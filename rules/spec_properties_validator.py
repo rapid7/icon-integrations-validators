@@ -1,5 +1,5 @@
 from .validator import KomandPluginValidator
-from ..plugin_spec import KomandPluginSpec, PluginComponent
+from icon_plugin_spec.plugin_spec import KomandPluginSpec, PluginComponent
 
 
 class SpecPropertiesValidator(KomandPluginValidator):

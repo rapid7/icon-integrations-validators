@@ -1,63 +1,49 @@
 import sys
 import traceback
 
-from .plugin_spec import KomandPluginSpec
-from .validation import VALIDATORS
+from icon_plugin_spec.plugin_spec import KomandPluginSpec
+from rules import VALIDATORS
 from .timing import *
-
-from . import OUTPUT
 
 RED = '\033[31m'
 YELLOW = '\033[33m'
 BOLD = '\033[1m'
 CEND = '\033[0m'
 
+BULLET_OK = f"[{YELLOW}*{CEND}]"
+BULLET_FAIL = f"[{RED}*{CEND}]"
+
 
 def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False):
     spec = KomandPluginSpec(directory, spec_file_name)
+    status = 0  # Resultant return code
 
-    out = {
-        'plugin': spec.spec_dictionary().get('name'),
-        'validators': []
-    }
-
-    status = 0
-    total_time_start = time_now()
-
-    success = False
-
-    print('[' + YELLOW + '*' + CEND + ']' + ' ' + BOLD + "Running CI Validators..." + CEND)
+    start_time = time_now()
+    print(f"{BULLET_OK} {BOLD}Running Integration Validators...{CEND}")
 
     for v in VALIDATORS:
-        print('[' + YELLOW + '*' + CEND + ']' + " Executing validator %s" % v.name)
+        print(f"{BULLET_OK} Executing validator {v.name}")
         try:
-            start_time = time_now()
             v.validate(spec)
             success = True
+
         except Exception as e:
-            print("Validator %s failed" % v.name)
+            print(f"Validator {v.name} failed!")
             ex_type, ex, tb = sys.exc_info()
             traceback.print_exception(Exception, e, tb)
             status = 1
             success = False
-        else:
-            end_time = time_now()
-            out['validators'].append({
-                'name': v.name,
-                'time_ms': format_time(start_time, end_time),
-                'success': success
-            })
+
         if not success and fail_fast:
             break
 
+    end_time = time_now()
+    time_elapsed = format_time(start=start_time, end=end_time)
+
     if status == 0:
-        print('[' + YELLOW + 'SUCCESS' + CEND + ']' + " Plugin successfully validated")
+        print(f"{BULLET_OK} Plugin successfully validated!")
     else:
-        print('[' + RED + 'FAIL' + CEND + ']' + " Plugin did not pass validation")
+        print(f"{BULLET_FAIL} Plugin failed validation!")
 
-    total_time_end = time_now()
-    out['time_ms'] = format_time(total_time_start, total_time_end)
-
-    OUTPUT.add_result('validate', out)
-
+    print(f"{BULLET_OK} Total time elapsed: {time_elapsed}ms")
     return status

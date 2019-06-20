@@ -1,5 +1,4 @@
 from .validator import KomandPluginValidator
-import base64
 import os
 import filetype
 from pathlib import Path
