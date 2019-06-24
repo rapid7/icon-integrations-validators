@@ -2,9 +2,14 @@
 
 from setuptools import setup, find_packages
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 setup(name='insightconnect_integrations_validators',
-      version='0.1.0',
+      version='1.0.0',
       description='Validator tooling for InsightConnect integrations',
+      long_description=long_description,
+      long_description_content_type="text/markdown",
       author='Rapid7 Integrations Alliance',
       author_email='integrationalliance@rapid7.com',
       url='https://github.com/rapid7/icon-integrations-validators',
@@ -14,6 +19,14 @@ setup(name='insightconnect_integrations_validators',
           'filetype==1.0.0',
           'pathlib==1.0.1',
           'insightconnect-integrations-plugin-spec-tooling==1.0.0'
+      ],
+      classifiers=[
+        "Programming Language :: Python :: 3",
+        "Operating System :: OS Independent",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: English",
+        "Topic :: Software Development :: Build Tools"
       ],
       license="MIT"
       )
