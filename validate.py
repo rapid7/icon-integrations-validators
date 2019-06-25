@@ -47,3 +47,16 @@ def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False):
 
     print(f"{BULLET_OK} Total time elapsed: {time_elapsed}ms")
     return status
+
+
+if __name__ == '__main__':
+    args = sys.argv
+
+    if not len(args) >= 2:
+        print("Invalid call")
+        exit(0)
+
+    print(f"Validating plugin at {args[1]}")
+    validate(directory=args[1])
+
+
