@@ -11,7 +11,7 @@ class DockerValidator(KomandPluginValidator):
         # Directory of current plugin
         d = spec.directory
         build_image = ["docker", "build", "-q", "--pull", "-t", "docker_validator", d]
-        run_image = ["docker", "run", "--rm", "-it", "docker_validator", "info"]
+        run_image = ["docker", "run", "--rm", "-t", "docker_validator", "info"]
 
         with open(os.devnull, "w") as fd:
             try:
@@ -22,9 +22,10 @@ class DockerValidator(KomandPluginValidator):
                 try:
                     subprocess.check_call(build_image, stdout=fd, stderr=fd)
                 except subprocess.CalledProcessError as e:
-                    raise Exception('Docker image did not build successfully.')
+                    raise Exception('Docker image did not build successfully.') from e
 
                 try:
                     subprocess.check_call(run_image, stdout=fd, stderr=fd)
                 except subprocess.CalledProcessError as e:
-                    raise Exception('Docker failed at running info command. Check your plugin code for run-time errors.')
+                    raise Exception('Docker failed at running info command. '
+                                    'Check your plugin code for run-time errors.') from e
