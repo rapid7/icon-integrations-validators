@@ -29,4 +29,3 @@ from icon_validator.validate import validate
 
 validate("/path/to/plugin/directory")
 ```
-
