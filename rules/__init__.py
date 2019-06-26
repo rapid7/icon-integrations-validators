@@ -1,5 +1,6 @@
 """
-The validation package provides the array VALIDATORS which contains all the validators for validating Komand plugins.
+The rules package provides the array VALIDATORS which contains all the validators for
+validating InsightConnect plugins.
 """
 
 from .files_validator import *

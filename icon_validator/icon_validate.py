@@ -1,9 +1,11 @@
+#! /usr/bin/env python3
+
 import sys
 import traceback
 
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
 from rules import VALIDATORS
-from timing import *
+from .timing import *
 
 RED = '\033[31m'
 YELLOW = '\033[33m'

@@ -20,6 +20,11 @@ setup(name='insightconnect_integrations_validators',
           'pathlib==1.0.1',
           'insightconnect-integrations-plugin-spec-tooling==1.0.0'
       ],
+      entry_points={
+        'console_scripts': [
+            'icon-validate=icon_validator:icon_validate icon_validate'
+        ]
+      },
       classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
