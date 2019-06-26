@@ -8,8 +8,6 @@ ensuring quality across
 
 ## Installation
 
-### Install
-
 ```
 $ pip install insightconnect-integrations-validators
 ```
