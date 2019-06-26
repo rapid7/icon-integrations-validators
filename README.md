@@ -14,7 +14,7 @@ ensuring quality across
 $ pip install insightconnect-integrations-validators
 ```
 
-## Okay great, but how do I use it
+## Use
 
 Simple!
 
