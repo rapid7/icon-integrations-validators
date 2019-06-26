@@ -1,4 +1,3 @@
-
 # InsightConnect Integrations Validators
 
 ## What this is
@@ -33,4 +32,3 @@ from icon_validator.validate import validate
 
 validate("/path/to/plugin/directory")
 ```
-
