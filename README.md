@@ -24,7 +24,7 @@ Simple!
 $ icon-validate my_plugin_directory/
 ```
 
-### Or via Python
+### Python
 
 ```
 from icon_validator.validate import validate
