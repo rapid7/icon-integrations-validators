@@ -29,3 +29,5 @@ from icon_validator.validate import validate
 
 validate("/path/to/plugin/directory")
 ```
+
+PyPi.org link: [https://pypi.org/project/insightconnect-integrations-validators/](https://pypi.org/project/insightconnect-integrations-validators/)
