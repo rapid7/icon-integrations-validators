@@ -1,6 +1,5 @@
-# InsightConnect Integrations Validators
 
-## What this is
+# InsightConnect Integrations Validators
 
 Tooling with a bundled suite of validator rules for
 ensuring quality across
