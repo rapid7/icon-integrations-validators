@@ -3,7 +3,7 @@
 
 ## What this is
 
-Tooling with a bundled suite of validators for
+Tooling with a bundled suite of validator rules for
 ensuring quality across
 [Rapid7 InsightConnect](https://www.rapid7.com/products/insightconnect/) integrations.
 
@@ -19,19 +19,18 @@ $ pip install insightconnect-integrations-validators
 
 Simple!
 
-TODO: UPDATE USAGE
+### Standalone via CLI
 
 ```
-from typing import Any
-from icon_plugin_spec.plugin_spec import KomandPluginSpec, PluginComponent
+$ icon-validate my_plugin_directory/
+```
 
-spec: KomandPluginSpec = KomandPluginSpec(directory="path_to_my_plugin")
-raw_connection: {str: Any} = spec.connection()  # Dictionary of connection properties
+### Or via Python
 
-print(raw_connection)  # Prints out list of inputs on the connection
+```
+from icon_validator.validate import validate
 
-# or, do the following
-connection: PluginComponent = PluginComponent.new_connection(raw=raw_connection)
-print(connection.inputs)
+
+validate("/path/to/plugin/directory")
 ```
 
