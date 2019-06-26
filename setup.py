@@ -22,7 +22,7 @@ setup(name='insightconnect_integrations_validators',
       ],
       entry_points={
         'console_scripts': [
-            'icon-validate=icon_validator:icon_validate icon_validate'
+            'icon-validate=icon_validator.__main__:main'
         ]
       },
       classifiers=[
