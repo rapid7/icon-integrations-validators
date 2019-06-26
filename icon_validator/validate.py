@@ -6,14 +6,7 @@ import traceback
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
 from rules import VALIDATORS
 from .timing import *
-
-RED = '\033[31m'
-YELLOW = '\033[33m'
-BOLD = '\033[1m'
-CEND = '\033[0m'
-
-BULLET_OK = f"[{YELLOW}*{CEND}]"
-BULLET_FAIL = f"[{RED}*{CEND}]"
+from .styling import *
 
 
 def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False):
@@ -43,9 +36,9 @@ def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False):
     time_elapsed = format_time(start=start_time, end=end_time)
 
     if status == 0:
-        print(f"{BULLET_OK} Plugin successfully validated!")
+        print(f"{BULLET_OK} {BOLD}Plugin successfully validated!{CEND}")
     else:
         print(f"{BULLET_FAIL} Plugin failed validation!")
 
-    print(f"{BULLET_OK} Total time elapsed: {time_elapsed}ms")
+    print(f"\n----\n{BULLET_OK}{BOLD} Total time elapsed: {time_elapsed}ms{CEND}")
     return status
