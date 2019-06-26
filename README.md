@@ -18,7 +18,7 @@ $ pip install insightconnect-integrations-validators
 
 Simple!
 
-### Standalone via CLI
+### Command
 
 ```
 $ icon-validate my_plugin_directory/
