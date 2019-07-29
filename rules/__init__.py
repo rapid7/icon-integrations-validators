@@ -21,6 +21,7 @@ from .docker_validator import *
 from .logging_validator import *
 from .spec_properties_validator import *
 from .profanity_validator import *
+from .acronym_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
@@ -41,5 +42,6 @@ VALIDATORS = [
     DockerfileParentValidator(),
     DockerValidator(),
     LoggingValidator(),
-    ProfanityValidator()
+    ProfanityValidator(),
+    AcronymValidator()
 ]
