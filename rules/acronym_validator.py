@@ -3,9 +3,7 @@ from .validator import KomandPluginValidator
 
 class AcronymValidator(KomandPluginValidator):
 
-    acronyms = [
-      'API', 'AWS', 'BCC', 'BIOS', 'CI', 'CLI', 'CPU', 'CRLF', 'CSV', 'FTP', 'GMT', 'GNU', 'GPU', 'HTML', 'HTTP', 'HTTPS', 'ID', 'IMAP', 'IO', 'IP', 'IP2', 'ISO', 'JIRA', 'JPEG', 'JQ', 'JQL', 'JSON', 'LAN', 'MD5', 'MIME', 'PDF', 'PHP', 'PID', 'PNG', 'REST', 'RPM', 'RRS', 'RSA', 'SDK', 'SHA', 'SHA1', 'SHASUM', 'SHA1SUM', 'SHA256', 'SHA512', 'SMS', 'SMTP', 'SQL', 'SSH', 'SSL', 'TCP', 'UDP', 'UI', 'UID', 'URI', 'URL', 'UUID', 'VPN', 'XML', 'ZIP'
-    ]
+    acronyms = ['API', 'AWS', 'BCC', 'BIOS', 'CI', 'CLI', 'CPU', 'CRLF', 'CSV', 'FTP', 'GMT', 'GNU', 'GPU', 'HTML', 'HTTP', 'HTTPS', 'ID', 'IMAP', 'IO', 'IP', 'IP2', 'ISO', 'JPEG', 'JQ', 'JQL', 'JSON', 'LAN', 'MD5', 'MIME', 'PDF', 'PHP', 'PID', 'PNG', 'REST', 'RPM', 'RRS', 'RSA', 'SDK', 'SHA', 'SHA1', 'SHASUM', 'SHA1SUM', 'SHA256', 'SHA512', 'SMS', 'SMTP', 'SQL', 'SSH', 'SSL', 'TCP', 'UDP', 'UI', 'UID', 'URI', 'URL', 'UUID', 'VPN', 'XML', 'ZIP']
 
     @staticmethod
     def validate_acronym(s):
@@ -29,4 +27,4 @@ class AcronymValidator(KomandPluginValidator):
         
 
         if len(bad) > 0:
-            raise Exception('Acronyms found in plugin.spec.yaml or help.md that should be capitalized: ', str(bad))
+            raise Exception(f'Acronyms found in plugin.spec.yaml or help.md that should be capitalized: ', {str(bad)})
