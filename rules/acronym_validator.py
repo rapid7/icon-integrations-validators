@@ -18,14 +18,10 @@ class AcronymValidator(KomandPluginValidator):
     def validate_subsection(section, bad): 
         if type(section) is not dict:
             return
-        try:
-            desc = section['description']
-            AcronymValidator.validate_line(desc.split(), bad)
-            # items in spec sometimes have a desc but no title
-            title = section['title']
-            AcronymValidator.validate_line(title.split(), bad)
-        except KeyError:
-            pass 
+        if 'description' in section:
+            AcronymValidator.validate_line(section['description'].split(), bad)
+        if 'title' in section:
+            AcronymValidator.validate_line(section['title'].split(), bad)
         for subsection in section:
                 AcronymValidator.validate_subsection(section[subsection], bad) 
 
