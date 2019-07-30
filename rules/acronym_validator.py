@@ -22,7 +22,7 @@ class AcronymValidator(KomandPluginValidator):
         'PCI', 'PCAP', 'PDF', 'PHP', 'PID', 'PNG',
         'RAR', 'REST', 'RFC', 'RPM', 'RRS', 'RSA', 'RSS',
         'SAML', 'SCCM', 'SDK', 'SHA', 'SHA1', 'SHASUM', 'SHA1SUM', 'SHA256', 'SHA512', 'SLA', 'SMB', 'SMS', 'SMTP', 'SPAM', 'SQL', 'SNMP', 'SNS', 'SRV', 'SQS', 'SSH', 'SSDEEP', 'STIX', 'SSL',
-        'TCP', 'TSV', 'TLS', 'TTL',
+        'TCP', 'TSV', 'TLP', 'TLS', 'TTL',
         'UDP', 'UI', 'UID', 'URI', 'URL', 'UTC', 'UUID', 'VPN',
         'VM', 'VTI',
         'XML',
