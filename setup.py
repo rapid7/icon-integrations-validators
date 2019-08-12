@@ -18,7 +18,7 @@ setup(name='insightconnect_integrations_validators',
           'validators==0.12.1',
           'filetype==1.0.0',
           'pathlib==1.0.1',
-          'insightconnect-integrations-plugin-spec-tooling==1.0.0'
+          'insightconnect-integrations-plugin-spec-tooling~=1.0'
       ],
       entry_points={
         'console_scripts': [
