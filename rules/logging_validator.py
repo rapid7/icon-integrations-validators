@@ -7,23 +7,16 @@ class LoggingValidator(KomandPluginValidator):
     def validate_import_logging(section):
         logging_found = False
         logging_getlogger_found = False
-        print_found = False
 
         for f in section:
             if 'import logging' in f:
                 logging_found = True
             if 'logging.getLogger' in f:
                 logging_getlogger_found = True
-            if 'print(' in f:
-                print_found = True
 
         # logging is imported without presence of logging.GetLogger
         if logging_found and not logging_getlogger_found:
             raise Exception('One or more files imports logging, update to self.logger')
-
-        # print statement is used instead of self.logger
-        if print_found:
-            raise Exception('One ore more files use print statements, update to use self.logger')
 
     def validate(self, spec):
         # Logging update is only for Python plugins
