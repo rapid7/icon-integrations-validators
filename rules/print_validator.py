@@ -12,7 +12,7 @@ class PrintValidator(KomandPluginValidator):
                 print_found = True
 
         if print_found:
-            raise Exception('One ore more files use print statements, update to use self.logger')
+            raise Exception('One or more files use print statements, update to use self.logger')
 
     def validate(self, spec):
         # Logging update is only for Python plugins
