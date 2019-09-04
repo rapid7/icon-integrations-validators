@@ -1,6 +1,6 @@
 from .validator import KomandPluginValidator
 import os
-
+import subprocess
 
 class MakefileValidator(KomandPluginValidator):
 
@@ -67,8 +67,16 @@ class MakefileValidator(KomandPluginValidator):
                     'Makefile does not contain current validate target: '
                     '@test -x ../tools/bandit.sh && ../tools/bandit.sh || true')
 
+    @staticmethod
+    def validate_syntax(path_to_makefile):
+        result = subprocess.run(["make", "-n", "-C", path_to_makefile], capture_output=True)
+        err = result.stderr.decode("utf-8").strip()
+        if err is not "":
+            raise Exception(f'Makefile not properly formatted: {err}')
+
     def validate(self, spec):
         d = spec.directory
+        MakefileValidator.validate_syntax(d)
         for i in spec.raw_makefile().split('\n\n'):
             line = i.split('\n')
             if line[0].startswith('runner:'):

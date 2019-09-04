@@ -46,6 +46,6 @@ VALIDATORS = [
     LoggingValidator(),
     ProfanityValidator(),
     AcronymValidator(),
-    PrintValidator()
+    PrintValidator(),
     JSONValidator()
 ]
