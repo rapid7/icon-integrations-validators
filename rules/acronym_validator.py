@@ -48,7 +48,7 @@ class AcronymValidator(KomandPluginValidator):
         if 'title' in section:
             AcronymValidator.validate_line(section['title'].split(), bad)
         for subsection in section:
-                AcronymValidator.validate_subsection(section[subsection], bad)
+            AcronymValidator.validate_subsection(section[subsection], bad)
 
     @staticmethod
     def validate_line(content, bad):
@@ -70,7 +70,6 @@ class AcronymValidator(KomandPluginValidator):
         for section in subsections:
             if section in spec.spec_dictionary():
                 AcronymValidator.validate_subsection(spec.spec_dictionary()[section], bad)
-
 
         if len(bad) > 0:
             raise Exception(f'Acronyms found in plugin.spec.yaml or help.md that should be capitalized: ', {str(bad)})

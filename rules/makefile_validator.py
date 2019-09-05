@@ -2,6 +2,7 @@ from .validator import KomandPluginValidator
 import os
 import subprocess
 
+
 class MakefileValidator(KomandPluginValidator):
 
     @staticmethod
