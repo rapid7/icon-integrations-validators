@@ -12,11 +12,14 @@ class CredentialsValidator(KomandPluginValidator):
                 with open(os.path.join(tests_dir, name)) as test:
                     data = json.load(test)
                     try:
-                        secret_key = data.get("body").get("connection").get("credentials").get("secretKey")
-                        if secret_key is None:
+                        creds = data.get("body").get("connection").get("credentials")
+                        if creds is None:
                             continue
-                        if secret_key != "":
-                            violating_files.append(f"tests/{name}")
+                        else:
+                            for key in creds:
+                                if creds[key] != "":
+                                    violating_files.append(f"tests/{name}")
+                                    continue
                     except AttributeError:
                         continue
         if len(violating_files) > 0:
