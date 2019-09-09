@@ -25,6 +25,7 @@ from .acronym_validator import *
 from .print_validator import *
 from .json_validator import *
 from .exception_validator import *
+from .credentials_validator import *
 from .password_validator import *
 
 # The order of this list is the execution order of the validators.
@@ -51,5 +52,6 @@ VALIDATORS = [
     PrintValidator(),
     JSONValidator(),
     ExceptionValidator(),
-    PasswordValidator()
+    PasswordValidator(),
+    CredentialsValidator()
 ]
