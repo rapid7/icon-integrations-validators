@@ -77,7 +77,7 @@ class MakefileValidator(KomandPluginValidator):
 
     def validate(self, spec):
         d = spec.directory
-        MakefileValidator.validate_syntax(d)
+        # MakefileValidator.validate_syntax(d)
         for i in spec.raw_makefile().split('\n\n'):
             line = i.split('\n')
             if line[0].startswith('runner:'):
