@@ -15,6 +15,8 @@ setup(name='insightconnect_integrations_validators',
       url='https://github.com/rapid7/icon-integrations-validators',
       packages=find_packages(),
       install_requires=[
+          'python_jsonschema_objects==0.3.2',
+          'jsonschema==2.3.0',
           'validators==0.12.1',
           'filetype==1.0.0',
           'pathlib==1.0.1',
