@@ -27,6 +27,7 @@ from .json_validator import *
 from .exception_validator import *
 from .credentials_validator import *
 from .password_validator import *
+from .output_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
@@ -53,5 +54,6 @@ VALIDATORS = [
     JSONValidator(),
     ExceptionValidator(),
     PasswordValidator(),
-    CredentialsValidator()
+    CredentialsValidator(),
+    OutputValidator()
 ]
