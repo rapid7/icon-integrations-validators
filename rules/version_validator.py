@@ -19,6 +19,8 @@ class VersionValidator(KomandPluginValidator):
             raise Exception('Version should be of semver format: x.x.x.')
         if version.startswith("0"):
             raise Exception('Version should begin at an initial version of 1.0.0 to comply with semver.')
+        if "-" in version:
+            raise Exception('Version should not contain dashes')
 
     @staticmethod
     def validate_version_quotes(spec):
