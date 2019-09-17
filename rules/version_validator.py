@@ -1,30 +1,20 @@
 from .validator import KomandPluginValidator
+import re
 
 
 class VersionValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_version(version):
-        if version.endswith('.'):
-            raise Exception('Version ends with period when it should not.')
-        if any(c.isalpha() for c in version):
-            raise Exception('Version contains alphabet when it should not.')
-        if "." not in version:
-            raise Exception('Version should be separated by decimal point.')
-        if " " in version:
-            raise Exception('Version should not contain spaces.')
-        if "_" in version:
-            raise Exception('Version should not contain underscores.')
-        if len(version.split('.')) != 3:
-            raise Exception('Version should be of semver format: x.x.x.')
-        if version.startswith("0"):
-            raise Exception('Version should begin at an initial version of 1.0.0 to comply with semver.')
-        if "-" in version:
-            raise Exception('Version should not contain dashes')
+        if re.match("[1-9]+.[0-9]+.[0-9]+$", version) is None:
+            raise Exception("Version does not match required semver format. "
+                            "Version should be in form X.Y.Z with X, Y, and Z "
+                            "being numbers. No special characters or spaces allowed. "
+                            "Versions start at 1.0.0.")
 
     @staticmethod
     def validate_version_quotes(spec):
-        '''Requires raw spec to see the quotes'''
+        """Requires raw spec to see the quotes"""
         for line in spec.splitlines():
             if line.startswith('version:'):
                 val = line[line.find(' ')+1:]
