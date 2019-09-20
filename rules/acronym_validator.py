@@ -43,9 +43,9 @@ class AcronymValidator(KomandPluginValidator):
     def validate_subsection(section, bad):
         if type(section) is not dict:
             return
-        if 'description' in section:
+        if 'description' in section and type(section['description']) == str:
             AcronymValidator.validate_line(section['description'].split(), bad)
-        if 'title' in section:
+        if 'title' in section and type(section['title']) == str:
             AcronymValidator.validate_line(section['title'].split(), bad)
         for subsection in section:
             AcronymValidator.validate_subsection(section[subsection], bad)
