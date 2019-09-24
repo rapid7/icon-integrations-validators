@@ -31,6 +31,7 @@ validate("/path/to/plugin/directory")
 ```
 
 ## Changelog
+* 1.1.2 - Fix for Acronym and Output validators
 * 1.1.1 - Removed breaking changes to Makefile validator
 * 1.1.0 - Add validator rules: Check for Help.md, profanity check, acronym capitalization check, 
 `print` usage check, JSON tests, exceptions, credentials, passwords | Updated rules: Makefiles, logging

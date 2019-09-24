@@ -38,7 +38,7 @@ class OutputValidator(KomandPluginValidator):
     def validate(self, spec):
         schemas = OutputValidator.get_schemas(spec)
         for action in spec.actions():
-            path = os.path.join(spec.directory, f"test-output/{action}.json")
+            path = os.path.join(spec.directory, f".output/{action}.json")
             if os.path.exists(path):
                 with open(path, 'r') as output:  # if test output has been generated
                     self.validate_output(json.load(output), schemas[action], action)
