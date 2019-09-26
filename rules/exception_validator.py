@@ -4,8 +4,6 @@ import re
 
 
 class ExceptionValidator(KomandPluginValidator):
-    ignore = ["unit_tests", "unit_test"]
-
     def __init__(self):
         super().__init__()
         self._violating_files = []
@@ -22,16 +20,14 @@ class ExceptionValidator(KomandPluginValidator):
             self._violating_files.append(os.path.relpath(joined_path, spec_dir))
 
     @staticmethod
-    def is_ignore(path):
-        for dir_ in ExceptionValidator.ignore:
-            if dir_ in path:
-                return True
-        return False
+    def should_search(path, name):
+        return f"icon_{name}" in path or f"komand_{name}" in path
 
     def validate(self, spec):
+        name = spec.plugin_name()
         d = spec.directory
         for path, _, files in os.walk(d):
-            if ExceptionValidator.is_ignore(path):
+            if not ExceptionValidator.should_search(path, name):
                 continue
             for name in files:
                 if name.endswith(".py"):
