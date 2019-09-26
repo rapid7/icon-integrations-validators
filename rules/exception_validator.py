@@ -23,7 +23,7 @@ class ExceptionValidator(KomandPluginValidator):
                 violating_lines.append(line_num)
 
         if len(violating_lines) > 0:
-            self._violating_files.append((os.path.relpath(joined_path, spec_dir), f"Line Number(s): {violating_lines}"))
+            self._violating_files.append((os.path.relpath(joined_path, spec_dir), f"Line number(s): {violating_lines}"))
 
     def validate(self, spec):
         d = spec.directory
