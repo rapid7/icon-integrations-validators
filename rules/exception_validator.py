@@ -21,13 +21,13 @@ class ExceptionValidator(KomandPluginValidator):
 
     @staticmethod
     def should_search(path, name):
-        return f"icon_{name}" in path or f"komand_{name}" in path
+        return (f"icon_{name}" in path) or (f"komand_{name}" in path)
 
     def validate(self, spec):
-        name = spec.plugin_name()
+        plugin_name = spec.plugin_name()
         d = spec.directory
         for path, _, files in os.walk(d):
-            if not ExceptionValidator.should_search(path, name):
+            if not ExceptionValidator.should_search(path, plugin_name):
                 continue
             for name in files:
                 if name.endswith(".py"):
