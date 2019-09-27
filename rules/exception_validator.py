@@ -17,13 +17,20 @@ class ExceptionValidator(KomandPluginValidator):
         pattern = "raise [A-Za-z]*"
         for line_num in range(len(text)):
             matches = re.findall(pattern, text[line_num])
-            violations = list(filter(lambda x: "raise PluginException" not in x
-                                               and "raise ConnectionTestException" not in x, matches))
+            violations = list(filter(lambda m: ExceptionValidator.violation_check(m), matches))
             if len(violations) > 0:
-                violating_lines.append(line_num)
+                violating_lines.append(str(line_num + 1))
 
         if len(violating_lines) > 0:
-            self._violating_files.append((os.path.relpath(joined_path, spec_dir), f"Line number(s): {violating_lines}"))
+            self._violating_files.append(f"{os.path.relpath(joined_path, spec_dir)}: {', '.join(violating_lines)}")
+
+    @staticmethod
+    def violation_check(match):
+        allowed = ["PluginException", "ConnectionTestException"]
+        for e in allowed:
+            if e in match:
+                return False
+        return True
 
     def validate(self, spec):
         d = spec.directory
