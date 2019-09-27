@@ -11,13 +11,26 @@ class ExceptionValidator(KomandPluginValidator):
     def validate_exceptions(self, spec_dir, path, name):
         joined_path = os.path.join(path, name)
         with open(joined_path, 'r') as f:
-            text = f.read()
+            text = f.readlines()
+
+        violating_lines = []
         pattern = "raise [A-Za-z]*"
-        matches = re.findall(pattern, text)
-        violations = list(filter(lambda x: "raise PluginException" not in x
-                                           and "raise ConnectionTestException" not in x, matches))
-        if len(violations) > 0:
-            self._violating_files.append(os.path.relpath(joined_path, spec_dir))
+        for line_num in range(len(text)):
+            matches = re.findall(pattern, text[line_num])
+            violations = list(filter(lambda m: ExceptionValidator.violation_check(m), matches))
+            if len(violations) > 0:
+                violating_lines.append(str(line_num + 1))
+
+        if len(violating_lines) > 0:
+            self._violating_files.append(f"{os.path.relpath(joined_path, spec_dir)}: {', '.join(violating_lines)}")
+
+    @staticmethod
+    def violation_check(match):
+        allowed = ["PluginException", "ConnectionTestException"]
+        for e in allowed:
+            if e in match:
+                return False
+        return True
 
     def validate(self, spec):
         d = spec.directory
@@ -27,6 +40,6 @@ class ExceptionValidator(KomandPluginValidator):
                     self.validate_exceptions(d, path, name)
         if len(self._violating_files) > 0:
             raise Exception(f"Please use 'PluginException' or"
-                            f" 'ConnectionTestException' instead of 'Exception'. "
+                            f" 'ConnectionTestException' when raising an exception. "
                             f"The following files violated this rule: {self._violating_files}")
 
