@@ -31,6 +31,7 @@ validate("/path/to/plugin/directory")
 ```
 
 ## Changelog
+* 1.1.3 - Ignore unit test directories (/unit_test & /unit_tests) in Exception Validator
 * 1.1.2 - Fix for Acronym and Output validators
 * 1.1.1 - Removed breaking changes to Makefile validator
 * 1.1.0 - Add validator rules: Check for Help.md, profanity check, acronym capitalization check, 
