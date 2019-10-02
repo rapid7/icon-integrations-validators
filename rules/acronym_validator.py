@@ -2,7 +2,6 @@ from .validator import KomandPluginValidator
 
 
 class AcronymValidator(KomandPluginValidator):
-
     acronyms = [
         'ACL', 'API', 'AMI', 'ANC', 'ANS', 'ARN', 'ASCII', 'ASN', 'AV', 'AWS',
         'BCC', 'BGP', 'BIOS',
@@ -58,18 +57,25 @@ class AcronymValidator(KomandPluginValidator):
 
     def validate(self, spec):
         bad = []
+        bad_help = []
         sections = [ 'title', 'description', 'help']
         for section in sections: # check title/desc of spec and whole of help.md
             if section is 'help':
                 content = spec.raw_help().split()
+                AcronymValidator.validate_line(content, bad_help)
             else:
                 content = spec.spec_dictionary()[section].split()
-            AcronymValidator.validate_line(content, bad)
+                AcronymValidator.validate_line(content, bad)
 
         subsections = ['actions', 'triggers', 'connection', 'types']
         for section in subsections:
             if section in spec.spec_dictionary():
                 AcronymValidator.validate_subsection(spec.spec_dictionary()[section], bad)
 
+        err_msg = ""
         if len(bad) > 0:
-            raise Exception(f'Acronyms found in plugin.spec.yaml or help.md that should be capitalized: ', {str(bad)})
+            err_msg += f'Acronyms found in plugin.spec.yaml that should be capitalized: {str(bad)}\n'
+        if len(bad_help) > 0:
+            err_msg += f'Acronyms found in help.md that should be capitalized: {str(bad_help)}'
+        if err_msg != "":
+            raise Exception(err_msg)
