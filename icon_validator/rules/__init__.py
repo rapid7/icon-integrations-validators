@@ -13,7 +13,6 @@ from .default_value_validator import *
 from .vendor_validator import *
 from .icon_validator import *
 from .required_validator import *
-from .makefile_validator import *
 from .version_validator import *
 from .help_validator import *
 from .spec_version_validator import *
@@ -41,7 +40,6 @@ VALIDATORS = [
     DefaultValueValidator(),
     IconValidator(),
     RequiredValidator(),
-    MakefileValidator(),
     VersionValidator(),
     HelpValidator(),
     SpecVersionValidator(),

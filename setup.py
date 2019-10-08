@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='insightconnect_integrations_validators',
-      version='1.1.4',
+      version='1.1.5',
       description='Validator tooling for InsightConnect integrations',
       long_description=long_description,
       long_description_content_type="text/markdown",
