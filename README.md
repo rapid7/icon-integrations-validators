@@ -32,7 +32,7 @@ validate("/path/to/plugin/directory")
 
 ## Changelog
 
-* 1.1.5 - Remove Makefile validator rule 
+* 1.1.5 - Remove Makefile validator rule, fix rules import
 * 1.1.4 - Move `rules` package inside `icon_validator`
 * 1.1.3 - Ignore unit test directories (/unit_test & /unit_tests) in Exception Validator
 * 1.1.2 - Fix for Acronym and Output validators
