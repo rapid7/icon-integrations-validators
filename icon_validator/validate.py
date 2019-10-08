@@ -4,7 +4,7 @@ import sys
 import traceback
 
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
-from rules import VALIDATORS
+from .rules import VALIDATORS
 from .timing import *
 from .styling import *
 

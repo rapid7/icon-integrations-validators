@@ -1,7 +1,7 @@
 from .validator import KomandPluginValidator
 import os
 import json
-import importlib
+import re
 import sys
 
 from jsonschema import validate
@@ -25,15 +25,19 @@ class OutputValidator(KomandPluginValidator):
         for path, _, files in os.walk(spec.directory):
             for file in files:
                 if "schema.py" in file and os.path.basename(path) != "connection":
-                    action_name = "".join([str(x.capitalize()) for x in os.path.basename(path).split("_")])
                     full_path = os.path.join(path, file)
-                    full_path = full_path.split(os.path.basename(spec.directory), 1)[1][1:-3]
-                    full_path = full_path.replace("/", ".")
-                    class_name = f"{action_name}Output"
-                    output = __import__(str(full_path), fromlist=[class_name])
-                    output_class = getattr(output, class_name)
-                    schemas[os.path.basename(path)] = output_class.schema
+                    print(full_path)
+                    schemas[os.path.basename(path)] = OutputValidator.read_schema(full_path)
         return schemas
+
+    @staticmethod
+    def read_schema(path):
+        with open(path) as schema:
+            text = schema.read()
+        text = text.strip()
+        output_pattern = '(?s)"""(.*?)"""'
+        json_ = json.loads(re.findall(output_pattern, text)[1]) # 0 for input, 1 for output
+        return json_
 
     def validate(self, spec):
         schemas = OutputValidator.get_schemas(spec)
