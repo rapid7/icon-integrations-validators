@@ -32,6 +32,7 @@ validate("/path/to/plugin/directory")
 
 ## Changelog
 
+* 1.1.7 - Added Regeneration validator
 * 1.1.6 - Improved Output validator
 * 1.1.5 - Remove Makefile validator rule, fix rules import
 * 1.1.4 - Move `rules` package inside `icon_validator`
