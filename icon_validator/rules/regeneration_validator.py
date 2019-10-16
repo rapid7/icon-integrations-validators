@@ -8,12 +8,7 @@ from . import KomandPluginSpec
 
 MD5 = str
 JSON = str
-
 _CHECKSUM = ".CHECKSUM"
-
-
-def log(s: str) -> NoReturn:
-    print(f"RegenerationValidator: {s}\n")
 
 
 class SchemaHash(object):
@@ -46,23 +41,16 @@ class SchemaHash(object):
 
 class Checksum(object):
 
-    def __init__(self, schemas: [SchemaHash], manifest: MD5, setup: MD5 = None):
+    def __init__(self, spec: MD5 = None):
         """
         Initializer for a Checksum
-        :param schemas: List of SchemaHash objects
-        :param manifest: Hash of the plugin manifest. For Go, this is cmd/main.go. For Python, this is the binfile.
-        :param setup: Hash of the setup.py. Only relevant to Python plugins.
+        :param spec: Hash of the plugin spec. Only relevant to Python plugins.
         """
-        self.schemas = schemas
-        self.manifest = manifest
-        self.setup = setup
+
+        self.spec = spec
 
     def __eq__(self, other):
-        self.schemas.sort()
-        other.schemas.sort()
-
-        equals = (self.manifest == other.manifest) and (self.setup == self.setup) and (self.schemas == other.schemas)
-
+        equals = self.spec == other.spec
         return equals
 
     def to_json(self) -> JSON:
@@ -81,29 +69,20 @@ class Checksum(object):
         :return: Checksum object created from JSON
         """
         hashes: {str: str} = json.loads(json_string)
-        schemas = hashes.get("schemas")
-
-        schema_hashes: [SchemaHash] = list(map(lambda h: SchemaHash.from_dict(dict_=h), schemas))
 
         return cls(
-            schemas=schema_hashes,
-            manifest=hashes.get("manifest"),
-            setup=hashes.get("setup")
+            spec=hashes.get("spec")
         )
 
     @classmethod
-    def from_plugin(cls, schema_hashes: [SchemaHash], manifest_hash: MD5, setup_hash: MD5 = None):
+    def from_plugin(cls, spec_hash: MD5 = None):
         """
         Creates a Checksum from a plugin
-        :param schema_hashes: List of MD5 hashed-schemas
-        :param manifest_hash: MD5 hash of a plugin manifest (binfile or cmd/main.go)
-        :param setup_hash: Python-only, MD5 hash of a setup.py
+        :param spec_hash: Python-only, MD5 hash of plugin spec
         :return: Checksum representing a plugin
         """
 
-        return Checksum(schemas=schema_hashes,
-                        manifest=manifest_hash,
-                        setup=setup_hash)
+        return Checksum(spec=spec_hash)
 
 
 class ChecksumHandler(object):
@@ -119,21 +98,16 @@ class ChecksumHandler(object):
             # print("No .CHECKSUM file found, skipping")
             return
 
-        # Provided hashfile is the .CHECKSUM that was packaged with the plugin.
+        # Provided hashfile is the .CHECKSUM generated from icon-plugin
         # This should match what we create after regeneration.
         # Important to do this before regeneration so we don't lose it!
         provided_checksum_file: Checksum = Checksum.from_json(json_string=checksum_file_contents)
 
-        # Are we dealing with Python or Go?
+        # If it is a python plugin
         if self._SETUP_PY in os.listdir(self.plugin_directory):
-            self._regenerate()  # First regenerate the plugin
-            schema_hashes: [SchemaHash] = self._hash_python_schemas()
-            manifest_hash: MD5 = self._hash_python_manifest()
-            setup_hash: MD5 = self._hash_python_setup()
+            spec_hash: MD5 = self._hash_python_spec()
 
-            post_regen_checksum_file: Checksum = Checksum.from_plugin(schema_hashes=schema_hashes,
-                                                                      manifest_hash=manifest_hash,
-                                                                      setup_hash=setup_hash)
+            post_regen_checksum_file: Checksum = Checksum.from_plugin(spec_hash=spec_hash)
         else:
             # print("Skipping regeneration validation for Go plugin!")
             # Go plugin, so just pass it
@@ -185,6 +159,16 @@ class ChecksumHandler(object):
 
         except FileNotFoundError as e:
             raise Exception("Fatal: No %s found in Python plugin!" % self._SETUP_PY) from e
+
+    def _hash_python_spec(self) -> MD5:
+        spec_file: str = os.path.join(self.plugin_directory, "plugin.spec.yaml")
+
+        try:
+            with open(file=spec_file, mode="rb") as sf:
+                return md5(sf.read()).hexdigest()
+
+        except FileNotFoundError as e:
+            raise Exception("Fatal: No %s found in Python plugin!" % "plugin spec") from e
 
     def _hash_python_manifest(self) -> MD5:
         manifest_directory: str = os.path.join(".", "bin")
@@ -238,33 +222,6 @@ class ChecksumHandler(object):
             if os.path.isdir(a) and self.plugin_name in a:
                 return a
         raise Exception("Fatal: Python plugin missing main directory!")
-
-    def _regenerate(self) -> NoReturn:
-        """
-        Regenerates a plugin
-        :return: None
-        """
-        regen_command: str = "make regenerate > /dev/null 2>&1"
-
-        # Get current directory, change directories to the one with the correct Makefile
-        current_directory = os.curdir
-        os.chdir(self.plugin_directory)
-
-        # Run the regeneration command
-        subprocess.run(regen_command.split(" "))
-
-        # Regen is done, change back to previous directory
-        os.chdir(current_directory)
-
-    def _write_hashfile(self, hashfile: Checksum) -> NoReturn:
-        """
-        Writes a .CHECKSUM file to a plugin directory
-        :param hashfile: Checksum object to write to file
-        :return:
-        """
-        path = os.path.join(self.plugin_directory, _CHECKSUM)
-        with open(file=path, mode="w") as hf:
-            hf.write(hashfile.to_json())
 
     def _get_hashfile(self) -> Optional[str]:
         """
