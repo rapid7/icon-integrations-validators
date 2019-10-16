@@ -26,7 +26,6 @@ class OutputValidator(KomandPluginValidator):
             for file in files:
                 if "schema.py" in file and os.path.basename(path) != "connection":
                     full_path = os.path.join(path, file)
-                    print(full_path)
                     schemas[os.path.basename(path)] = OutputValidator.read_schema(full_path)
         return schemas
 

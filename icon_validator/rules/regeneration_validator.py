@@ -116,7 +116,7 @@ class ChecksumHandler(object):
     def run_from_validator(self):
         checksum_file_contents: str = self._get_hashfile()
         if not checksum_file_contents:
-            print("No .CHECKSUM file found, skipping")
+            # print("No .CHECKSUM file found, skipping")
             return
 
         # Provided hashfile is the .CHECKSUM that was packaged with the plugin.
@@ -135,18 +135,18 @@ class ChecksumHandler(object):
                                                                       manifest_hash=manifest_hash,
                                                                       setup_hash=setup_hash)
         else:
-            print("Skipping regeneration validation for Go plugin!")
+            # print("Skipping regeneration validation for Go plugin!")
             # Go plugin, so just pass it
             return
 
         # Now that we have a post-regeneration Checksum, let's compare!
-        print(post_regen_checksum_file.to_json())
+        # print(post_regen_checksum_file.to_json())
         if not (provided_checksum_file == post_regen_checksum_file):
             raise Exception("Error: Hashes between provided plugin and regenerated plugin were not equal!")
 
     def _hash_python_schemas(self) -> [SchemaHash]:
         hashes: [SchemaHash] = []
-        for root, dirs, files in os.walk(self.plugin_directory):
+        for root, dirs, files in os.walk("."):
             if "schema.py" not in files:
                 continue
 
@@ -177,7 +177,7 @@ class ChecksumHandler(object):
         return hashes
 
     def _hash_python_setup(self) -> MD5:
-        setup_file: str = os.path.join(self.plugin_directory, self._SETUP_PY)
+        setup_file: str = os.path.join(".", self._SETUP_PY)
 
         try:
             with open(file=setup_file, mode="rb") as sf:
@@ -187,8 +187,7 @@ class ChecksumHandler(object):
             raise Exception("Fatal: No %s found in Python plugin!" % self._SETUP_PY) from e
 
     def _hash_python_manifest(self) -> MD5:
-        manifest_directory: str = os.path.join(self.plugin_directory, "bin")
-
+        manifest_directory: str = os.path.join(".", "bin")
         try:
             manifest_file: str = os.path.join(manifest_directory, os.listdir(manifest_directory)[0])
             with open(file=manifest_file, mode="rb") as mf:
@@ -198,7 +197,7 @@ class ChecksumHandler(object):
             raise Exception("Fatal: No binfile found in Python plugin!") from e
 
     def _hash_go_manifest(self) -> MD5:
-        manifest_file: str = os.path.join(self.plugin_directory, "cmd", "main.go")
+        manifest_file: str = os.path.join(".", "cmd", "main.go")
 
         try:
             with open(file=manifest_file, mode="rb") as mf:
@@ -245,15 +244,14 @@ class ChecksumHandler(object):
         Regenerates a plugin
         :return: None
         """
-        # REGEN_COMMAND: str = "make regenerate > /dev/null 2>&1"
+        regen_command: str = "make regenerate > /dev/null 2>&1"
 
         # Get current directory, change directories to the one with the correct Makefile
         current_directory = os.curdir
         os.chdir(self.plugin_directory)
-        REGEN_COMMAND: str = "make regenerate"
 
         # Run the regeneration command
-        subprocess.run(REGEN_COMMAND.split(" "))
+        subprocess.run(regen_command.split(" "))
 
         # Regen is done, change back to previous directory
         os.chdir(current_directory)
@@ -286,22 +284,23 @@ class RegenerationValidator(KomandPluginValidator):
 
     def validate(self, spec: KomandPluginSpec):
         is_jenkins: bool = self.is_run_from_jenkins()
-        log(f"Run from Jenkins is: {is_jenkins}")
+        # log(f"Run from Jenkins is: {is_jenkins}")
 
         if is_jenkins:
             path = os.path.join(".", "plugin")
         else:
             path = "."
-        log(f"Path is: {path}")
-        log("Directory contents are: %s" % os.listdir(path))
 
-        log("ENVIRONMENT VARIABLES ARE: %s" % os.environ)
-
-        log("Root directory contents are: %s" % os.listdir("."))
-
-        with open(file=os.path.join(".", "Makefile"), mode="r+") as hf:
-            log("MAKEFILES CONTENTS ARE: %s" % hf.read())
-
+        # log(f"Path is: {path}")
+        # log("Directory contents are: %s" % os.listdir(path))
+        #
+        # log("ENVIRONMENT VARIABLES ARE: %s" % os.environ)
+        #
+        # log("Root directory contents are: %s" % os.listdir("."))
+        #
+        # if not is_jenkins:
+        #     with open(file=os.path.join(".", "Makefile"), mode="r+") as hf:
+        #         log("MAKEFILES CONTENTS ARE: %s" % hf.read())
         handler: ChecksumHandler = ChecksumHandler(plugin_name=spec.plugin_name(),
                                                    plugin_directory=path)
 
