@@ -136,7 +136,8 @@ class ChecksumHandler(object):
         # Now that we have a post-regeneration Checksum, let's compare!
         # print(post_regen_checksum_file.to_json())
         if not (provided_checksum_file == post_regen_checksum_file):
-            raise Exception("Error: Hashes between provided plugin and regenerated plugin were not equal!")
+            raise Exception("Error: Hashes between provided plugin and checksum were not equal! "
+                            "Regenerate the plugin and push to working branch.")
 
     def _hash_python_schemas(self) -> [SchemaHash]:
         hashes: [SchemaHash] = []
