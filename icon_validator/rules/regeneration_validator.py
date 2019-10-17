@@ -1,7 +1,6 @@
 import os
-import subprocess
 import json
-from typing import Optional, NoReturn
+from typing import Optional
 from hashlib import md5
 from .validator import KomandPluginValidator
 from . import KomandPluginSpec
@@ -41,16 +40,26 @@ class SchemaHash(object):
 
 class Checksum(object):
 
-    def __init__(self, spec: MD5 = None):
+    def __init__(self, spec: MD5, schemas: [SchemaHash], manifest: MD5, setup: MD5 = None):
         """
         Initializer for a Checksum
         :param spec: Hash of the plugin spec. Only relevant to Python plugins.
+        :param schemas: List of hashed schema files
+        :param manifest: Hash of plugin manifest: bin file for Python plugins, cmd/main.go for Go plugins
+        :param setup: Hash of setup.py if relevant
         """
 
         self.spec = spec
+        self.schemas = schemas
+        self.manifest = manifest
+        self.setup = setup
 
     def __eq__(self, other):
-        equals = self.spec == other.spec
+        self.schemas.sort()
+        other.schemas.sort()
+
+        equals = (self.spec == other.spec) and (self.manifest == other.manifest) and (self.setup == self.setup)\
+                 and (self.schemas == other.schemas)
         return equals
 
     def to_json(self) -> JSON:
@@ -69,20 +78,27 @@ class Checksum(object):
         :return: Checksum object created from JSON
         """
         hashes: {str: str} = json.loads(json_string)
+        schemas = hashes.get("schemas")
 
+        schema_hashes: [SchemaHash] = list(map(lambda h: SchemaHash.from_dict(dict_=h), schemas))
         return cls(
-            spec=hashes.get("spec")
+            spec=hashes.get("spec"),
+            schemas=schema_hashes,
+            manifest=hashes.get("manifest"),
+            setup=hashes.get("setup")
         )
 
     @classmethod
-    def from_plugin(cls, spec_hash: MD5 = None):
+    def from_plugin(cls, spec_hash: MD5, schema_hashes: [SchemaHash], manifest_hash: MD5, setup_hash: MD5 = None):
         """
         Creates a Checksum from a plugin
-        :param spec_hash: Python-only, MD5 hash of plugin spec
-        :return: Checksum representing a plugin
+        :param spec_hash: Hash of the plugin spec. Only relevant to Python plugins.
+        :param schema_hashes: List of hashed schema files
+        :param manifest_hash: Hash of plugin manifest: bin file for Python plugins, cmd/main.go for Go plugins
+        :param setup_hash: Hash of setup.py if relevant
         """
 
-        return Checksum(spec=spec_hash)
+        return Checksum(spec=spec_hash, schemas=schema_hashes, manifest=manifest_hash, setup=setup_hash)
 
 
 class ChecksumHandler(object):
@@ -106,8 +122,12 @@ class ChecksumHandler(object):
         # If it is a python plugin
         if self._SETUP_PY in os.listdir(self.plugin_directory):
             spec_hash: MD5 = self._hash_python_spec()
-
-            post_regen_checksum_file: Checksum = Checksum.from_plugin(spec_hash=spec_hash)
+            schema_hashes: [SchemaHash] = self._hash_python_schemas()
+            manifest_hash: MD5 = self._hash_python_manifest()
+            setup_hash: MD5 = self._hash_python_setup()
+            post_regen_checksum_file: Checksum = Checksum.from_plugin(
+                spec_hash=spec_hash, schema_hashes=schema_hashes, manifest_hash=manifest_hash, setup_hash=setup_hash
+            )
         else:
             # print("Skipping regeneration validation for Go plugin!")
             # Go plugin, so just pass it
