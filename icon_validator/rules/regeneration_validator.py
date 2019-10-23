@@ -141,7 +141,7 @@ class ChecksumHandler(object):
 
     def _hash_python_schemas(self) -> [SchemaHash]:
         hashes: [SchemaHash] = []
-        for root, dirs, files in os.walk("."):
+        for root, dirs, files in os.walk(self.plugin_directory):
             if "schema.py" not in files:
                 continue
 
