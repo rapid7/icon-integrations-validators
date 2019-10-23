@@ -172,7 +172,7 @@ class ChecksumHandler(object):
         return hashes
 
     def _hash_python_setup(self) -> MD5:
-        setup_file: str = os.path.join(".", self._SETUP_PY)
+        setup_file: str = os.path.join(self.plugin_directory, self._SETUP_PY)
 
         try:
             with open(file=setup_file, mode="rb") as sf:
@@ -192,7 +192,7 @@ class ChecksumHandler(object):
             raise Exception("Fatal: No %s found in Python plugin!" % "plugin spec") from e
 
     def _hash_python_manifest(self) -> MD5:
-        manifest_directory: str = os.path.join(".", "bin")
+        manifest_directory: str = os.path.join(self.plugin_directory, "bin")
         try:
             manifest_file: str = os.path.join(manifest_directory, os.listdir(manifest_directory)[0])
             with open(file=manifest_file, mode="rb") as mf:
@@ -202,7 +202,7 @@ class ChecksumHandler(object):
             raise Exception("Fatal: No binfile found in Python plugin!") from e
 
     def _hash_go_manifest(self) -> MD5:
-        manifest_file: str = os.path.join(".", "cmd", "main.go")
+        manifest_file: str = os.path.join(self.plugin_directory, "cmd", "main.go")
 
         try:
             with open(file=manifest_file, mode="rb") as mf:
