@@ -31,8 +31,8 @@ validate("/path/to/plugin/directory")
 ```
 
 ## Changelog
-
-* 1.1.8 - Add regeneration validator
+* 1.2.1 - Refine regeneration validator
+* 1.2.0 - Add regeneration validator
 * 1.1.7 - Remove false positive "SPAM" entry from the Acronym Validator
 * 1.1.6 - Improved Output validator
 * 1.1.5 - Remove Makefile validator rule, fix rules import
