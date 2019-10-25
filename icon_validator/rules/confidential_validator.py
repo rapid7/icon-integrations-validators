@@ -2,39 +2,49 @@ from .validator import KomandPluginValidator
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
 
 import re
-
+import os
 
 class ConfidentialValidator(KomandPluginValidator):
+    # emails allowed
     emails = ["user@example.com"]
+
+    # store violations per file
     violations = []
 
-    def __init__(self):
-        super().__init__()
-        ConfidentialValidator.name = "ConfidentialValidator"
-
-    # Search help file line by line for emails not in allowed list
+    # Search help file
     @staticmethod
     def validate_help(plugin_path: str):
-        email_pattern = "[^@]+@[^@]+\.[^@]+"
         with open(f"{plugin_path}/help.md") as h:
             help_lines: [str] = h.readlines()
 
-        for i in range(0, len(help_lines)):
-            matches = re.findall(email_pattern, help_lines[i])
+        ConfidentialValidator.validate_emails(help_lines, "help.md")
+
+    # Check content line by line for emails that validate the rule
+    @staticmethod
+    def validate_emails(content: [str], file_name: str):
+        email_pattern = "[^@]+@[^@]+\.[^@]+"
+        for i in range(0, len(content)):
+            matches = re.findall(email_pattern, content[i])
             for match in matches:
-                if match not in ConfidentialValidator.emails:
-                    ConfidentialValidator.violations.append(f"help.md, {i + 1}")
+                if match.strip() not in ConfidentialValidator.emails:
+                    ConfidentialValidator.violations.append(f"{file_name}: {i + 1}")
                     break
 
-    # Search code base for confidential info
+    # Search code base
     @staticmethod
     def validate_code(plugin_path: str):
-        pass
+        for path, _, files in os.walk(plugin_path):
+            for file in files:
+                if file.endswith(".py"):
+                    with open(f"{path}/{file}") as f:
+                        contents = f.readlines()
+                    ConfidentialValidator.validate_emails(contents, file)
 
-    # Search tests line by line for emails not in allowed list
+    # Search tests
     @staticmethod
     def validate_tests(plugin_path: str):
-        pass
+        for path, _, files in os.walk(f"{plugin_path}/tests"):
+
 
     def validate(self, spec: KomandPluginSpec):
         ConfidentialValidator.validate_help(spec.directory)

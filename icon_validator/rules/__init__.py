@@ -57,5 +57,5 @@ VALIDATORS = [
     CredentialsValidator(),
     OutputValidator(),
     RegenerationValidator(),
-    ConfidentialValidator
+    ConfidentialValidator()
 ]
