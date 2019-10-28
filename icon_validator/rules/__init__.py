@@ -49,11 +49,14 @@ VALIDATORS = [
     LoggingValidator(),
     ProfanityValidator(),
     AcronymValidator(),
-    PrintValidator(),
     JSONValidator(),
     ExceptionValidator(),
-    PasswordValidator(),
-    CredentialsValidator(),
     OutputValidator(),
     RegenerationValidator()
+]
+
+ADDITIONAL_VALIDATORS = [
+    CredentialsValidator(),
+    PasswordValidator(),
+    PrintValidator()
 ]
