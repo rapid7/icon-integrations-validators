@@ -21,13 +21,13 @@ class ConfidentialValidator(KomandPluginValidator):
 
     # Check content line by line for emails that validate the rule
     @staticmethod
-    def validate_emails(content: [str], file_name: str):
+    def validate_emails(content: [str], path_to_file: str):
         email_pattern = "[^@]+@[^@]+\.[^@]+"
         for i in range(0, len(content)):
             matches = re.findall(email_pattern, content[i])
             for match in matches:
                 if match.strip() not in ConfidentialValidator.emails:
-                    ConfidentialValidator.violations.append(f"{file_name}: {i + 1}")
+                    ConfidentialValidator.violations.append(f"{path_to_file}: {i + 1}")
                     break
 
     # Search code base
@@ -38,7 +38,8 @@ class ConfidentialValidator(KomandPluginValidator):
                 if file.endswith(".py"):
                     with open(f"{path}/{file}") as f:
                         contents = f.readlines()
-                    ConfidentialValidator.validate_emails(contents, file)
+                    path_to_file = f"{os.path.relpath(path, plugin_path)}/file"
+                    ConfidentialValidator.validate_emails(contents, path_to_file)
 
     # Search tests
     @staticmethod
@@ -47,7 +48,8 @@ class ConfidentialValidator(KomandPluginValidator):
             for file in files:
                 with open(f"{path}/{file}") as f:
                     contents = f.readlines()
-                ConfidentialValidator.validate_emails(contents, file)
+                path_to_file = f"{os.path.relpath(path, plugin_path)}/file"
+                ConfidentialValidator.validate_emails(contents, path_to_file)
 
     def validate(self, spec: KomandPluginSpec):
         ConfidentialValidator.validate_help(spec.directory)
