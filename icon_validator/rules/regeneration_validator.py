@@ -261,27 +261,8 @@ class ChecksumHandler(object):
 class RegenerationValidator(KomandPluginValidator):
 
     def validate(self, spec: KomandPluginSpec):
-        is_jenkins: bool = self.is_run_from_jenkins()
-        # log(f"Run from Jenkins is: {is_jenkins}")
-
-        if is_jenkins:
-            path = os.path.join(".", "plugin")
-        else:
-            path = "."
-
-        # log(f"Path is: {path}")
-        # log("Directory contents are: %s" % os.listdir(path))
-        #
-        # log("ENVIRONMENT VARIABLES ARE: %s" % os.environ)
-        #
-        # log("Root directory contents are: %s" % os.listdir("."))
-        #
-        # if not is_jenkins:
-        #     with open(file=os.path.join(".", "Makefile"), mode="r+") as hf:
-        #         log("MAKEFILES CONTENTS ARE: %s" % hf.read())
         handler: ChecksumHandler = ChecksumHandler(plugin_name=spec.plugin_name(),
-                                                   plugin_directory=path)
-
+                                                   plugin_directory=spec.directory)
         handler.run_from_validator()
 
     @staticmethod
