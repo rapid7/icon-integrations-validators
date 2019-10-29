@@ -55,7 +55,7 @@ VALIDATORS = [
     RegenerationValidator()
 ]
 
-ADDITIONAL_VALIDATORS = [
+JENKINS_VALIDATORS = [
     CredentialsValidator(),
     PasswordValidator(),
     PrintValidator()

@@ -4,7 +4,7 @@ import sys
 import traceback
 
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
-from .rules import VALIDATORS, ADDITIONAL_VALIDATORS
+from .rules import VALIDATORS, JENKINS_VALIDATORS
 from .timing import *
 from .styling import *
 
@@ -18,7 +18,7 @@ def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False, run_
 
     validators = VALIDATORS
     if run_all:
-        validators += ADDITIONAL_VALIDATORS
+        validators += JENKINS_VALIDATORS
 
     for v in validators:
         print(f"{BULLET_OK} Executing validator {v.name}")
