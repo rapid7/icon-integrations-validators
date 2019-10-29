@@ -44,7 +44,10 @@ class ConfidentialValidator(KomandPluginValidator):
     @staticmethod
     def validate_tests(plugin_path: str):
         for path, _, files in os.walk(f"{plugin_path}/tests"):
-
+            for file in files:
+                with open(f"{path}/{file}") as f:
+                    contents = f.readlines()
+                ConfidentialValidator.validate_emails(contents, file)
 
     def validate(self, spec: KomandPluginSpec):
         ConfidentialValidator.validate_help(spec.directory)
