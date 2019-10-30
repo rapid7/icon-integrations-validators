@@ -49,7 +49,8 @@ to simulate the `--all` flag.
 
 ## Changelog
 
-* 1.3.0 - Add --all flag to run entire set of validators
+* 1.3.0 - Add --all flag to run entire set of validators,
+add Confidential Validator, Regeneration Validator clean up
 * 1.2.0 - Add regeneration validator jenkins support
 * 1.1.8 - Add regeneration validator
 * 1.1.7 - Remove false positive "SPAM" entry from the Acronym Validator
