@@ -60,5 +60,5 @@ JENKINS_VALIDATORS = [
     CredentialsValidator(),
     PasswordValidator(),
     PrintValidator(),
-    ConfidentialValidator
+    ConfidentialValidator()
 ]
