@@ -46,10 +46,11 @@ class ConfidentialValidator(KomandPluginValidator):
     def validate_tests(plugin_path: str):
         for path, _, files in os.walk(f"{plugin_path}/tests"):
             for file in files:
-                with open(f"{path}/{file}") as f:
-                    contents = f.readlines()
-                path_to_file = f"{os.path.relpath(path, plugin_path)}/file"
-                ConfidentialValidator.validate_emails(contents, path_to_file)
+                if file.endswith(".json"):
+                    with open(f"{path}/{file}") as f:
+                        contents = f.readlines()
+                    path_to_file = f"{os.path.relpath(path, plugin_path)}/file"
+                    ConfidentialValidator.validate_emails(contents, path_to_file)
 
     def validate(self, spec: KomandPluginSpec):
         ConfidentialValidator.validate_help(spec.directory)
