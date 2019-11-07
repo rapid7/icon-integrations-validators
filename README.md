@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.0.0 - Update Help Validator to use new help format
 * 1.3.0 - Add --all flag to run entire set of validators,
 add Confidential Validator, Regeneration Validator clean up
 * 1.2.0 - Add regeneration validator jenkins support
