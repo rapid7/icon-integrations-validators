@@ -4,6 +4,7 @@ from icon_plugin_spec.plugin_spec import KomandPluginSpec
 import re
 import os
 
+
 class ConfidentialValidator(KomandPluginValidator):
     # emails allowed
     emails = ["user@example.com"]
