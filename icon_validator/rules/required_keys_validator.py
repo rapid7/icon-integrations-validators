@@ -13,8 +13,13 @@ class RequiredKeysValidator(KomandPluginValidator):
         'vendor': 'Plugin vendor, refers to the docker image repository and komand marketplace user',
         'status': 'List of development statuses to apply to the plugin',
         'tags': 'List of tags to apply to the plugin',
-        'resources': 'Key value pairing for resources and their links',
     }
+
+    @staticmethod
+    def validate_resources(spec_dict: dict):
+        if "resources" not in spec_dict or "source_url" not in spec_dict["resources"]\
+                or "license_url" not in spec_dict["resources"]:
+            RequiredKeysValidator.raise_exception("resources", "Must have sub-keys 'source_url' and 'license_url'")
 
     @staticmethod
     def validate_extension(spec_dict: dict):
@@ -44,6 +49,7 @@ class RequiredKeysValidator(KomandPluginValidator):
         for required_key, message in self.missing_key_message.items():
             if required_key not in spec.spec_dictionary():
                 RequiredKeysValidator.raise_exception(required_key, message)
+        RequiredKeysValidator.validate_resources(spec.spec_dictionary())
         RequiredKeysValidator.validate_extension(spec.spec_dictionary())
         RequiredKeysValidator.validate_product(spec.spec_dictionary())
         RequiredKeysValidator.validate_hub_tags(spec.spec_dictionary())

@@ -49,6 +49,8 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.2.0 - Add check for source_url and license_url in spec and removed check
+for source code section in help
 * 2.1.0 - Add new Hub related fields to check for in RequiredKeys Validator
 * 2.0.0 - Update Help Validator to use new help format
 * 1.3.0 - Add --all flag to run entire set of validators,

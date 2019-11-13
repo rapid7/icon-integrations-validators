@@ -79,8 +79,6 @@ class HelpValidator(KomandPluginValidator):
             raise Exception("Help section is missing header: # Version History")
         if '# Links' not in help_str:
             raise Exception("Help section is missing header: # Links")
-        if '## Source Code' not in help_str:
-            raise Exception("Help section is missing header: ## Source Code")
         if '## References' not in help_str:
             raise Exception("Help section is missing header: ## References")
 
