@@ -16,10 +16,19 @@ class RequiredKeysValidator(KomandPluginValidator):
     }
 
     @staticmethod
+    def validate_support(spec_dict: dict):
+        accepted_values = ["rapid7", "community", "partner"]
+        if "support" not in spec_dict or spec_dict["support"] not in accepted_values:
+            RequiredKeysValidator.raise_exception("support",
+                                                  "Supporter of plugin. Either 'rapid7', 'community', or 'partner'",)
+
+    @staticmethod
     def validate_resources(spec_dict: dict):
         if "resources" not in spec_dict or "source_url" not in spec_dict["resources"]\
-                or "license_url" not in spec_dict["resources"]:
-            RequiredKeysValidator.raise_exception("resources", "Must have sub-keys 'source_url' and 'license_url'")
+                or "license_url" not in spec_dict["resources"] or "vendor_url" not in spec_dict["resources"]:
+            RequiredKeysValidator.raise_exception(
+                "resources", "Must have sub-keys 'source_url', 'license_url', and 'vendor_url'. "
+                             "A URL must be provided for 'vendor_url'")
 
     @staticmethod
     def validate_extension(spec_dict: dict):
@@ -52,6 +61,7 @@ class RequiredKeysValidator(KomandPluginValidator):
         for required_key, message in self.missing_key_message.items():
             if required_key not in spec.spec_dictionary():
                 RequiredKeysValidator.raise_exception(required_key, message)
+        RequiredKeysValidator.validate_support(spec.spec_dictionary())
         RequiredKeysValidator.validate_resources(spec.spec_dictionary())
         RequiredKeysValidator.validate_extension(spec.spec_dictionary())
         RequiredKeysValidator.validate_product(spec.spec_dictionary())

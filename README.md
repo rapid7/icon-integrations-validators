@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.4.0 - Add check for support and vendor_url in RequiredKeys Validator
 * 2.3.0 - Add validator rule: use case validation
 * 2.2.0 - Add check for source_url and license_url in spec and removed check
 for source code section in help
