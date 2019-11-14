@@ -1,6 +1,7 @@
 from .validator import KomandPluginValidator
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
 
+
 class UseCaseValidator(KomandPluginValidator):
     use_case_ids = [
         "alert_enrichment",
