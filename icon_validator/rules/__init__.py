@@ -29,6 +29,7 @@ from .password_validator import *
 from .output_validator import *
 from .regeneration_validator import *
 from .confidential_validator import *
+from .use_case_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
@@ -54,6 +55,7 @@ VALIDATORS = [
     ExceptionValidator(),
     OutputValidator(),
     RegenerationValidator(),
+    UseCaseValidator()
 ]
 
 JENKINS_VALIDATORS = [

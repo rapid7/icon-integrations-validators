@@ -40,6 +40,9 @@ class RequiredKeysValidator(KomandPluginValidator):
                 if key not in spec_dict["hub_tags"]:
                     RequiredKeysValidator.raise_exception(
                         "hub_tags", "Must have sub-keys 'use_cases', 'keywords', and 'features'")
+        else:
+            RequiredKeysValidator.raise_exception(
+                "hub_tags", "Key value mapping containing use cases, keywords, and features")
 
     @staticmethod
     def raise_exception(key: str, msg: str):
