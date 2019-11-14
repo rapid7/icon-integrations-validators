@@ -25,8 +25,7 @@ class RequiredKeysValidator(KomandPluginValidator):
     @staticmethod
     def validate_resources(spec_dict: dict):
         if "resources" not in spec_dict or "source_url" not in spec_dict["resources"]\
-                or "license_url" not in spec_dict["resources"] or "vendor_url" not in spec_dict["resources"]\
-                or spec_dict["resources"]["vendor_url"] == "":
+                or "license_url" not in spec_dict["resources"] or "vendor_url" not in spec_dict["resources"]:
             RequiredKeysValidator.raise_exception(
                 "resources", "Must have sub-keys 'source_url', 'license_url', and 'vendor_url'. "
                              "A URL must be provided for 'vendor_url'")
