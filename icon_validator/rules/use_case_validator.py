@@ -16,7 +16,6 @@ use_case_ids = [
     "data_aggregation",
     "data_ingestion",
     "data_utility",
-    "detection_and_response",
     "external_enrichment",
     "investigations",
     "log_search",
