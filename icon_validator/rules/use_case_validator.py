@@ -29,6 +29,7 @@ use_case_ids = [
     "remediation_ticketing",
     "reporting_and_analytics",
     "siem",
+    "soar",
     "soc_automation",
     "threat_hunting",
     "threat_intel",
