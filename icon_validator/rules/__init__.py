@@ -29,12 +29,16 @@ from .password_validator import *
 from .output_validator import *
 from .regeneration_validator import *
 from .confidential_validator import *
+from .use_case_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
-    SpecPropertiesValidator(),
-    FilesValidator(),
+    HelpValidator(),
     RequiredKeysValidator(),
+    UseCaseValidator(),
+    SpecPropertiesValidator(),
+    SpecVersionValidator(),
+    FilesValidator(),
     TagValidator(),
     DescriptionValidator(),
     TitleValidator(),
@@ -43,8 +47,6 @@ VALIDATORS = [
     IconValidator(),
     RequiredValidator(),
     VersionValidator(),
-    HelpValidator(),
-    SpecVersionValidator(),
     DockerfileParentValidator(),
     DockerValidator(),
     LoggingValidator(),

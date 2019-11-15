@@ -23,12 +23,6 @@ class HelpValidator(KomandPluginValidator):
                                 )
 
     @staticmethod
-    def validate_same_plugin_title(spec, halp):
-        if 'title' in spec:
-            if '# {}'.format(spec['title']) not in halp:
-                raise Exception('Help section is missing the top level title heading of: # {}'.format(spec['title']))
-
-    @staticmethod
     def validate_same_actions_title(spec, halp):
         if 'actions' in spec:
             HelpValidator.validate_same_actions_loop(spec['actions'], halp)
@@ -39,8 +33,8 @@ class HelpValidator(KomandPluginValidator):
     def validate_same_actions_loop(section, help_str):
         for i in section:
             if 'title' in section[i]:
-                if '### {}'.format(section[i]['title']) not in help_str:
-                    raise Exception('Help section is missing title of: ### {}'.format(section[i]['title']))
+                if '#### {}'.format(section[i]['title']) not in help_str:
+                    raise Exception('Help section is missing title of: #### {}'.format(section[i]['title']))
 
     @staticmethod
     def validate_title_spelling(spec, halp):
@@ -61,20 +55,30 @@ class HelpValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_help_headers(help_str):
-        if '## About' not in help_str:
-            raise Exception("Help section is missing header: ## About")
-        if '## Actions' not in help_str:
-            raise Exception("Help section is missing header: ## Actions")
-        if '## Triggers' not in help_str:
-            raise Exception("Help section is missing header: ## Triggers")
-        if '## Connection' not in help_str:
+        if '# Description' not in help_str:
+            raise Exception("Help section is missing header: # Description")
+        if '# Key Features' not in help_str:
+            raise Exception("Help section is missing header: # Key Features")
+        if '# Requirements' not in help_str:
+            raise Exception("Help section is missing header: # Requirements")
+        if '# Documentation' not in help_str:
             raise Exception("Help section is missing header: ## Connection")
+        if '## Setup' not in help_str:
+            raise Exception("Help section is missing header: ## Setup")
+        if '## Technical Details' not in help_str:
+            raise Exception("Help section is missing header: ## Technical Details")
+        if '### Actions' not in help_str:
+            raise Exception("Help section is missing header: ### Actions")
+        if '### Triggers' not in help_str:
+            raise Exception("Help section is missing header: ### Triggers")
+        if '### Custom Output Types' not in help_str:
+            raise Exception("Help section is missing header: ### Custom Output Types")
         if '## Troubleshooting' not in help_str:
             raise Exception("Help section is missing header: ## Troubleshooting")
-        if '## Workflows' not in help_str:
-            raise Exception("Help section is missing header: ## Workflows")
-        if '## Versions' not in help_str:
-            raise Exception("Help section is missing header: ## Versions")
+        if '# Version History' not in help_str:
+            raise Exception("Help section is missing header: # Version History")
+        if '# Links' not in help_str:
+            raise Exception("Help section is missing header: # Links")
         if '## References' not in help_str:
             raise Exception("Help section is missing header: ## References")
 
@@ -82,6 +86,5 @@ class HelpValidator(KomandPluginValidator):
         HelpValidator.validate_help_exists(spec.spec_dictionary())
         HelpValidator.validate_help_headers(spec.raw_help())
         HelpValidator.validate_version_history(spec.raw_help())
-        HelpValidator.validate_same_plugin_title(spec.spec_dictionary(), spec.raw_help())
         HelpValidator.validate_same_actions_title(spec.spec_dictionary(), spec.raw_help())
         HelpValidator.validate_title_spelling(spec.spec_dictionary(), spec.raw_help())

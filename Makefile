@@ -10,3 +10,7 @@ disttest: package
 
 distprod: package
 	python3 -m twine upload dist/*
+	make notifyrelease
+
+notifyrelease:
+	./icon_trigger.sh
