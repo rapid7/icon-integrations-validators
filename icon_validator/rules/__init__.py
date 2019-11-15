@@ -33,9 +33,12 @@ from .use_case_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
-    SpecPropertiesValidator(),
-    FilesValidator(),
+    HelpValidator(),
     RequiredKeysValidator(),
+    UseCaseValidator(),
+    SpecPropertiesValidator(),
+    SpecVersionValidator(),
+    FilesValidator(),
     TagValidator(),
     DescriptionValidator(),
     TitleValidator(),
@@ -44,8 +47,6 @@ VALIDATORS = [
     IconValidator(),
     RequiredValidator(),
     VersionValidator(),
-    HelpValidator(),
-    SpecVersionValidator(),
     DockerfileParentValidator(),
     DockerValidator(),
     LoggingValidator(),
@@ -55,7 +56,6 @@ VALIDATORS = [
     ExceptionValidator(),
     OutputValidator(),
     RegenerationValidator(),
-    UseCaseValidator()
 ]
 
 JENKINS_VALIDATORS = [
