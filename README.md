@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.0.2 - Update HelpValidator to fix error messaging
 * 2.0.1 - Update UseCaseValidator valid use case list
 * 2.0.0 - Update Help Validator to use new help format |
 Update RequiredKeys Validator for new spec fields |

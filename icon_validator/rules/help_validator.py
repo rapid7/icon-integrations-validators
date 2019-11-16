@@ -62,7 +62,7 @@ class HelpValidator(KomandPluginValidator):
         if '# Requirements' not in help_str:
             raise Exception("Help section is missing header: # Requirements")
         if '# Documentation' not in help_str:
-            raise Exception("Help section is missing header: ## Connection")
+            raise Exception("Help section is missing header: ## Documentation")
         if '## Setup' not in help_str:
             raise Exception("Help section is missing header: ## Setup")
         if '## Technical Details' not in help_str:
