@@ -129,12 +129,16 @@ class ChecksumHandler(object):
                 spec_hash=spec_hash, schema_hashes=schema_hashes, manifest_hash=manifest_hash, setup_hash=setup_hash
             )
         else:
-            # print("Skipping regeneration validation for Go plugin!")
-            # Go plugin, so just pass it
-            return
+            spec_hash: MD5 = self._hash_python_spec()
+            schema_hashes: [SchemaHash] = self._hash_go_schemas()
+            manifest_hash: MD5 = self._hash_go_manifest()
+            setup_hash = None
+            post_regen_checksum_file: Checksum = Checksum.from_plugin(
+                spec_hash=spec_hash, schema_hashes=schema_hashes, manifest_hash=manifest_hash, setup_hash=setup_hash
+            )
 
         # Now that we have a post-regeneration Checksum, let's compare!
-        # print(post_regen_checksum_file.to_json())
+        #print(post_regen_checksum_file.to_json())
         if not (provided_checksum_file == post_regen_checksum_file):
             raise Exception("Error: Hashes between provided plugin and checksum were not equal! "
                             "Regenerate the plugin and push to working branch.")
@@ -158,17 +162,18 @@ class ChecksumHandler(object):
         return hashes
 
     def _hash_go_schemas(self) -> [SchemaHash]:
-        schema_paths: [str] = self._enumerate_go_schema_files()
+        schema_paths = self._enumerate_go_schema_files()
         hashes: [SchemaHash] = []
 
-        for path in schema_paths:
-            try:
-                with open(file=path, mode="rb") as schema:
-                    hash_ = md5(schema.read()).hexdigest()
-                    identifier = os.path.basename(path)
-                    hashes.append(SchemaHash(identifier=identifier, hash_=hash_))
-            except FileNotFoundError:
-                continue
+        for key in schema_paths:
+            for path in schema_paths[key]:
+                try:
+                    with open(file=path, mode="rb") as schema:
+                        hash_ = md5(schema.read()).hexdigest()
+                        identifier = f"{key}/{os.path.basename(path)}"
+                        hashes.append(SchemaHash(identifier=identifier, hash_=hash_))
+                except FileNotFoundError:
+                    continue
         return hashes
 
     def _hash_python_setup(self) -> MD5:
@@ -220,14 +225,22 @@ class ChecksumHandler(object):
         dir_triggers = os.path.join(self.plugin_directory, "triggers")
         connection = os.path.join(self.plugin_directory, "connection", "connection.go")
 
-        schemas: [str] = []
+        schemas = {
+            "actions": [],
+            "triggers": [],
+            "connection": []
+        }
 
         if os.path.exists(connection):
-            schemas.append(connection)
+            schemas["connection"].append(connection)
 
         # Get all actions and triggers, filter out non-schema files, and add them to the list
-        schemas.extend([os.path.join(dir_actions, a) for a in os.listdir(dir_actions) if "_custom.go" not in a])
-        schemas.extend([os.path.join(dir_triggers, t) for t in os.listdir(dir_triggers) if "_custom.go" not in t])
+        if os.path.isdir(dir_actions):
+            schemas["actions"].extend([os.path.join(dir_actions, a) for a in os.listdir(dir_actions) if "_custom.go" not in a])
+
+
+        if os.path.isdir(dir_triggers):
+            schemas["triggers"].extend([os.path.join(dir_triggers, t) for t in os.listdir(dir_triggers) if "_custom.go" not in t])
 
         return schemas
 
