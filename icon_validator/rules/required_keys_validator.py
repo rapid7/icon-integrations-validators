@@ -36,7 +36,7 @@ class RequiredKeysValidator(KomandPluginValidator):
             RequiredKeysValidator.raise_exception("extension", "extension should always be 'plugin'")
 
     @staticmethod
-    def validate_product(spec_dict: dict):
+    def validate_products(spec_dict: dict):
         if "products" not in spec_dict or "insightconnect" not in spec_dict["products"]:
             RequiredKeysValidator.raise_exception(
                 "products", "List of products the plugin is applicable to. Should always include 'insightconnect'")
@@ -64,5 +64,5 @@ class RequiredKeysValidator(KomandPluginValidator):
         RequiredKeysValidator.validate_support(spec.spec_dictionary())
         RequiredKeysValidator.validate_resources(spec.spec_dictionary())
         RequiredKeysValidator.validate_extension(spec.spec_dictionary())
-        RequiredKeysValidator.validate_product(spec.spec_dictionary())
+        RequiredKeysValidator.validate_products(spec.spec_dictionary())
         RequiredKeysValidator.validate_hub_tags(spec.spec_dictionary())
