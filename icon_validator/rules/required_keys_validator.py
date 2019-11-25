@@ -40,8 +40,6 @@ class RequiredKeysValidator(KomandPluginValidator):
                 "resources", f"Keys {keys_with_novalue} are present with an empty value, please remove empty key or provide a suitable value"
             )
 
-
-
     @staticmethod
     def validate_extension(spec_dict: dict):
         if "extension" not in spec_dict or spec_dict["extension"] != "plugin":
@@ -78,3 +76,4 @@ class RequiredKeysValidator(KomandPluginValidator):
         RequiredKeysValidator.validate_extension(spec.spec_dictionary())
         RequiredKeysValidator.validate_products(spec.spec_dictionary())
         RequiredKeysValidator.validate_hub_tags(spec.spec_dictionary())
+        RequiredKeysValidator.validate_existing_resources(spec.spec_dictionary())
