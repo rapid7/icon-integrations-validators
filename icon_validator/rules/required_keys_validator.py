@@ -24,11 +24,24 @@ class RequiredKeysValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_resources(spec_dict: dict):
-        if "resources" not in spec_dict or "source_url" not in spec_dict["resources"]\
-                or "license_url" not in spec_dict["resources"] or "vendor_url" not in spec_dict["resources"]:
+        if "resources" not in spec_dict:
             RequiredKeysValidator.raise_exception(
                 "resources", "Must have sub-keys 'source_url', 'license_url', and 'vendor_url'. "
                              "A URL must be provided for 'vendor_url'")
+
+    @staticmethod
+    def validate_existing_resources(spec_dict: dict):
+        resource_list = ["vendor_url", "source_url", "license_url"]
+        keys_with_novalue = []
+        for resources in spec_dict["resources"]:
+            for key, value in resources.items():
+                if key in resource_list and len(value) == 0:
+                    keys_with_novalue.append(key)
+        RequiredKeysValidator.raise_exception(
+                "resources", f"Keys {keys_with_novalue} are present with an empty value, please remove empty key or provide a suitable value"
+            )
+
+
 
     @staticmethod
     def validate_extension(spec_dict: dict):
