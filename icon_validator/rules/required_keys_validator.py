@@ -35,7 +35,8 @@ class RequiredKeysValidator(KomandPluginValidator):
         for resource, value in spec_dict["resources"].items():
             if resource in resource_list and value is None:
                     keys_with_novalue.append(resource)
-        RequiredKeysValidator.raise_exception(
+        if len(keys_with_novalue) > 0:
+            RequiredKeysValidator.raise_exception(
                 "resources", f"Keys {keys_with_novalue} are present with an empty value, please remove empty key or provide a suitable value"
             )
 
