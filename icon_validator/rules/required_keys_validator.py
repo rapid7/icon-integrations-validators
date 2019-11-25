@@ -37,9 +37,9 @@ class RequiredKeysValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_product(spec_dict: dict):
-        if "product" not in spec_dict or "insightconnect" not in spec_dict["product"]:
+        if "products" not in spec_dict or "insightconnect" not in spec_dict["products"]:
             RequiredKeysValidator.raise_exception(
-                "product", "List of products the plugin is applicable to. Should always include 'insightconnect'")
+                "products", "List of products the plugin is applicable to. Should always include 'insightconnect'")
 
     @staticmethod
     def validate_hub_tags(spec_dict: dict):
