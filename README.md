@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.1.1 - Update RequiredKeysValidator to validate the correct products key and empty resources keys
 * 2.1.0 - Update Golang RegenerationValidator
 * 2.0.2 - Update HelpValidator to fix error messaging
 * 2.0.1 - Update UseCaseValidator valid use case list

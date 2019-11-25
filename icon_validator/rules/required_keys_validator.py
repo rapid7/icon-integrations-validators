@@ -24,11 +24,20 @@ class RequiredKeysValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_resources(spec_dict: dict):
-        if "resources" not in spec_dict or "source_url" not in spec_dict["resources"]\
-                or "license_url" not in spec_dict["resources"] or "vendor_url" not in spec_dict["resources"]:
+        if "resources" not in spec_dict:
             RequiredKeysValidator.raise_exception(
-                "resources", "Must have sub-keys 'source_url', 'license_url', and 'vendor_url'. "
-                             "A URL must be provided for 'vendor_url'")
+                "resources", "Missing resources key")
+
+    @staticmethod
+    def validate_existing_resources(spec_dict: dict):
+        resource_list = ["vendor_url", "source_url", "license_url"]
+        keys_with_novalue = []
+        for resource, value in spec_dict["resources"].items():
+            if resource in resource_list and value is None:
+                    keys_with_novalue.append(resource)
+        RequiredKeysValidator.raise_exception(
+                "resources", f"Keys {keys_with_novalue} are present with an empty value, please remove empty key or provide a suitable value"
+            )
 
     @staticmethod
     def validate_extension(spec_dict: dict):
@@ -36,10 +45,10 @@ class RequiredKeysValidator(KomandPluginValidator):
             RequiredKeysValidator.raise_exception("extension", "extension should always be 'plugin'")
 
     @staticmethod
-    def validate_product(spec_dict: dict):
-        if "product" not in spec_dict or "insightconnect" not in spec_dict["product"]:
+    def validate_products(spec_dict: dict):
+        if "products" not in spec_dict or "insightconnect" not in spec_dict["products"]:
             RequiredKeysValidator.raise_exception(
-                "product", "List of products the plugin is applicable to. Should always include 'insightconnect'")
+                "products", "List of products the plugin is applicable to. Should always include 'insightconnect'")
 
     @staticmethod
     def validate_hub_tags(spec_dict: dict):
@@ -64,5 +73,6 @@ class RequiredKeysValidator(KomandPluginValidator):
         RequiredKeysValidator.validate_support(spec.spec_dictionary())
         RequiredKeysValidator.validate_resources(spec.spec_dictionary())
         RequiredKeysValidator.validate_extension(spec.spec_dictionary())
-        RequiredKeysValidator.validate_product(spec.spec_dictionary())
+        RequiredKeysValidator.validate_products(spec.spec_dictionary())
         RequiredKeysValidator.validate_hub_tags(spec.spec_dictionary())
+        RequiredKeysValidator.validate_existing_resources(spec.spec_dictionary())
