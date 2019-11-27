@@ -53,12 +53,12 @@ VALIDATORS = [
     ProfanityValidator(),
     AcronymValidator(),
     JSONValidator(),
-    ExceptionValidator(),
     OutputValidator(),
     RegenerationValidator(),
 ]
 
 JENKINS_VALIDATORS = [
+    ExceptionValidator(),
     CredentialsValidator(),
     PasswordValidator(),
     PrintValidator(),
