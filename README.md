@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.1.6 - Fix issue where ID was an acronym
 * 2.1.5 - Fix issue where confidential validator was not checking against provided whitelist
 * 2.1.4 - Fix issue where confidential validator was triggering on remediated findings and updated formatting
 * 2.1.3 - Update Exception Validator to throw warning
