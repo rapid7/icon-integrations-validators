@@ -29,9 +29,8 @@ class ConfidentialValidator(KomandPluginValidator):
             while "" in matches:
                 matches.remove("")
             for match in matches:
-                print(match)
-                if ConfidentialValidator.emails[0] not in match.strip():
-                    ConfidentialValidator.violations.append(f"{path_to_file}: {i + 1}")
+                if match.strip() not in ConfidentialValidator.violations:
+                    ConfidentialValidator.violations.append(f"{path_to_file}: line: {i + 1}")
                     break
 
     # Search code base
@@ -62,5 +61,6 @@ class ConfidentialValidator(KomandPluginValidator):
         ConfidentialValidator.validate_tests(spec.directory)
 
         if len(ConfidentialValidator.violations):
-            raise Exception(f"Please use 'user@example.com' when including emails. The following violated this:"
-                            f"{ConfidentialValidator.violations}")
+            for violation in ConfidentialValidator.violations:
+                print(f"  violation: {violation}")
+            raise Exception(f"Please use 'user@example.com' when including emails. The above items violated this.")
