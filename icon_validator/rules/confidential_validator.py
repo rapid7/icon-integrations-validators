@@ -29,7 +29,7 @@ class ConfidentialValidator(KomandPluginValidator):
             while "" in matches:
                 matches.remove("")
             for match in matches:
-                if match.strip() not in ConfidentialValidator.violations:
+                if match not in ConfidentialValidator.emails:
                     ConfidentialValidator.violations.append(f"{path_to_file}, line: {i + 1}")
                     break
 
