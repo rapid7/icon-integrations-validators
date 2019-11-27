@@ -47,5 +47,12 @@ class ExceptionValidator(KomandPluginValidator):
                 if name.endswith(".py"):
                     self.validate_exceptions(d, path, name)
         if len(self._violating_files) > 0:
-            print(f"{YELLOW}WARNING: Use of 'PluginException' or 'ConnectionTestException' is recommended when raising an exception. The following files violated this rule: {self._violating_files}")
+            print(f"{YELLOW}WARNING: Use of 'PluginException' or 'ConnectionTestException' is recommended when raising an exception.")
 
+            for violating_file in self._violating_files:
+                violation_content = violating_file.split(":")
+                file_name = violation_content[0]
+                line_numbers = violation_content[1].split(",")
+
+                for line_number in line_numbers:
+                    print(f'{YELLOW}violation: {file_name}: line, {line_number}')
