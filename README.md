@@ -49,7 +49,8 @@ to simulate the `--all` flag.
 
 ## Changelog
 
-* 2.1.3 - Fix issue where confidential validator was triggering on remediated findings and updated formatting
+* 2.1.4 - Fix issue where confidential validator was triggering on remediated findings and updated formatting
+* 2.1.3 - Update Exception Validator to throw warning
 * 2.1.2 - Fix issue where resources validator would always raise an exception
 * 2.1.1 - Update RequiredKeysValidator to validate the correct products key and empty resources keys
 * 2.1.0 - Update Golang RegenerationValidator
