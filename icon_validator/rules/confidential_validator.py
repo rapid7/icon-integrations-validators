@@ -63,4 +63,4 @@ class ConfidentialValidator(KomandPluginValidator):
         if len(ConfidentialValidator.violations):
             for violation in ConfidentialValidator.violations:
                 print(f"violation: {violation}")
-            raise Exception(f"{YELLOW}Please use 'user@example.com' when including emails. The above items violated this.")
+            raise Exception(f"Please use 'user@example.com' when including emails. The above items violated this.")
