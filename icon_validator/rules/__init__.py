@@ -30,10 +30,12 @@ from .output_validator import *
 from .regeneration_validator import *
 from .confidential_validator import *
 from .use_case_validator import *
+from .changelog_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
     HelpValidator(),
+    ChangelogValidator(),
     RequiredKeysValidator(),
     UseCaseValidator(),
     SpecPropertiesValidator(),
