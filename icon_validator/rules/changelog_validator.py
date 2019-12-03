@@ -24,11 +24,11 @@ class ChangelogValidator(KomandPluginValidator):
             version_found = re.findall(r'^\*\s\d+\.\d+\.\d+$', version_number[0])
 
             if not version_found:
-                violations.append(f"violation: Invalid version {version_number[0].replace('* ','')} in help.md")
+                violations.append(version_number[0].replace('* ', ''))
                 violated = 1
 
         if violated:
-            raise Exception(f"Incorrect version numbers specified as below in help.md:\n {YELLOW}{violations}")
+            raise Exception(f"Incorrect version numbers specified in help.md: {YELLOW}{violations}")
 
     @staticmethod
     def validate_order(versions_history):
