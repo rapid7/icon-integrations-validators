@@ -40,8 +40,7 @@ class ChangelogValidator(KomandPluginValidator):
         sorted_versions = sorted(versions, key=LooseVersion, reverse=True)
 
         if versions != sorted_versions:
-            print(f"{YELLOW} Version numbers in help.md are not sorted in descending order{RESET_ALL}")
-            raise Exception("Version numbers in help.md need to be in descending order")
+            raise Exception("Version numbers in help.md are not sorted in descending order")
 
     def validate(self, spec):
         versions_history = ChangelogValidator.get_versions(spec.raw_help())
