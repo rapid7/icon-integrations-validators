@@ -49,6 +49,8 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.3.0 - Add changelog validator
+* 2.2.0 - Using argparse module to handle arguments and provide -h option
 * 2.1.3 - Update Exception Validator to throw warning
 * 2.1.2 - Fix issue where resources validator would always raise an exception
 * 2.1.1 - Update RequiredKeysValidator to validate the correct products key and empty resources keys
