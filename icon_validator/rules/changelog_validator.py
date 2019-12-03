@@ -17,17 +17,18 @@ class ChangelogValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_version_numbers(versions_history):
-        violations = 0
+        violated = 0
+        violations = []
         for version in versions_history:
             version_number = version.split(" - ")
             version_found = re.findall(r'^\*\s\d+\.\d+\.\d+$', version_number[0])
 
             if not version_found:
-                print(f"{YELLOW}violation: Invalid version {version_number[0].replace('* ','')} in help.md{RESET_ALL}")
-                violations = 1
+                violations.append(f"violation: Invalid version {version_number[0].replace('* ','')} in help.md")
+                violated = 1
 
-        if violations:
-            raise Exception(f"Incorrect version numbers specified as stated above in help.md")
+        if violated:
+            raise Exception(f"Incorrect version numbers specified as below in help.md:\n {YELLOW}{violations}")
 
     @staticmethod
     def validate_order(versions_history):
