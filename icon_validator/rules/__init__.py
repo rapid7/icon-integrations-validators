@@ -63,6 +63,6 @@ JENKINS_VALIDATORS = [
     ExceptionValidator(),
     CredentialsValidator(),
     PasswordValidator(),
-    PrintValidator()
-#    ConfidentialValidator()
+    PrintValidator(),
+    ConfidentialValidator()
 ]
