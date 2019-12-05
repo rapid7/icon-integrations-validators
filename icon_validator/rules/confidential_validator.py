@@ -57,7 +57,7 @@ class ConfidentialValidator(KomandPluginValidator):
 
     def validate(self, spec: KomandPluginSpec):
         ConfidentialValidator.validate_help(spec.directory)
-        ConfidentialValidator.validate_code(spec.directory)
+        # ConfidentialValidator.validate_code(spec.directory)
         ConfidentialValidator.validate_tests(spec.directory)
 
         if len(ConfidentialValidator.violations):
