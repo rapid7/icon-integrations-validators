@@ -49,6 +49,8 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+
+* 2.5.0 - Add help input output validator
 * 2.4.0 - Update to turn off ConfidentialValidator in code | Revised use case list 
 for UseCase Validator
 * 2.3.0 - Add changelog validator
