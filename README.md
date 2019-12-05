@@ -49,7 +49,8 @@ to simulate the `--all` flag.
 
 ## Changelog
 
-* 2.4.0 - Update to turn of ConfidentialValidator in code
+* 2.4.0 - Update to turn off ConfidentialValidator in code | Revised use case list 
+for UseCase Validator
 * 2.3.0 - Add changelog validator
 * 2.2.0 - Using argparse module to handle arguments and provide -h option
 * 2.1.6 - Fix issue where ID was an acronym
