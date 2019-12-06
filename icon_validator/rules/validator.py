@@ -1,6 +1,6 @@
 class KomandPluginValidator:
     """
-    Class which can validate a Komand plugin.
+    Class which can validate a Komand plugin or workflow.
     """
 
     def __init__(self, name=None):

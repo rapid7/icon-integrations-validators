@@ -1,6 +1,6 @@
 """
 The rules package provides the array VALIDATORS which contains all the validators for
-validating InsightConnect plugins.
+validating InsightConnect plugins and workflows.
 """
 
 from .files_validator import *
@@ -32,6 +32,7 @@ from .confidential_validator import *
 from .use_case_validator import *
 from .changelog_validator import *
 from .help_input_output_validator import *
+from .workflow_help_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
@@ -67,4 +68,10 @@ JENKINS_VALIDATORS = [
     PasswordValidator(),
     PrintValidator(),
     ConfidentialValidator()
+]
+
+WORKFLOW_VALIDATORS = [
+    WorkflowHelpValidator(),
+    ChangelogValidator(),
+    ProfanityValidator()
 ]
