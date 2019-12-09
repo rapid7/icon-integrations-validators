@@ -4,7 +4,7 @@ import sys
 import traceback
 
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
-from .rules import VALIDATORS, JENKINS_VALIDATORS
+from .rules import VALIDATORS, JENKINS_VALIDATORS, WORKFLOW_VALIDATORS
 from .timing import *
 from .styling import *
 
@@ -12,13 +12,16 @@ from .styling import *
 def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False, run_all=False):
     spec = KomandPluginSpec(directory, spec_file_name)
     status = 0  # Resultant return code
-
+    validators = []
     start_time = time_now()
     print(f"{BULLET_OK} {BOLD}Running Integration Validators...{CEND}")
 
-    validators = VALIDATORS
-    if run_all:
-        validators += JENKINS_VALIDATORS
+    if spec_file_name == "plugin.spec.yaml":
+        validators = VALIDATORS
+        if run_all:
+            validators += JENKINS_VALIDATORS
+    elif spec_file_name == 'workflow.spec.yaml':
+        validators = WORKFLOW_VALIDATORS
 
     for v in validators:
         print(f"{BULLET_OK} Executing validator {v.name}")
@@ -39,10 +42,12 @@ def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False, run_
     end_time = time_now()
     time_elapsed = format_time(start=start_time, end=end_time)
 
+    extension = spec_file_name.split('.')[0].capitalize()
+
     if status == 0:
-        print(f"{BULLET_OK} {BOLD}Plugin successfully validated!{CEND}")
+        print(f"{BULLET_OK} {BOLD}{extension} successfully validated!{CEND}")
     else:
-        print(f"{BULLET_FAIL} Plugin failed validation!")
+        print(f"{BULLET_FAIL}{extension} failed validation!")
 
     print(f"\n----\n{BULLET_OK}{BOLD} Total time elapsed: {time_elapsed}ms{CEND}")
     return status
