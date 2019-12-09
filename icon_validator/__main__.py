@@ -13,14 +13,14 @@ def main():
         sys.exit(0)
 
     arguments_parser = argparse.ArgumentParser(epilog=version_string,
-                                               description='Validate plugin or workflow code is ready for publishing to Rapid7 Hub')
+                                               description='Linting rules for plugins and workflows')
     # required
     arguments_parser.add_argument('path', help='Path to find the plugin or workflow code', default='.')
 
     # optional
-    arguments_parser.add_argument('--all', help='Run the Jenkins Validators as well. Not supported for workflows', default=False,
+    arguments_parser.add_argument('--all', help='Run all Validators', default=False,
                                   dest='run_all_validators', action='store_true')
-    arguments_parser.add_argument('-a', help='Run the Jenkins Validators as well. Not supported for workflows', default=False,
+    arguments_parser.add_argument('-a', help='Run all validators', default=False,
                                   dest='run_all_validators', action='store_true')
 
     the_arguments = arguments_parser.parse_args()
@@ -31,8 +31,7 @@ def main():
     if os.path.exists(path + "/workflow.spec.yaml"):
         spec_file_name = "workflow.spec.yaml"
         if the_arguments.run_all_validators:
-            sys.stderr.write(f"{BULLET_FAIL}Option '--all' or '-a' does not work with workflows\n")
-            sys.exit(1)
+            sys.stderr.write(f"{BULLET_OK}Option '--all' and '-a' only works with plugins. Executing workflow supported validators\n")
     else:
         spec_file_name = "plugin.spec.yaml"
 
@@ -40,11 +39,13 @@ def main():
         sys.stderr.write(f"{BULLET_FAIL} Path '{path}' does not exist\n")
         sys.exit(1)
 
-    if the_arguments.run_all_validators:
-        print(f"{BULLET_OK} Validating plugin or workflow with all validators at {path}\n")
+    extension = spec_file_name.split('.')[0]
+
+    if extension == "plugin" and the_arguments.run_all_validators:
+        print(f"{BULLET_OK} Validating {extension} with all validators at {path}\n")
         validate(directory=path, run_all=True)
     else:
-        print(f"{BULLET_OK} Validating plugin or workflow at {path}\n")
+        print(f"{BULLET_OK} Validating {extension} at {path}\n")
         validate(directory=path, spec_file_name=spec_file_name)
 
 

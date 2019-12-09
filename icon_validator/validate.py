@@ -42,10 +42,12 @@ def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False, run_
     end_time = time_now()
     time_elapsed = format_time(start=start_time, end=end_time)
 
+    extension = spec_file_name.split('.')[0].capitalize()
+
     if status == 0:
-        print(f"{BULLET_OK} {BOLD}Plugin/Workflow successfully validated!{CEND}")
+        print(f"{BULLET_OK} {BOLD}{extension} successfully validated!{CEND}")
     else:
-        print(f"{BULLET_FAIL} Plugin/Workflow failed validation!")
+        print(f"{BULLET_FAIL}{extension} failed validation!")
 
     print(f"\n----\n{BULLET_OK}{BOLD} Total time elapsed: {time_elapsed}ms{CEND}")
     return status
