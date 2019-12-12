@@ -24,11 +24,11 @@ class HelpValidator(KomandPluginValidator):
                                 )
 
     @staticmethod
-    def validate_same_actions_title(spec, halp):
+    def validate_same_actions_title(spec, help_):
         if 'actions' in spec:
-            HelpValidator.validate_same_actions_loop(spec['actions'], halp)
+            HelpValidator.validate_same_actions_loop(spec['actions'], help_)
         if 'triggers' in spec:
-            HelpValidator.validate_same_actions_loop(spec['triggers'], halp)
+            HelpValidator.validate_same_actions_loop(spec['triggers'], help_)
 
     @staticmethod
     def validate_same_actions_loop(section, help_str):
@@ -45,12 +45,12 @@ class HelpValidator(KomandPluginValidator):
         return help_content
 
     @staticmethod
-    def validate_title_spelling(spec, halp):
+    def validate_title_spelling(spec, help_):
         if 'title' in spec:
             title = spec['title']
             lower_title = title.lower()
-            halp = HelpValidator.remove_example_output(halp)
-            for line in halp.split('\n'):
+            help_ = HelpValidator.remove_example_output(help_)
+            for line in help_.split('\n'):
                 lower_line = line.lower()
                 if lower_title in lower_line:
                     if title not in line:
