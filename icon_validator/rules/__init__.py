@@ -16,7 +16,6 @@ from .required_validator import *
 from .version_validator import *
 from .help_validator import *
 from .spec_version_validator import *
-from .docker_validator import *
 from .logging_validator import *
 from .spec_properties_validator import *
 from .profanity_validator import *
@@ -32,6 +31,7 @@ from .confidential_validator import *
 from .use_case_validator import *
 from .changelog_validator import *
 from .help_input_output_validator import *
+from .docker_validator import *
 from .workflow_help_validator import *
 
 # The order of this list is the execution order of the validators.
@@ -52,7 +52,6 @@ VALIDATORS = [
     RequiredValidator(),
     VersionValidator(),
     DockerfileParentValidator(),
-    DockerValidator(),
     LoggingValidator(),
     ProfanityValidator(),
     AcronymValidator(),
@@ -60,6 +59,7 @@ VALIDATORS = [
     OutputValidator(),
     RegenerationValidator(),
     HelpInputOutputValidator()
+    DockerValidator(),
 ]
 
 JENKINS_VALIDATORS = [
