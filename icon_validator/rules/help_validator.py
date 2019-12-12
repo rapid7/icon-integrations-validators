@@ -1,4 +1,5 @@
 from .validator import KomandPluginValidator
+import re
 
 
 class HelpValidator(KomandPluginValidator):
@@ -37,10 +38,18 @@ class HelpValidator(KomandPluginValidator):
                     raise Exception('Help section is missing title of: #### {}'.format(section[i]['title']))
 
     @staticmethod
+    def remove_example_output(help_content):
+        example_outputs = re.findall(r'Example output:\n\n```\n.*?```\n\n', help_content, re.DOTALL)
+        for example_output in example_outputs:
+            help_content = help_content.replace(example_output, '')
+        return help_content
+
+    @staticmethod
     def validate_title_spelling(spec, halp):
         if 'title' in spec:
             title = spec['title']
             lower_title = title.lower()
+            halp = HelpValidator.remove_example_output(halp)
             for line in halp.split('\n'):
                 lower_line = line.lower()
                 if lower_title in lower_line:
