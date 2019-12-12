@@ -20,7 +20,7 @@ class AcronymValidator(KomandPluginValidator):
         'OSSEC', 'OSI', 'OTRS',
         'PCI', 'PCAP', 'PDF', 'PEM', 'PHP', 'PKI', 'PID', 'PNG',
         'RAR', 'RBAC', 'REST', 'RFC', 'RPC', 'RPM', 'RPZ', 'RRS', 'RSA', 'RSS',
-        'SAML', 'SCCM', 'SDK', 'SHA', 'SHA1', 'SHASUM', 'SHA1SUM', 'SHA256', 'SHA512', 'SIEM', 'SLA', 'SMB', 'SMS', 'SMTP', 'SPF', 'SQL', 'SNMP', 'SNS', 'SRV', 'SQS', 'SSH', 'SSDEEP', 'SSID', 'STIX', 'SSL', 'SUID',
+        'SAML', 'SCCM', 'SDK', 'SHA', 'SHA1', 'SHASUM', 'SHA1SUM', 'SHA256', 'SHA512', 'SIEM', 'SLA', 'SMB', 'SMS', 'SMTP', 'SPF', 'SQL', 'SNMP', 'SNS', 'SRV', 'SQS', 'SSH', 'SSID', 'STIX', 'SSL', 'SUID',
         'TCP', 'TSV', 'TLD', 'TLP', 'TLS', 'TTL', 'TTP', 'TXT',
         'UBA', 'UDP', 'UI', 'UID', 'URI', 'URL', 'UTC', 'UUID', 'VPN',
         'VBA', 'VM', 'VPC', 'VNC', 'VT', 'VTI',
