@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.6.1 - Fix issue where SSDEEP was listed as an acronym
 * 2.6.0 - Update to support workflow's help.md validation
 * 2.5.0 - Add help input output validator
 * 2.4.0 - Update to turn off ConfidentialValidator in code | Revised use case list 
