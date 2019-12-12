@@ -58,8 +58,8 @@ VALIDATORS = [
     JSONValidator(),
     OutputValidator(),
     RegenerationValidator(),
-    HelpInputOutputValidator()
-    DockerValidator(),
+    HelpInputOutputValidator(),
+    DockerValidator()
 ]
 
 JENKINS_VALIDATORS = [
