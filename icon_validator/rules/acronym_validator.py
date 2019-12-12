@@ -1,4 +1,5 @@
 from .validator import KomandPluginValidator
+import re
 
 
 class AcronymValidator(KomandPluginValidator):
@@ -55,14 +56,22 @@ class AcronymValidator(KomandPluginValidator):
             if AcronymValidator.validate_acronym(word):
                 bad.append(word)
 
+    @staticmethod
+    def remove_example_output(help_content):
+        example_outputs = re.findall(r'Example output:\n\n```\n.*?```\n\n', help_content, re.DOTALL)
+        for example_output in example_outputs:
+            help_content = help_content.replace(example_output, '')
+        return help_content
+
     def validate(self, spec):
         bad = []
         bad_help = []
-        sections = [ 'title', 'description', 'help']
-        for section in sections: # check title/desc of spec and whole of help.md
+        sections = ['title', 'description', 'help']
+        for section in sections:  # check title/desc of spec and whole of help.md
             if section is 'help':
-                content = spec.raw_help().split()
-                AcronymValidator.validate_line(content, bad_help)
+                content = spec.raw_help()
+                content_without_example_output = AcronymValidator.remove_example_output(content).split()
+                AcronymValidator.validate_line(content_without_example_output, bad_help)
             else:
                 content = spec.spec_dictionary()[section].split()
                 AcronymValidator.validate_line(content, bad)

@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.6.3 - Update AcronymValidator and HelpValidator to skip validating example outputs of help.md
 * 2.6.2 - Syntax error bug fix in validator order
 * 2.6.1 - Fix issue where SSDEEP was listed as an acronym | Run the DockerValidator last
 * 2.6.0 - Update to support workflow's help.md validation
