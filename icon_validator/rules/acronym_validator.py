@@ -13,7 +13,7 @@ class AcronymValidator(KomandPluginValidator):
         'GID', 'GUID', 'GMT', 'GNU', 'GPU',
         'HIBP', 'HIDS', 'HTML', 'HTTP', 'HTTPS',
         'IAM', 'IANA', 'IBM', 'ICANN', 'ICMP', 'ICIS', 'IDNA', 'IMAP', 'IO', 'IOC', 'IP', 'IP2', 'IPA', 'ISE', 'ISO', 'ISP', 'ITIL',
-        'JPEG', 'JQ', 'JQL', 'JSON', 'JWT',
+        'JPEG', 'JQL', 'JSON', 'JWT',
         'KML', 'KMS',
         'LAN', 'LDAP',
         'MAC', 'MD5', 'MFA', 'MIME', 'MISP', 'MITRE', 'MIT', 'MHR', 'MSI', 'MSSQL', 'MX',
