@@ -24,14 +24,14 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_output(action_title: str, action_output: list):
-        regex = r"#### " + action_title + "\n.*?#+ Output\n\n.*?\n\n"
+        regex = r"#### " + action_title + "\n.*?#+ Output\n\n.*?" + re.escape("|Name|Type|Required|Description|") + ".*?\n\n"
         action_help_section = re.findall(regex, HelpInputOutputValidator.raw_help, re.DOTALL)
 
         if not action_help_section:
             print(f'{YELLOW}Action/Trigger \"{action_title}\" could be missing from help.md{RESET_ALL}')
             HelpInputOutputValidator.violated = 1
             return
-        action_output_section = re.findall(r'#+ Output\n\n.*?\n\n', action_help_section[0], re.DOTALL)
+        action_output_section = re.findall(r'#+ Output\n\n.*?' + re.escape("|Name|Type|Required|Description|") + ".*?\n\n", action_help_section[0], re.DOTALL)
 
         for output_fields in action_output:
             if output_fields not in action_output_section[0]:
