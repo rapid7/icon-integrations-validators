@@ -48,7 +48,7 @@ class IconValidator(KomandPluginValidator):
 
         file_item = Path(extension_image_file)
         if not file_item.is_file():
-            raise Exception("extension.png file not included in plugin.  Please include a color PNG image of a logo for this vendor or product.")
+            raise Exception("extension.png file not included in plugin. Please include a color PNG image of a logo for this vendor or product.")
 
     @staticmethod
     def check_extension_image_file_is_nonzero_size(plugin_spec):
