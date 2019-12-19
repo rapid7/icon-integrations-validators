@@ -57,5 +57,5 @@ class IconValidator(KomandPluginValidator):
 
         image_file = os.stat(extension_image_file)
         if not image_file.st_size > 0:
-            raise Exception("Extension image file is size zero.  Please include a color PNG image of a logo for this vendor or product.")
+            raise Exception("Extension image file is size zero. Please include a color PNG image of a logo for this vendor or product.")
 
