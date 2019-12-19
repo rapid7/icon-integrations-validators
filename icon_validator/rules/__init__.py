@@ -33,6 +33,7 @@ from .changelog_validator import *
 from .help_input_output_validator import *
 from .docker_validator import *
 from .workflow_help_validator import *
+from .url_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
@@ -67,7 +68,8 @@ JENKINS_VALIDATORS = [
     CredentialsValidator(),
     PasswordValidator(),
     PrintValidator(),
-    ConfidentialValidator()
+    ConfidentialValidator(),
+    URLValidator()
 ]
 
 WORKFLOW_VALIDATORS = [

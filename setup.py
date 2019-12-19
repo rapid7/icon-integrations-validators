@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name='insightconnect_integrations_validators',
-      version='2.6.7',
+      version='2.7.0',
       description='Validator tooling for InsightConnect integrations',
       long_description=long_description,
       long_description_content_type="text/markdown",
@@ -20,7 +20,10 @@ setup(name='insightconnect_integrations_validators',
           'validators==0.12.1',
           'filetype==1.0.0',
           'pathlib==1.0.1',
-          'insightconnect-integrations-plugin-spec-tooling~=1.0'
+          'insightconnect-integrations-plugin-spec-tooling~=1.0',
+          'requests==2.22.0',
+          'urlextract==0.14.0',
+          'typing==3.7.4.1'
       ],
       entry_points={
         'console_scripts': [
