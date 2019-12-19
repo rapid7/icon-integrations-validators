@@ -7,6 +7,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
     raw_help = ""
     violations = []
     violated = 0
+    action_missing = 0
 
     @staticmethod
     def validate_input(action_title: str, action_input: list):
@@ -14,8 +15,9 @@ class HelpInputOutputValidator(KomandPluginValidator):
         action_input_section = re.findall(regex, HelpInputOutputValidator.raw_help, re.DOTALL)
 
         if not action_input_section:
-            print(f'{YELLOW}Action/Trigger \"{action_title}\" could be missing from help.md{RESET_ALL}')
+            print(f"{YELLOW}Action/Trigger \"{action_title}\" could be missing or title is incorrect in help.md{RESET_ALL}")
             HelpInputOutputValidator.violated = 1
+            HelpInputOutputValidator.action_missing = 1
             return
 
         for input_fields in action_input:
@@ -27,11 +29,12 @@ class HelpInputOutputValidator(KomandPluginValidator):
         regex = r"#### " + action_title + "\n.*?#+ Output\n\n.*?\n\n"
         action_help_section = re.findall(regex, HelpInputOutputValidator.raw_help, re.DOTALL)
 
-        if not action_help_section:
-            print(f'{YELLOW}Action/Trigger \"{action_title}\" could be missing from help.md{RESET_ALL}')
-            HelpInputOutputValidator.violated = 1
-            return
-        action_output_section = re.findall(r'#+ Output\n\n.*?\n\n', action_help_section[0], re.DOTALL)
+        if "This action does not contain any outputs." not in action_help_section[0]:
+            regex = r"#### " + action_title + "\n.*?#+ Output\n\n.*?" + re.escape("|Name|Type|Required|Description|") + ".*?\n\n"
+            action_help_section = re.findall(regex, HelpInputOutputValidator.raw_help, re.DOTALL)
+            action_output_section = re.findall(r'#+ Output\n\n.*?' + re.escape("|Name|Type|Required|Description|") + ".*?\n\n", action_help_section[0], re.DOTALL)
+        else:
+            action_output_section = re.findall(r"#+ Output\n\n.*?\n\n", action_help_section[0], re.DOTALL)
 
         for output_fields in action_output:
             if output_fields not in action_output_section[0]:
@@ -72,8 +75,9 @@ class HelpInputOutputValidator(KomandPluginValidator):
             action_name = actions[key].get('title')
             input_section = actions[key].get('input')
             output_section = actions[key].get('output')
+            HelpInputOutputValidator.action_missing = 0
 
-            # Action with no input will skip validation
+            # Action with no input in spec file will skip input validation
             if input_section:
                 action_input_fields = HelpInputOutputValidator.get_spec_input(input_section)
                 HelpInputOutputValidator.validate_input(action_name, action_input_fields)
@@ -83,8 +87,8 @@ class HelpInputOutputValidator(KomandPluginValidator):
                     HelpInputOutputValidator.violations = []
                     HelpInputOutputValidator.violated = 1
 
-            # Action with no output will skip validation
-            if output_section:
+            # Actions with no output in spec file will skip output validation. Also, skip output validation for actions not found in help.md
+            if output_section and not HelpInputOutputValidator.action_missing:
                 action_output_fields = HelpInputOutputValidator.get_spec_output(output_section)
                 HelpInputOutputValidator.validate_output(action_name, action_output_fields)
 
