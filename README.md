@@ -49,7 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
-* 2.6.5 - Fix issue where HelpInputOutputValidator was not extracting complete output section of an action or a trigger
+* 2.6.5 - Fix issue where HelpInputOutputValidator was not extracting complete output section of an action or a trigger | Fix issue when action's title is missing from plugin.spec.yaml
 * 2.6.4 - Remove invalid "JQ" entry from the Acronym Validator
 * 2.6.3 - Update AcronymValidator and HelpValidator to skip validating example outputs of help.md
 * 2.6.2 - Syntax error bug fix in validator order
