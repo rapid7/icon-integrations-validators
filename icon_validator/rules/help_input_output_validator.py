@@ -72,7 +72,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
         actions.update(raw_spec_yaml.get('triggers', {}))
 
         for key, value in actions.items():
-            action_name = actions[key].get('title') or key.capitalize()
+            action_name = actions[key].get('title')
             input_section = actions[key].get('input')
             output_section = actions[key].get('output')
             HelpInputOutputValidator.action_missing = 0
