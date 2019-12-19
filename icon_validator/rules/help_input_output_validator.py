@@ -15,7 +15,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
         action_input_section = re.findall(regex, HelpInputOutputValidator.raw_help, re.DOTALL)
 
         if not action_input_section:
-            print(f"{YELLOW}Action/Trigger \"{action_title}\" could be missing or action's title is incorrect in help.md{RESET_ALL}")
+            print(f"{YELLOW}Action/Trigger \"{action_title}\" could be missing or title is incorrect in help.md{RESET_ALL}")
             HelpInputOutputValidator.violated = 1
             HelpInputOutputValidator.action_missing = 1
             return
