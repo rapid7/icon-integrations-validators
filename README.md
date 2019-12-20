@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.6.7 - Fix issue where OutputValidator was throwing error for plugins without any action
 * 2.6.6 - Fix issue where HelpInputOutputValidator was not extracting complete output section of an action or trigger
 * 2.6.5 - Update IconValidator to check for extension.png
 * 2.6.4 - Remove invalid "JQ" entry from the Acronym Validator
