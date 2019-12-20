@@ -41,6 +41,7 @@ class OutputValidator(KomandPluginValidator):
     def validate(self, spec):
         schemas = OutputValidator.get_schemas(spec)
 
+        # Prevent parsing action-less plugin
         if spec.actions():
             actions = spec.actions()
         else:
