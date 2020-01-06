@@ -58,8 +58,7 @@ VALIDATORS = [
     JSONValidator(),
     OutputValidator(),
     RegenerationValidator(),
-    HelpInputOutputValidator(),
-    DockerValidator()
+    HelpInputOutputValidator()
 ]
 
 JENKINS_VALIDATORS = [
@@ -67,7 +66,8 @@ JENKINS_VALIDATORS = [
     CredentialsValidator(),
     PasswordValidator(),
     PrintValidator(),
-    ConfidentialValidator()
+    ConfidentialValidator(),
+    DockerValidator()
 ]
 
 WORKFLOW_VALIDATORS = [
