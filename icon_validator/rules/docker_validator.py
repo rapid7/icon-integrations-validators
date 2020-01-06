@@ -22,7 +22,9 @@ class DockerValidator(KomandPluginValidator):
                 try:
                     subprocess.check_call(build_image, stdout=fd, stderr=fd)
                 except subprocess.CalledProcessError as e:
-                    raise Exception('Docker image did not build successfully.') from e
+                    raise Exception('The plugin is either broken or the image might not be built.'
+                                    'Please try "icon-plugin build image" to rebuild the image.'
+                                    '"icon-plugin run -c bash" will open a bash shell on the build container.') from e
 
                 try:
                     subprocess.check_call(run_image, stdout=fd, stderr=fd)
