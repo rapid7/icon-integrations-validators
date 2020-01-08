@@ -49,6 +49,8 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.6.9 - Update HelpInputOutputValidator to fix error messaging |
+Fix issue with HelpInputOutputValidator when help.md has action and trigger with same name
 * 2.6.8 - Docker Validator to run with -a command line argument | Helpful message on failure
 * 2.6.7 - Fix issue where OutputValidator was throwing error for plugins without any action
 * 2.6.6 - Fix issue where HelpInputOutputValidator was not extracting complete output section of an action or trigger
