@@ -1,0 +1,5 @@
+.idea/
+__pycache__/
+build/
+dist/
+insightconnect_integrations_validators.egg-info/
