@@ -16,4 +16,4 @@ jobs:
     - name: Lint Markdown
       run: |
         gem install mdl
-        mdl --rules MD024,MD013,MD029,MD033,MD034,MD013,MD024,MD025,MD034,MD036 README.md
+        mdl --rules MD024,MD029,MD033,MD034,MD013,MD024,MD025,MD034,MD036 README.md
