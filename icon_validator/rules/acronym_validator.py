@@ -68,7 +68,7 @@ class AcronymValidator(KomandPluginValidator):
         bad_help = []
         sections = ['title', 'description', 'help']
         for section in sections:  # check title/desc of spec and whole of help.md
-            if section is 'help':
+            if section == 'help':
                 content = spec.raw_help()
                 content_without_example_output = AcronymValidator.remove_example_output(content).split()
                 AcronymValidator.validate_line(content_without_example_output, bad_help)
