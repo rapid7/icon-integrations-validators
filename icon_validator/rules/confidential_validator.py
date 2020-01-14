@@ -1,8 +1,9 @@
-from .validator import KomandPluginValidator
-from icon_plugin_spec.plugin_spec import KomandPluginSpec
-from icon_validator.styling import YELLOW, BULLET_FAIL
-import re
 import os
+import re
+
+from icon_plugin_spec.plugin_spec import KomandPluginSpec
+
+from .validator import KomandPluginValidator
 
 
 class ConfidentialValidator(KomandPluginValidator):

@@ -40,4 +40,3 @@ class WorkflowHelpValidator(KomandPluginValidator):
         WorkflowHelpValidator.validate_help_exists(spec.spec_dictionary())
         WorkflowHelpValidator.validate_help_headers(spec.raw_help())
         WorkflowHelpValidator.validate_version_history(spec.raw_help())
-

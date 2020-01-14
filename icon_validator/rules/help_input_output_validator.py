@@ -1,6 +1,7 @@
-from .validator import KomandPluginValidator
 import re
+
 from icon_validator.styling import *
+from .validator import KomandPluginValidator
 
 
 class HelpInputOutputValidator(KomandPluginValidator):
@@ -18,7 +19,8 @@ class HelpInputOutputValidator(KomandPluginValidator):
         action_input_section = re.findall(regex, HelpInputOutputValidator.raw_help, re.DOTALL)
 
         if not action_input_section:
-            print(f"{YELLOW}{process_type[:-1].capitalize()} \"{action_title}\" could be missing or title is incorrect in help.md{RESET_ALL}")
+            print(
+                f"{YELLOW}{process_type[:-1].capitalize()} \"{action_title}\" could be missing or title is incorrect in help.md{RESET_ALL}")
             HelpInputOutputValidator.violated = 1
             HelpInputOutputValidator.action_missing = 1
             return
@@ -41,14 +43,18 @@ class HelpInputOutputValidator(KomandPluginValidator):
         action_help_section = re.findall(regex, action_help_section_temp[0], re.DOTALL)
 
         if "This " + process_type[:-1] + " does not contain any outputs." not in action_help_section[0]:
-            regex = r"### " + process_type.capitalize() + ".*?#### " + action_title + "\n.*?#+ Output\n\n.*?" + re.escape("|Name|Type|Required|Description|") + ".*?\n\n"
+            regex = r"### " + process_type.capitalize() + ".*?#### " + action_title + "\n.*?#+ Output\n\n.*?" + re.escape(
+                "|Name|Type|Required|Description|") + ".*?\n\n"
             if process_type == "actions":
                 regex = regex + ".*?### Triggers"
 
             action_help_section_temp = re.findall(regex, HelpInputOutputValidator.raw_help, re.DOTALL)
-            regex = r"#### " + action_title + "\n.*?#+ Output\n\n.*?" + re.escape("|Name|Type|Required|Description|") + ".*?\n\n"
+            regex = r"#### " + action_title + "\n.*?#+ Output\n\n.*?" + re.escape(
+                "|Name|Type|Required|Description|") + ".*?\n\n"
             action_output_section_temp = re.findall(regex, action_help_section_temp[0], re.DOTALL)
-            action_output_section = re.findall(r'#+ Output\n\n.*?' + re.escape("|Name|Type|Required|Description|") + ".*?\n\n", action_output_section_temp[0], re.DOTALL)
+            action_output_section = re.findall(
+                r'#+ Output\n\n.*?' + re.escape("|Name|Type|Required|Description|") + ".*?\n\n",
+                action_output_section_temp[0], re.DOTALL)
         else:
             action_output_section = re.findall(r"#+ Output\n\n.*?\n\n", action_help_section[0], re.DOTALL)
 
@@ -100,7 +106,8 @@ class HelpInputOutputValidator(KomandPluginValidator):
                     HelpInputOutputValidator.validate_input(action_name, action_input_fields, p_type)
 
                     if HelpInputOutputValidator.violations:
-                        print(f'{YELLOW}Input violations: {p_type[:-1].capitalize()} -> \"{action_name}\": Missing {HelpInputOutputValidator.violations} in help.md{RESET_ALL}')
+                        print(
+                            f'{YELLOW}Input violations: {p_type[:-1].capitalize()} -> \"{action_name}\": Missing {HelpInputOutputValidator.violations} in help.md{RESET_ALL}')
                         HelpInputOutputValidator.violations = []
                         HelpInputOutputValidator.violated = 1
 
@@ -110,7 +117,8 @@ class HelpInputOutputValidator(KomandPluginValidator):
                     HelpInputOutputValidator.validate_output(action_name, action_output_fields, p_type)
 
                     if HelpInputOutputValidator.violations:
-                        print(f'{YELLOW}Output violations: {p_type[:-1].capitalize()}-> \"{action_name}\": Missing {HelpInputOutputValidator.violations} in help.md{RESET_ALL}')
+                        print(
+                            f'{YELLOW}Output violations: {p_type[:-1].capitalize()}-> \"{action_name}\": Missing {HelpInputOutputValidator.violations} in help.md{RESET_ALL}')
                         HelpInputOutputValidator.violations = []
                         HelpInputOutputValidator.violated = 1
 

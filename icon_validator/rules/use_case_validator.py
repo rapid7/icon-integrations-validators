@@ -1,5 +1,6 @@
-from .validator import KomandPluginValidator
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
+
+from .validator import KomandPluginValidator
 
 
 class UseCaseValidator(KomandPluginValidator):

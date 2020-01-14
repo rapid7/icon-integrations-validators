@@ -6,10 +6,11 @@ class DockerfileParentValidator(KomandPluginValidator):
         spec_str = ''.join(spec.raw_dockerfile())
 
         valid_images = [
-          'komand/go-plugin-2', 'komand/python-2-plugin', 'komand/python-3-plugin', 'komand/python-pypy3-plugin', 
-          'komand/python-3-slim-plugin', 'komand/python-2-slim-plugin',
-          'komand/python-2-27-slim-plugin', 'komand/python-3-37-slim-plugin', 'komand/python-2-27-plugin', 'komand/python-3-37-plugin',
-          'komand/python-2-27-full-plugin', 'komand/python-pypy3-full-plugin'
+            'komand/go-plugin-2', 'komand/python-2-plugin', 'komand/python-3-plugin', 'komand/python-pypy3-plugin',
+            'komand/python-3-slim-plugin', 'komand/python-2-slim-plugin',
+            'komand/python-2-27-slim-plugin', 'komand/python-3-37-slim-plugin', 'komand/python-2-27-plugin',
+            'komand/python-3-37-plugin',
+            'komand/python-2-27-full-plugin', 'komand/python-pypy3-full-plugin'
         ]
         root_spec_found = False
         for line in spec.raw_dockerfile():
