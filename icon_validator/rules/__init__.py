@@ -34,6 +34,7 @@ from .use_case_validator import *
 from .vendor_validator import *
 from .version_validator import *
 from .workflow_help_validator import *
+from .workflow_files_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
@@ -73,7 +74,10 @@ JENKINS_VALIDATORS = [
 ]
 
 WORKFLOW_VALIDATORS = [
+    WorkflowFilesValidator(),
     WorkflowHelpValidator(),
     ChangelogValidator(),
+    VersionValidator(),
+    VendorValidator(),
     ProfanityValidator()
 ]
