@@ -43,7 +43,22 @@ class ChangelogValidator(KomandPluginValidator):
         if versions != sorted_versions:
             raise Exception("Version numbers in help.md are not sorted in descending order")
 
+    @staticmethod
+    def validate_version_history_updated(versions_history, spec):
+        violation = 1
+        spec_version = spec.spec_dictionary()['version']
+
+        for version_detail in versions_history:
+            help_version = re.search(r'^\*\s\d+\.\d+\.\d+$', version_detail.split(" - ")[0])
+            if spec_version in help_version.group():
+                violation = 0
+                break
+
+        if violation:
+            raise Exception(f"Version history of help.md missing version {spec_version}. Please add missing version")
+
     def validate(self, spec):
         versions_history = ChangelogValidator.get_versions(spec.raw_help())
         ChangelogValidator.validate_version_numbers(versions_history)
         ChangelogValidator.validate_order(versions_history)
+        ChangelogValidator.validate_version_history_updated(versions_history, spec)
