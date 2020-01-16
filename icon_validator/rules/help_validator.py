@@ -1,5 +1,6 @@
-from .validator import KomandPluginValidator
 import re
+
+from .validator import KomandPluginValidator
 
 
 class HelpValidator(KomandPluginValidator):
@@ -19,9 +20,9 @@ class HelpValidator(KomandPluginValidator):
             if '* 0.' in help_str:
                 # Takes advantage of the fact that versioning used to start from 0.1.0 instead of 1.0.0
                 raise Exception(
-                                "Initial plugin was released prior to schema V2 but versioning history "
-                                "does not document the upgrade to web server mode: Support web server mode"
-                                )
+                    "Initial plugin was released prior to schema V2 but versioning history "
+                    "does not document the upgrade to web server mode: Support web server mode"
+                )
 
     @staticmethod
     def validate_same_actions_title(spec, help_):
@@ -54,7 +55,7 @@ class HelpValidator(KomandPluginValidator):
                 lower_line = line.lower()
                 if lower_title in lower_line:
                     if title not in line:
-                        if lower_line[lower_line.find(title.lower())-1].isspace():
+                        if lower_line[lower_line.find(title.lower()) - 1].isspace():
                             if line.startswith('$'):
                                 pass
                             elif line.startswith('>>>'):

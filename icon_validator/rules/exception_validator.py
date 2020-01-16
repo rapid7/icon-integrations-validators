@@ -1,7 +1,8 @@
-from .validator import KomandPluginValidator
 import os
 import re
+
 from icon_validator.styling import *
+from .validator import KomandPluginValidator
 
 
 class ExceptionValidator(KomandPluginValidator):
@@ -47,7 +48,8 @@ class ExceptionValidator(KomandPluginValidator):
                 if name.endswith(".py"):
                     self.validate_exceptions(d, path, name)
         if len(self._violating_files) > 0:
-            print(f"{YELLOW}WARNING: Use of 'PluginException' or 'ConnectionTestException' is recommended when raising an exception.")
+            print(
+                f"{YELLOW}WARNING: Use of 'PluginException' or 'ConnectionTestException' is recommended when raising an exception.")
 
             for violating_file in self._violating_files:
                 violation_content = violating_file.split(":")

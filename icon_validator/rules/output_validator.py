@@ -1,10 +1,11 @@
-from .validator import KomandPluginValidator
-import os
 import json
+import os
 import re
 import sys
 
 from jsonschema import validate
+
+from .validator import KomandPluginValidator
 
 
 class OutputValidator(KomandPluginValidator):
@@ -35,7 +36,7 @@ class OutputValidator(KomandPluginValidator):
             text = schema.read()
         text = text.strip()
         output_pattern = '(?s)"""(.*?)"""'
-        json_ = json.loads(re.findall(output_pattern, text)[1]) # 0 for input, 1 for output
+        json_ = json.loads(re.findall(output_pattern, text)[1])  # 0 for input, 1 for output
         return json_
 
     def validate(self, spec):

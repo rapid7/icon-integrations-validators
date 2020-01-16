@@ -1,5 +1,6 @@
-from .validator import KomandPluginValidator
 import re
+
+from .validator import KomandPluginValidator
 
 
 class VersionValidator(KomandPluginValidator):
@@ -17,7 +18,7 @@ class VersionValidator(KomandPluginValidator):
         """Requires raw spec to see the quotes"""
         for line in spec.splitlines():
             if line.startswith('version:'):
-                val = line[line.find(' ')+1:]
+                val = line[line.find(' ') + 1:]
                 if '"' in val:
                     raise Exception('Version is surrounded by or contains quotes when it should not')
                 if "'" in val:

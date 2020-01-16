@@ -1,9 +1,10 @@
-import os
 import json
-from typing import Optional
+import os
 from hashlib import md5
-from .validator import KomandPluginValidator
+from typing import Optional
+
 from . import KomandPluginSpec
+from .validator import KomandPluginValidator
 
 MD5 = str
 JSON = str
@@ -58,7 +59,7 @@ class Checksum(object):
         self.schemas.sort()
         other.schemas.sort()
 
-        equals = (self.spec == other.spec) and (self.manifest == other.manifest) and (self.setup == self.setup)\
+        equals = (self.spec == other.spec) and (self.manifest == other.manifest) and (self.setup == self.setup) \
                  and (self.schemas == other.schemas)
         return equals
 
@@ -138,7 +139,7 @@ class ChecksumHandler(object):
             )
 
         # Now that we have a post-regeneration Checksum, let's compare!
-        #print(post_regen_checksum_file.to_json())
+        # print(post_regen_checksum_file.to_json())
         if not (provided_checksum_file == post_regen_checksum_file):
             raise Exception("Error: Hashes between provided plugin and checksum were not equal! "
                             "Regenerate the plugin and push to working branch.")
@@ -236,11 +237,12 @@ class ChecksumHandler(object):
 
         # Get all actions and triggers, filter out non-schema files, and add them to the list
         if os.path.isdir(dir_actions):
-            schemas["actions"].extend([os.path.join(dir_actions, a) for a in os.listdir(dir_actions) if "_custom.go" not in a])
-
+            schemas["actions"].extend(
+                [os.path.join(dir_actions, a) for a in os.listdir(dir_actions) if "_custom.go" not in a])
 
         if os.path.isdir(dir_triggers):
-            schemas["triggers"].extend([os.path.join(dir_triggers, t) for t in os.listdir(dir_triggers) if "_custom.go" not in t])
+            schemas["triggers"].extend(
+                [os.path.join(dir_triggers, t) for t in os.listdir(dir_triggers) if "_custom.go" not in t])
 
         return schemas
 

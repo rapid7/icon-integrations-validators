@@ -1,6 +1,7 @@
-from .validator import KomandPluginValidator
-import os
 import json
+import os
+
+from .validator import KomandPluginValidator
 
 
 class CredentialsValidator(KomandPluginValidator):

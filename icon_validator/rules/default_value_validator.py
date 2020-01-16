@@ -1,6 +1,6 @@
-from .validator import KomandPluginValidator
-
 import validators
+
+from .validator import KomandPluginValidator
 
 
 class DefaultValueValidator(KomandPluginValidator):

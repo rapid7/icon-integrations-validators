@@ -1,7 +1,8 @@
-from .validator import KomandPluginValidator
-import subprocess
 import os
+import subprocess
 import sys
+
+from .validator import KomandPluginValidator
 
 
 class DockerValidator(KomandPluginValidator):
