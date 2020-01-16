@@ -1,7 +1,8 @@
-from .validator import KomandPluginValidator
 import re
-from icon_validator.styling import *
 from distutils.version import LooseVersion
+
+from icon_validator.styling import *
+from .validator import KomandPluginValidator
 
 
 class ChangelogValidator(KomandPluginValidator):

@@ -20,7 +20,7 @@ class VendorValidator(KomandPluginValidator):
         '''Requires raw spec to see the quotes'''
         for line in spec.splitlines():
             if line.startswith('vendor:'):
-                val = line[line.find(' ')+1:]
+                val = line[line.find(' ') + 1:]
                 if '"' in val:
                     raise Exception('Vendor is surrounded by or contains quotes when it should not')
                 if "'" in val:

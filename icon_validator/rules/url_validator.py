@@ -1,11 +1,13 @@
-from .validator import KomandPluginValidator
+import http.client
 import urllib
 import urllib.request
-import http.client
-from socket import gaierror
-from urlextract import URLExtract
-from icon_validator.styling import *
 from typing import List
+
+from urlextract import URLExtract
+
+from icon_validator.styling import *
+from .validator import KomandPluginValidator
+
 
 class URLValidator(KomandPluginValidator):
     """ Search for HTTP(s) links, and testing for invalid ones.  Namely, 400+ HTTP return codes"""
@@ -59,7 +61,6 @@ class URLValidator(KomandPluginValidator):
 
         return return_list
 
-
     def validate(self, spec):
         raw_spec_contents = spec.raw_spec()
         spec_file_bad_urls = self.inspect_file_for_urls_and_test_them(raw_spec_contents)
@@ -83,13 +84,13 @@ class URLValidator(KomandPluginValidator):
 
                 violating_urls = self._violating_files_to_urls_map[violating_file]
                 for url in violating_urls:
-                    lines_with_url = list(filter(lambda i: url in file_lines[i] , range(1, len(file_lines))))
+                    lines_with_url = list(filter(lambda i: url in file_lines[i], range(1, len(file_lines))))
 
                     for line in lines_with_url:
                         actual_line_number_in_file = str(int(line) + 1)
                         if not header_printed:
-                            header = ' '.join( (f"{YELLOW}WARNING: URLs found that return a 4xx code.",
-                                        'Verify they are publicly accessible and if not, update with a working URL'))
+                            header = ' '.join((f"{YELLOW}WARNING: URLs found that return a 4xx code.",
+                                               'Verify they are publicly accessible and if not, update with a working URL'))
                             print(header)
                             header_printed = True
                         print(f'{YELLOW}violation: {violating_file}[{actual_line_number_in_file}]: ' + str(url))

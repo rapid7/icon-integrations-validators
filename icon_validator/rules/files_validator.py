@@ -1,5 +1,6 @@
-from .validator import KomandPluginValidator
 import os
+
+from .validator import KomandPluginValidator
 
 
 class FilesValidator(KomandPluginValidator):

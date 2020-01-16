@@ -1,9 +1,11 @@
-import sys
 import argparse
 import os
+import sys
+
 from pkg_resources import get_distribution
-from .validate import validate
+
 from .styling import *
+from .validate import validate
 
 
 def main():
@@ -31,7 +33,8 @@ def main():
     if os.path.exists(path + "/workflow.spec.yaml"):
         spec_file_name = "workflow.spec.yaml"
         if the_arguments.run_all_validators:
-            sys.stderr.write(f"{BULLET_OK}Option '--all' and '-a' only works with plugins. Executing workflow supported validators\n")
+            sys.stderr.write(
+                f"{BULLET_OK}Option '--all' and '-a' only works with plugins. Executing workflow supported validators\n")
     else:
         spec_file_name = "plugin.spec.yaml"
 

@@ -1,5 +1,6 @@
-from .validator import KomandPluginValidator
 import re
+
+from .validator import KomandPluginValidator
 
 
 class AcronymValidator(KomandPluginValidator):
@@ -7,12 +8,13 @@ class AcronymValidator(KomandPluginValidator):
         'ACL', 'API', 'AMI', 'ANC', 'ANS', 'ARN', 'ASCII', 'ASN', 'AV', 'AWS',
         'BCC', 'BGP', 'BIOS',
         'CC', 'CEF', 'CI', 'CIDR', 'CIF', 'CLI', 'CNAME', 'CORS', 'CPU', 'CRLF', 'CRM', 'CSV', 'CVE', 'CVSS',
-        'DB', 'DBMS', 'DHCP', 'DMARC', 'DNS', 
+        'DB', 'DBMS', 'DHCP', 'DMARC', 'DNS',
         'EDR', 'EML',
         'FIFO', 'FTP', 'FQDN',
         'GID', 'GUID', 'GMT', 'GNU', 'GPU',
         'HIBP', 'HIDS', 'HTML', 'HTTP', 'HTTPS',
-        'IAM', 'IANA', 'IBM', 'ICANN', 'ICMP', 'ICIS', 'IDNA', 'IMAP', 'IO', 'IOC', 'IP', 'IP2', 'IPA', 'ISE', 'ISO', 'ISP', 'ITIL',
+        'IAM', 'IANA', 'IBM', 'ICANN', 'ICMP', 'ICIS', 'IDNA', 'IMAP', 'IO', 'IOC', 'IP', 'IP2', 'IPA', 'ISE', 'ISO',
+        'ISP', 'ITIL',
         'JPEG', 'JQL', 'JSON', 'JWT',
         'KML', 'KMS',
         'LAN', 'LDAP',
@@ -21,7 +23,8 @@ class AcronymValidator(KomandPluginValidator):
         'OSSEC', 'OSI', 'OTRS',
         'PCI', 'PCAP', 'PDF', 'PEM', 'PHP', 'PKI', 'PID', 'PNG',
         'RAR', 'RBAC', 'REST', 'RFC', 'RPC', 'RPM', 'RPZ', 'RRS', 'RSA', 'RSS',
-        'SAML', 'SCCM', 'SDK', 'SHA', 'SHA1', 'SHASUM', 'SHA1SUM', 'SHA256', 'SHA512', 'SIEM', 'SLA', 'SMB', 'SMS', 'SMTP', 'SPF', 'SQL', 'SNMP', 'SNS', 'SRV', 'SQS', 'SSH', 'SSID', 'STIX', 'SSL', 'SUID',
+        'SAML', 'SCCM', 'SDK', 'SHA', 'SHA1', 'SHASUM', 'SHA1SUM', 'SHA256', 'SHA512', 'SIEM', 'SLA', 'SMB', 'SMS',
+        'SMTP', 'SPF', 'SQL', 'SNMP', 'SNS', 'SRV', 'SQS', 'SSH', 'SSID', 'STIX', 'SSL', 'SUID',
         'TCP', 'TSV', 'TLD', 'TLP', 'TLS', 'TTL', 'TTP', 'TXT',
         'UBA', 'UDP', 'UI', 'UID', 'URI', 'URL', 'UTC', 'UUID', 'VPN',
         'VBA', 'VM', 'VPC', 'VNC', 'VT', 'VTI',
@@ -29,7 +32,6 @@ class AcronymValidator(KomandPluginValidator):
         'WAF', 'WHOIS', 'WINDOMAIN',
         'ZIP',
     ]
-
 
     @staticmethod
     def validate_acronym(s):
@@ -68,7 +70,7 @@ class AcronymValidator(KomandPluginValidator):
         bad_help = []
         sections = ['title', 'description', 'help']
         for section in sections:  # check title/desc of spec and whole of help.md
-            if section is 'help':
+            if section == 'help':
                 content = spec.raw_help()
                 content_without_example_output = AcronymValidator.remove_example_output(content).split()
                 AcronymValidator.validate_line(content_without_example_output, bad_help)

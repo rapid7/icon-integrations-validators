@@ -1,9 +1,9 @@
-from .validator import KomandPluginValidator
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
+
+from .validator import KomandPluginValidator
 
 
 class RequiredKeysValidator(KomandPluginValidator):
-
     missing_key_message = {
         'plugin_spec_version': 'Specifies the version of the spec. Current version is v1',
         'name': 'Name of the plugin, refers to the docker image name. Should be lower case',
@@ -20,7 +20,7 @@ class RequiredKeysValidator(KomandPluginValidator):
         accepted_values = ["rapid7", "community", "partner"]
         if "support" not in spec_dict or spec_dict["support"] not in accepted_values:
             RequiredKeysValidator.raise_exception("support",
-                                                  "Supporter of plugin. Either 'rapid7', 'community', or 'partner'",)
+                                                  "Supporter of plugin. Either 'rapid7', 'community', or 'partner'", )
 
     @staticmethod
     def validate_resources(spec_dict: dict):
@@ -34,10 +34,11 @@ class RequiredKeysValidator(KomandPluginValidator):
         keys_with_novalue = []
         for resource, value in spec_dict["resources"].items():
             if resource in resource_list and value is None:
-                    keys_with_novalue.append(resource)
+                keys_with_novalue.append(resource)
         if len(keys_with_novalue) > 0:
             RequiredKeysValidator.raise_exception(
-                "resources", f"Keys {keys_with_novalue} are present with an empty value, please remove empty key or provide a suitable value"
+                "resources",
+                f"Keys {keys_with_novalue} are present with an empty value, please remove empty key or provide a suitable value"
             )
 
     @staticmethod
