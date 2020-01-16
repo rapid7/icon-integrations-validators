@@ -49,6 +49,8 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.8.0 - Update ChangelogValidator to validate plugin's version history with latest version number |
+Update HelpInputOutputValidator error messaging
 * 2.7.0 - Add URL Validator
 * 2.6.9 - Update HelpInputOutputValidator to fix error messaging |
 Fix issue with HelpInputOutputValidator when help.md has action and trigger with same name

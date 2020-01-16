@@ -123,4 +123,4 @@ class HelpInputOutputValidator(KomandPluginValidator):
                         HelpInputOutputValidator.violated = 1
 
         if HelpInputOutputValidator.violated:
-            raise Exception("Help.md is not in sync with plugin.spec.yaml. Please check and rectify above violations")
+            raise Exception("Help.md is not in sync with plugin.spec.yaml. Please regenerate help.md by running 'icon-plugin generate python --regenerate' to rectify violations")
