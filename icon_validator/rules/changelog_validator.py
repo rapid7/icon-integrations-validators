@@ -17,7 +17,7 @@ class ChangelogValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_version_numbers(versions_history):
-        violated = 0
+        violated = False
         violations = []
         for version in versions_history:
             version_number = version.split(" - ")
@@ -25,7 +25,7 @@ class ChangelogValidator(KomandPluginValidator):
 
             if not version_found:
                 violations.append(version_number[0].replace('* ', ''))
-                violated = 1
+                violated = True
 
         if violated:
             raise Exception(f"Incorrect version numbers specified in help.md: {YELLOW}{violations}")
@@ -45,13 +45,13 @@ class ChangelogValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_version_history_updated(versions_history, spec):
-        violation = 1
+        violation = True
         spec_version = spec.spec_dictionary()['version']
 
         for version_detail in versions_history:
             help_version = re.search(r'^\*\s\d+\.\d+\.\d+$', version_detail.split(" - ")[0])
             if spec_version in help_version.group():
-                violation = 0
+                violation = False
                 break
 
         if violation:
