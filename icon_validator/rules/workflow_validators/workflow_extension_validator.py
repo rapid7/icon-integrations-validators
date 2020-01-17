@@ -11,7 +11,7 @@ class WorkflowExtensionValidator(KomandPluginValidator):
     @staticmethod
     def validate_extension_exists(spec):
         if 'extension' not in spec.spec_dictionary():
-            raise Exception('workflow extension is missing.')
+            raise Exception('Workflow extension is missing.')
 
     def validate(self, spec):
         WorkflowExtensionValidator.validate_extension_exists(spec)
