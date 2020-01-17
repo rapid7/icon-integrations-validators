@@ -4,6 +4,7 @@ from .validator import KomandPluginValidator
 
 
 class WorkflowFilesValidator(KomandPluginValidator):
+
     def validate(self, spec):
         d = spec.directory
 
