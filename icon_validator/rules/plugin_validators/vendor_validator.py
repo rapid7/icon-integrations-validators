@@ -21,17 +21,15 @@ class VendorValidator(KomandPluginValidator):
         for line in spec.splitlines():
             if line.startswith('vendor:'):
                 val = line[line.find(' ') + 1:]
-                if '"' in val:
-                    raise Exception('Vendor is surrounded by or contains quotes when it should not')
-                if "'" in val:
-                    raise Exception('Vendor is surrounded by or contains quotes when it should not')
+                if '"' or "'" in val:
+                    raise Exception('Vendor is surrounded by or contains quotes when it should not.')
 
     @staticmethod
     def validate_plugin_vendor(spec):
         if 'vendor' not in spec.spec_dictionary():
-            raise Exception('Plugin vendor is missing')
+            raise Exception('Plugin vendor is missing.')
         if not isinstance(spec.spec_dictionary()['vendor'], str):
-            raise Exception('Plugin vendor does not contain a string')
+            raise Exception('Plugin vendor does not contain a string.')
 
     def validate(self, spec):
         VendorValidator.validate_plugin_vendor(spec)

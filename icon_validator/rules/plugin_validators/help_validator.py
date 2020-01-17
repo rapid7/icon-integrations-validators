@@ -8,20 +8,20 @@ class HelpValidator(KomandPluginValidator):
     @staticmethod
     def validate_help_exists(spec):
         if 'help' in spec:
-            raise Exception('Help section should exist in help.md and not in the plugin.spec.yaml file')
+            raise Exception('Help section should exist in help.md and not in the plugin.spec.yaml file.')
 
     @staticmethod
     def validate_version_history(help_str):
         if '- Initial plugin' not in help_str:
-            raise Exception("Initial plugin version line is missing: 1.0.0 - Initial plugin")
+            raise Exception("Initial plugin version line is missing: 1.0.0 - Initial plugin.")
 
         if 'Support web server mode' not in help_str and '1.0.0 - Initial plugin' not in help_str:
             # Match legacy versioning which indicates this plugin came before web server mode existed
             if '* 0.' in help_str:
                 # Takes advantage of the fact that versioning used to start from 0.1.0 instead of 1.0.0
                 raise Exception(
-                    "Initial plugin was released prior to schema V2 but versioning history "
-                    "does not document the upgrade to web server mode: Support web server mode"
+                    "Initial plugin was released prior to schema V2 but versioning history."
+                    "does not document the upgrade to web server mode: Support web server mode."
                 )
 
     @staticmethod
@@ -66,31 +66,31 @@ class HelpValidator(KomandPluginValidator):
     @staticmethod
     def validate_help_headers(help_str):
         if '# Description' not in help_str:
-            raise Exception("Help section is missing header: # Description")
+            raise Exception("Help section is missing header: # Description.")
         if '# Key Features' not in help_str:
-            raise Exception("Help section is missing header: # Key Features")
+            raise Exception("Help section is missing header: # Key Features.")
         if '# Requirements' not in help_str:
-            raise Exception("Help section is missing header: # Requirements")
+            raise Exception("Help section is missing header: # Requirements.")
         if '# Documentation' not in help_str:
-            raise Exception("Help section is missing header: # Documentation")
+            raise Exception("Help section is missing header: # Documentation.")
         if '## Setup' not in help_str:
-            raise Exception("Help section is missing header: ## Setup")
+            raise Exception("Help section is missing header: ## Setup.")
         if '## Technical Details' not in help_str:
-            raise Exception("Help section is missing header: ## Technical Details")
+            raise Exception("Help section is missing header: ## Technical Details.")
         if '### Actions' not in help_str:
-            raise Exception("Help section is missing header: ### Actions")
+            raise Exception("Help section is missing header: ### Actions.")
         if '### Triggers' not in help_str:
-            raise Exception("Help section is missing header: ### Triggers")
+            raise Exception("Help section is missing header: ### Triggers.")
         if '### Custom Output Types' not in help_str:
-            raise Exception("Help section is missing header: ### Custom Output Types")
+            raise Exception("Help section is missing header: ### Custom Output Types.")
         if '## Troubleshooting' not in help_str:
-            raise Exception("Help section is missing header: ## Troubleshooting")
+            raise Exception("Help section is missing header: ## Troubleshooting.")
         if '# Version History' not in help_str:
-            raise Exception("Help section is missing header: # Version History")
+            raise Exception("Help section is missing header: # Version History.")
         if '# Links' not in help_str:
-            raise Exception("Help section is missing header: # Links")
+            raise Exception("Help section is missing header: # Links.")
         if '## References' not in help_str:
-            raise Exception("Help section is missing header: ## References")
+            raise Exception("Help section is missing header: ## References.")
 
     def validate(self, spec):
         HelpValidator.validate_help_exists(spec.spec_dictionary())

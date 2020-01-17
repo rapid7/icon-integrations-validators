@@ -34,7 +34,7 @@ class SchemaHash(object):
     @classmethod
     def from_dict(cls, dict_: {str: str}):
         if "identifier" not in dict_ or "hash" not in dict_:
-            raise Exception("Fatal: Invalid dict provided for SchemaHash! Dict was: %s" % dict_)
+            raise Exception(f"Fatal: Invalid dict provided for SchemaHash! Dict was: {dict_}")
 
         return cls(identifier=dict_["identifier"], hash_=dict_["hash"])
 

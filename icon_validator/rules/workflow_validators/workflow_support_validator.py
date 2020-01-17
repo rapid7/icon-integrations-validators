@@ -21,17 +21,15 @@ class WorkflowSupportValidator(KomandPluginValidator):
         for line in spec.splitlines():
             if line.startswith('support:'):
                 val = line[line.find(' ') + 1:]
-                if '"' in val:
-                    raise Exception('Support is surrounded by or contains quotes when it should not')
-                if "'" in val:
-                    raise Exception('Support is surrounded by or contains quotes when it should not')
+                if '"' or "'" in val:
+                    raise Exception('Support is surrounded by or contains quotes when it should not.')
 
     @staticmethod
     def validate_workflow_support(spec):
         if 'support' not in spec.spec_dictionary():
-            raise Exception('Plugin supporter is missing')
+            raise Exception('Plugin supporter is missing.')
         if not isinstance(spec.spec_dictionary()['vendor'], str):
-            raise Exception('Plugin supporter does not contain a string')
+            raise Exception('Plugin supporter does not contain a string.')
 
     def validate(self, spec):
         WorkflowSupportValidator.validate_workflow_support(spec)

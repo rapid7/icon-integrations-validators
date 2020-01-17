@@ -90,7 +90,7 @@ class URLValidator(KomandPluginValidator):
                         actual_line_number_in_file = str(int(line) + 1)
                         if not header_printed:
                             header = ' '.join((f"{YELLOW}WARNING: URLs found that return a 4xx code.",
-                                               'Verify they are publicly accessible and if not, update with a working URL'))
+                                               'Verify they are publicly accessible and if not, update with a working URL.'))
                             print(header)
                             header_printed = True
                         print(f'{YELLOW}violation: {violating_file}[{actual_line_number_in_file}]: ' + str(url))

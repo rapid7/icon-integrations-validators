@@ -11,7 +11,7 @@ class WorkflowChangelogValidator(KomandPluginValidator):
     def get_versions(help_content):
         raw_versions = re.findall(r'Version History\n\n.*?\n\n', help_content, re.DOTALL)
         if not raw_versions:
-            raise Exception("Incorrect Version History in help.md")
+            raise Exception("Incorrect Version History in help.md.")
 
         versions_history = raw_versions[0].replace('Version History\n\n', '').replace('\n\n', '').split('\n')
         return versions_history
@@ -29,7 +29,7 @@ class WorkflowChangelogValidator(KomandPluginValidator):
                 violated = True
 
         if violated:
-            raise Exception(f"Incorrect version numbers specified in help.md: {YELLOW}{violations}")
+            raise Exception(f"Incorrect version numbers specified in help.md: {YELLOW}{violations}.")
 
     @staticmethod
     def validate_order(versions_history):
@@ -42,7 +42,7 @@ class WorkflowChangelogValidator(KomandPluginValidator):
         sorted_versions = sorted(versions, key=LooseVersion, reverse=True)
 
         if versions != sorted_versions:
-            raise Exception("Version numbers in help.md are not sorted in descending order")
+            raise Exception("Version numbers in help.md are not sorted in descending order.")
 
     @staticmethod
     def validate_version_history_updated(versions_history, spec):
@@ -56,7 +56,7 @@ class WorkflowChangelogValidator(KomandPluginValidator):
                 break
 
         if violation:
-            raise Exception(f"Version history of help.md missing version {spec_version}. Please add missing version")
+            raise Exception(f"Version history of help.md missing version {spec_version}. Please add missing version.")
 
     def validate(self, spec):
         versions_history = WorkflowChangelogValidator.get_versions(spec.raw_help())

@@ -18,12 +18,12 @@ class ProfanityValidator(KomandPluginValidator):
 
         for word in spec_words:
             if word in bannedWords:
-                raise Exception(f"{spec.spec_file_name} contains banned word: {word}")
+                raise Exception(f"{spec.spec_file_name} contains banned word: {word}.")
 
         help_lst = spec.raw_help().split()
         for word in help_lst:
             if word in bannedWords:
-                raise Exception(f"help.md contains banned word: {word}")
+                raise Exception(f"help.md contains banned word: {word}.")
 
     def validate(self, spec):
         ProfanityValidator.validate_profanity(spec)

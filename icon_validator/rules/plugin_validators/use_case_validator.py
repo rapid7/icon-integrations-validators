@@ -34,6 +34,6 @@ class UseCaseValidator(KomandPluginValidator):
             result = UseCaseValidator.validate_use_cases(spec.spec_dictionary()["hub_tags"]["use_cases"])
             if len(result):
                 err = ', '.join(result)
-                raise Exception(f"Invalid use cases: {err}")
+                raise Exception(f"Invalid use cases: {err}.")
         except KeyError:
-            raise Exception("Missing required field 'use_cases' in key 'hub_tags'")
+            raise Exception("Missing required field 'use_cases' in key 'hub_tags'.")

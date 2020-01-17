@@ -15,10 +15,10 @@ class DefaultValueValidator(KomandPluginValidator):
             if 'default' in v:
                 if k == 'domain':
                     if validators.domain(v['default']) is not True:
-                        raise Exception("Variable %s's default value is not a valid domain" % k)
+                        raise Exception(f"Variable {k}'s default value is not a valid domain.")
                 elif k == 'email' or k == 'email_address':
                     if validators.email(v['default']) is not True:
-                        raise Exception("Variable %s's default value is not a valid email address" % k)
+                        raise Exception(f"Variable {k}'s default value is not a valid email address.")
 
     @staticmethod
     def validate_action(action):

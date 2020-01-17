@@ -20,7 +20,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
         if not action_input_section:
             print(
-                f"{YELLOW}{process_type[:-1].capitalize()} \"{action_title}\" could be missing or title is incorrect in help.md{RESET_ALL}")
+                f"{YELLOW}{process_type[:-1].capitalize()} \"{action_title}\" could be missing or title is incorrect in help.md{RESET_ALL}.")
             HelpInputOutputValidator.violated = 1
             HelpInputOutputValidator.action_missing = 1
             return
@@ -123,4 +123,4 @@ class HelpInputOutputValidator(KomandPluginValidator):
                         HelpInputOutputValidator.violated = 1
 
         if HelpInputOutputValidator.violated:
-            raise Exception("Help.md is not in sync with plugin.spec.yaml. Please regenerate help.md by running 'icon-plugin generate python --regenerate' to rectify violations")
+            raise Exception("Help.md is not in sync with plugin.spec.yaml. Please regenerate help.md by running 'icon-plugin generate python --regenerate' to rectify violations.")
