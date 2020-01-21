@@ -20,8 +20,14 @@ class TestWorkflowValidate(TestCase):
         file_to_test = "workflow.spec.yaml"
         validate(directory_to_test, file_to_test, False, True)
 
-    def test_bad_change_log_validator(self):
-        # Test bad workflows. This will test the workflow_change_log_validator
+    def test_bad_vendor_validator(self):
+        # Test bad workflows. This will test the workflow_vendor_validator
+        directory_to_test = "workflow_examples/vendor_tests"
+        file_to_test = "workflow.spec.yaml"
+        validate(directory_to_test, file_to_test, False, True)
+
+    def test_bad_version_validator(self):
+        # Test bad workflows. This will test the workflow_version_validator
         directory_to_test = "workflow_examples/vendor_tests"
         file_to_test = "workflow.spec.yaml"
         validate(directory_to_test, file_to_test, False, True)

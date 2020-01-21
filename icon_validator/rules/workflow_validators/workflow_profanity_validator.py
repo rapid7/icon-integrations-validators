@@ -1,4 +1,5 @@
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 bannedWords = ['anal', 'anus', 'arse', 'ass', 'ballsack', 'balls', 'bastard', 'bitch', 'biatch', 'bloody', 'blowjob',
                'blow job', 'bollock', 'bollok', 'boner', 'boob', 'bugger', 'bum', 'butt', 'buttplug', 'clitoris',
@@ -18,12 +19,12 @@ class WorkflowProfanityValidator(KomandPluginValidator):
 
         for word in spec_words:
             if word in bannedWords:
-                raise Exception(f"{spec.spec_file_name} contains banned word: {word}.")
+                raise ValidationException(f"{spec.spec_file_name} contains banned word: {word}.")
 
         help_lst = spec.raw_help().split()
         for word in help_lst:
             if word in bannedWords:
-                raise Exception(f"help.md contains banned word: {word}.")
+                raise ValidationException(f"help.md contains banned word: {word}.")
 
     def validate(self, spec):
         WorkflowProfanityValidator.validate_profanity(spec)

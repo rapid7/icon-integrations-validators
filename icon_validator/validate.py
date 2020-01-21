@@ -4,25 +4,26 @@ import sys
 import traceback
 
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
+from icon_validator.exceptions import ValidationException
 
 from .rules import VALIDATORS, JENKINS_VALIDATORS, WORKFLOW_VALIDATORS
 from .styling import *
 from .timing import *
 
 
-def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False, run_all=False):
+def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False, run_all=False, validators=list()):
     spec = KomandPluginSpec(directory, spec_file_name)
     status = 0  # Resultant return code
-    validators = []
     start_time = time_now()
     print(f"{BULLET_OK} {BOLD}Running Integration Validators...{CEND}")
 
-    if spec_file_name == "plugin.spec.yaml":
-        validators = VALIDATORS
-        if run_all:
-            validators += JENKINS_VALIDATORS
-    elif spec_file_name == 'workflow.spec.yaml':
-        validators = WORKFLOW_VALIDATORS
+    if len(validators) == 0:
+        if spec_file_name == "plugin.spec.yaml":
+            validators = VALIDATORS
+            if run_all:
+                validators += JENKINS_VALIDATORS
+        elif spec_file_name == 'workflow.spec.yaml':
+            validators = WORKFLOW_VALIDATORS
 
     for v in validators:
         print(f"{BULLET_OK} Executing validator {v.name}")
