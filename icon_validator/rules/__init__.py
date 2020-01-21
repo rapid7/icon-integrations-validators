@@ -91,6 +91,6 @@ WORKFLOW_VALIDATORS = [
     WorkflowVendorValidator(),
     WorkflowVersionValidator(),
     WorkflowExtensionValidator(),
-    WorkflowSupportValidator,
-    WorkflowProfanityValidator
+    WorkflowSupportValidator(),
+    WorkflowProfanityValidator()
 ]

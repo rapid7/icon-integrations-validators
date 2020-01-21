@@ -15,4 +15,4 @@ class WorkflowExtensionValidator(KomandPluginValidator):
 
     def validate(self, spec):
         WorkflowExtensionValidator.validate_extension_exists(spec)
-        WorkflowExtensionValidator.validate_extension_exists(spec.spec_dictionary()['extension'])
+        WorkflowExtensionValidator.validate_extension(spec.spec_dictionary()['extension'])

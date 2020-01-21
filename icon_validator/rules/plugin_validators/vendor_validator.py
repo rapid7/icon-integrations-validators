@@ -21,7 +21,7 @@ class VendorValidator(KomandPluginValidator):
         for line in spec.splitlines():
             if line.startswith('vendor:'):
                 val = line[line.find(' ') + 1:]
-                if '"' or "'" in val:
+                if "'" in val or '"' in val:
                     raise Exception('Vendor is surrounded by or contains quotes when it should not.')
 
     @staticmethod

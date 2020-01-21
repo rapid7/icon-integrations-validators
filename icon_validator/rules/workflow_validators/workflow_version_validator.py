@@ -19,8 +19,8 @@ class WorkflowVersionValidator(KomandPluginValidator):
         for line in spec.splitlines():
             if line.startswith('version:'):
                 val = line[line.find(' ') + 1:]
-                if '"' or "'" in val:
-                    raise Exception('Version is surrounded by or contains quotes when it should not.')
+                if "'" in val or '"' in val:
+                    raise Exception('Vendor is surrounded by or contains quotes when it should not.')
 
     @staticmethod
     def validate_workflow_version(spec):

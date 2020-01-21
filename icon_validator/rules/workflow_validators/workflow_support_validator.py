@@ -21,7 +21,7 @@ class WorkflowSupportValidator(KomandPluginValidator):
         for line in spec.splitlines():
             if line.startswith('support:'):
                 val = line[line.find(' ') + 1:]
-                if '"' or "'" in val:
+                if '"' in val or "'" in val:
                     raise Exception('Support is surrounded by or contains quotes when it should not.')
 
     @staticmethod
