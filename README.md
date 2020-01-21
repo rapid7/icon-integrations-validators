@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.8.1 - Bug fix for URLValidator when opening files
 * 2.8.0 - Update ChangelogValidator to validate plugin's version history with latest version number |
 Update HelpInputOutputValidator error messaging
 * 2.7.0 - Add URL Validator
