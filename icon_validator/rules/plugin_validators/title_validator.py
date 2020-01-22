@@ -57,8 +57,7 @@ class TitleValidator(KomandPluginValidator):
                     try:
                         TitleValidator.validate_title(value["title"], plugin_title=False)
                     except Exception as e:
-                        raise Exception("%s key '%s'\'s title ends with period when it should not"
-                                        % (dict_key, key), e)
+                        raise Exception(f"{dict_key} key '{key}'\'s title ends with period when it should not", e)
 
     @staticmethod
     def validate_plugin_title(spec):

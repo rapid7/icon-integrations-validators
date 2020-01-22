@@ -34,8 +34,7 @@ class RequiredValidator(KomandPluginValidator):
                 try:
                     RequiredValidator.validate_required(value["required"])
                 except Exception as e:
-                    raise Exception("%s key '%s'\'s required must be boolean"
-                                    % (dict_key, key), e)
+                    raise Exception(f"{dict_key} key '{key}'\'s required must be boolean", e)
 
     def validate(self, spec):
         RequiredValidator.validate_actions(spec.spec_dictionary(), "actions")
