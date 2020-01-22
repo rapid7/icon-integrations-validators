@@ -282,7 +282,7 @@ class RegenerationValidator(KomandPluginValidator):
 
     @staticmethod
     def is_run_from_jenkins() -> bool:
-        directory_contents: [str] = os.listdir("..")
+        directory_contents: [str] = os.listdir(".")
         if "Gopkg.lock" not in directory_contents and "setup.py" not in directory_contents:
             return True
         else:
