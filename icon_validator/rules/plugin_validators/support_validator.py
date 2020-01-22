@@ -28,7 +28,7 @@ class SupportValidator(KomandPluginValidator):
     def validate_plugin_support(spec):
         if 'support' not in spec.spec_dictionary():
             raise Exception('Plugin supporter is missing.')
-        if not isinstance(spec.spec_dictionary()['vendor'], str):
+        if not isinstance(spec.spec_dictionary()['support'], str):
             raise Exception('Plugin supporter does not contain a string.')
 
     def validate(self, spec):

@@ -29,7 +29,7 @@ class WorkflowSupportValidator(KomandPluginValidator):
     def validate_workflow_support(spec):
         if 'support' not in spec.spec_dictionary():
             raise ValidationException('Plugin supporter is missing.')
-        if not isinstance(spec.spec_dictionary()['vendor'], str):
+        if not isinstance(spec.spec_dictionary()['support'], str):
             raise ValidationException('Plugin supporter does not contain a string.')
 
     def validate(self, spec):
