@@ -23,6 +23,7 @@ class TestPluginValidate(TestCase):
 
 class TestWorkflowValidate(TestCase):
 
+    # TODO bad tests need to run in a way where they will pass with bad data rather than fail
     def test_good_workflow_validator(self):
         # Test good workflow. This should pass all validation
         directory_to_test = "workflow_examples/good_test"
