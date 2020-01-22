@@ -18,19 +18,19 @@ class WorkflowVersionValidator(KomandPluginValidator):
     def validate_version_quotes(spec):
         """Requires raw spec to see the quotes"""
         for line in spec.splitlines():
-            if line.startswith('version:'):
-                val = line[line.find(' ') + 1:]
+            if line.startswith("version:"):
+                val = line[line.find(" ") + 1:]
                 if "'" in val or '"' in val:
-                    raise ValidationException('Vendor is surrounded by or contains quotes when it should not.')
+                    raise ValidationException("Vendor is surrounded by or contains quotes when it should not.")
 
     @staticmethod
     def validate_workflow_version(spec):
-        if 'version' not in spec.spec_dictionary():
-            raise ValidationException('Plugin version is missing.')
-        if not isinstance(spec.spec_dictionary()['version'], str):
-            raise ValidationException('Plugin version does not contain a string.')
+        if "version" not in spec.spec_dictionary():
+            raise ValidationException("Plugin version is missing.")
+        if not isinstance(spec.spec_dictionary()["version"], str):
+            raise ValidationException("Plugin version does not contain a string.")
 
     def validate(self, spec):
         WorkflowVersionValidator.validate_workflow_version(spec)
-        WorkflowVersionValidator.validate_version(spec.spec_dictionary()['version'])
+        WorkflowVersionValidator.validate_version(spec.spec_dictionary()["version"])
         WorkflowVersionValidator.validate_version_quotes(spec.raw_spec())

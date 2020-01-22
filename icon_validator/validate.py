@@ -12,7 +12,7 @@ from .timing import *
 
 
 # TODO refactor this into a class to allow for easier and better testing
-def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False, run_all=False, validators=list()):
+def validate(directory, spec_file_name="plugin.spec.yaml", fail_fast=False, run_all=False, validators=list()):
     spec = KomandPluginSpec(directory, spec_file_name)
     status = 0  # Resultant return code
     start_time = time_now()
@@ -23,7 +23,7 @@ def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False, run_
             validators = VALIDATORS
             if run_all:
                 validators += JENKINS_VALIDATORS
-        elif spec_file_name == 'workflow.spec.yaml':
+        elif spec_file_name == "workflow.spec.yaml":
             validators = WORKFLOW_VALIDATORS
 
     for v in validators:
@@ -46,7 +46,7 @@ def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False, run_
     end_time = time_now()
     time_elapsed = format_time(start=start_time, end=end_time)
 
-    extension = spec_file_name.split('.')[0].capitalize()
+    extension = spec_file_name.split(".")[0].capitalize()
 
     if status == 0:
         print(f"{BULLET_OK} {BOLD}{extension} successfully validated!{CEND}")

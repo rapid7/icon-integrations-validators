@@ -17,19 +17,19 @@ class VersionValidator(KomandPluginValidator):
     def validate_version_quotes(spec):
         """Requires raw spec to see the quotes"""
         for line in spec.splitlines():
-            if line.startswith('version:'):
-                val = line[line.find(' ') + 1:]
+            if line.startswith("version:"):
+                val = line[line.find(" ") + 1:]
                 if "'" in val or '"' in val:
-                    raise Exception('Vendor is surrounded by or contains quotes when it should not.')
+                    raise Exception("Vendor is surrounded by or contains quotes when it should not.")
 
     @staticmethod
     def validate_plugin_version(spec):
-        if 'version' not in spec.spec_dictionary():
-            raise Exception('Plugin version is missing.')
-        if not isinstance(spec.spec_dictionary()['version'], str):
-            raise Exception('Plugin version does not contain a string.')
+        if "version" not in spec.spec_dictionary():
+            raise Exception("Plugin version is missing.")
+        if not isinstance(spec.spec_dictionary()["version"], str):
+            raise Exception("Plugin version does not contain a string.")
 
     def validate(self, spec):
         VersionValidator.validate_plugin_version(spec)
-        VersionValidator.validate_version(spec.spec_dictionary()['version'])
+        VersionValidator.validate_version(spec.spec_dictionary()["version"])
         VersionValidator.validate_version_quotes(spec.raw_spec())

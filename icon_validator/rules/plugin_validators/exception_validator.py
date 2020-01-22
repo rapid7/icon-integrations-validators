@@ -12,7 +12,7 @@ class ExceptionValidator(KomandPluginValidator):
 
     def validate_exceptions(self, spec_dir, path, name):
         joined_path = os.path.join(path, name)
-        with open(joined_path, 'r') as f:
+        with open(joined_path, "r") as f:
             text = f.readlines()
 
         violating_lines = []
@@ -57,4 +57,4 @@ class ExceptionValidator(KomandPluginValidator):
                 line_numbers = violation_content[1].split(",")
 
                 for line_number in line_numbers:
-                    print(f'{YELLOW}violation: {file_name}: line, {line_number}')
+                    print(f"{YELLOW}violation: {file_name}: line, {line_number}")

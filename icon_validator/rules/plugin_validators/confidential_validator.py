@@ -24,7 +24,7 @@ class ConfidentialValidator(KomandPluginValidator):
     # Check content line by line for emails that validate the rule
     @staticmethod
     def validate_emails(content: [str], path_to_file: str):
-        email_pattern = re.compile(r'([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+){0,}')
+        email_pattern = re.compile(r"([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+){0,}")
         for i in range(0, len(content)):
             matches = email_pattern.findall(content[i])
             while "" in matches:

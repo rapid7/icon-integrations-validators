@@ -9,21 +9,21 @@ from .validate import validate
 
 
 def main():
-    version_string = (f"{BULLET_OK} " + str(get_distribution('insightconnect-integrations-validators')))
-    if '--version' in sys.argv:
+    version_string = (f"{BULLET_OK} " + str(get_distribution("insightconnect-integrations-validators")))
+    if "--version" in sys.argv:
         print(version_string)
         sys.exit(0)
 
     arguments_parser = argparse.ArgumentParser(epilog=version_string,
-                                               description='Linting rules for plugins and workflows')
+                                               description="Linting rules for plugins and workflows")
     # required
-    arguments_parser.add_argument('path', help='Path to find the plugin or workflow code', default='.')
+    arguments_parser.add_argument("path", help="Path to find the plugin or workflow code", default=".")
 
     # optional
-    arguments_parser.add_argument('--all', help='Run all Validators', default=False,
-                                  dest='run_all_validators', action='store_true')
-    arguments_parser.add_argument('-a', help='Run all validators', default=False,
-                                  dest='run_all_validators', action='store_true')
+    arguments_parser.add_argument("--all", help="Run all Validators", default=False,
+                                  dest="run_all_validators", action="store_true")
+    arguments_parser.add_argument("-a", help="Run all validators", default=False,
+                                  dest="run_all_validators", action="store_true")
 
     the_arguments = arguments_parser.parse_args()
 
@@ -42,7 +42,7 @@ def main():
         sys.stderr.write(f"{BULLET_FAIL} Path '{path}' does not exist\n")
         sys.exit(1)
 
-    extension = spec_file_name.split('.')[0]
+    extension = spec_file_name.split(".")[0]
 
     if extension == "plugin" and the_arguments.run_all_validators:
         print(f"{BULLET_OK} Validating {extension} with all validators at {path}\n")
@@ -52,5 +52,5 @@ def main():
         validate(directory=path, spec_file_name=spec_file_name)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

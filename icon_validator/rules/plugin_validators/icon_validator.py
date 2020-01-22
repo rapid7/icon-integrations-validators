@@ -46,7 +46,7 @@ class IconValidator(KomandPluginValidator):
     @staticmethod
     def check_if_extension_image_file_exists(plugin_spec):
         directory = plugin_spec.directory
-        extension_image_file = directory + '/extension.png'
+        extension_image_file = directory + "/extension.png"
 
         file_item = Path(extension_image_file)
         if not file_item.is_file():
@@ -56,7 +56,7 @@ class IconValidator(KomandPluginValidator):
     @staticmethod
     def check_extension_image_file_is_nonzero_size(plugin_spec):
         directory = plugin_spec.directory
-        extension_image_file = directory + '/extension.png'
+        extension_image_file = directory + "/extension.png"
 
         image_file = os.stat(extension_image_file)
         if not image_file.st_size > 0:

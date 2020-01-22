@@ -30,14 +30,14 @@ class URLValidator(KomandPluginValidator):
         urls_from_file = list(set(url_extractor.find_urls(file_contents)))
 
         for web_address in urls_from_file:
-            if web_address.lower() in ['help.md', 'license.md', 'readme.md']:
+            if web_address.lower() in ["help.md", "license.md", "readme.md"]:
                 continue
-            if not web_address[0:4] == 'http':
-                web_address = 'http://' + web_address
+            if not web_address[0:4] == "http":
+                web_address = "http://" + web_address
             address_parts = urllib.parse.urlparse(web_address)
             cleaned_web_address = address_parts.netloc
 
-            path_to_test = r'/'
+            path_to_test = r"/"
             if address_parts.path:
                 path_to_test = address_parts.path
 
@@ -48,7 +48,7 @@ class URLValidator(KomandPluginValidator):
             self._urls_already_tried.append(url_tested)
             try:
                 connection = http.client.HTTPConnection(cleaned_web_address, timeout=self.maximum_timeout, port=80)
-                connection.request('HEAD', path_to_test)
+                connection.request("HEAD", path_to_test)
                 response = connection.getresponse()
                 code = int(response.status)
 
@@ -63,16 +63,16 @@ class URLValidator(KomandPluginValidator):
         return return_list
 
     def validate(self, spec):
-        specfile = spec.directory + '/' + spec.spec_file_name
+        specfile = spec.directory + "/" + spec.spec_file_name
         if os.path.exists(specfile):
             raw_spec_contents = spec.raw_spec()
             spec_file_bad_urls = self.inspect_file_for_urls_and_test_them(raw_spec_contents)
             if len(spec_file_bad_urls) > 0:
                 self._violating_files_to_urls_map[specfile] = spec_file_bad_urls
 
-        helpfile = spec.directory + '/help.md'
+        helpfile = spec.directory + "/help.md"
         if os.path.exists(helpfile):
-            help_file_contents = ''
+            help_file_contents = ""
             with open(helpfile) as h:
                 help_file_contents = h.read()
                 help_file_bad_urls = self.inspect_file_for_urls_and_test_them(help_file_contents)
@@ -93,9 +93,9 @@ class URLValidator(KomandPluginValidator):
                     for line in lines_with_url:
                         actual_line_number_in_file = str(int(line) + 1)
                         if not header_printed:
-                            header = ' '.join((f"{YELLOW}WARNING: URLs found that return a 4xx code.",
-                                               'Verify they are publicly accessible and if not, update with a working URL.'))
+                            header = " ".join((f"{YELLOW}WARNING: URLs found that return a 4xx code.",
+                                               "Verify they are publicly accessible and if not, update with a working URL."))
                             print(header)
                             header_printed = True
                         file_name = os.path.basename(violating_file)
-                        print(f'{YELLOW}violation: {file_name}[{actual_line_number_in_file}]: ' + str(url))
+                        print(f"{YELLOW}violation: {file_name}[{actual_line_number_in_file}]: " + str(url))

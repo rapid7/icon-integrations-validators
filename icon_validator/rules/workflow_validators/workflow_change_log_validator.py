@@ -10,11 +10,11 @@ class WorkflowChangelogValidator(KomandPluginValidator):
 
     @staticmethod
     def get_versions(help_content):
-        raw_versions = re.findall(r'Version History\n\n.*?\n\n', help_content, re.DOTALL)
+        raw_versions = re.findall(r"Version History\n\n.*?\n\n", help_content, re.DOTALL)
         if not raw_versions:
             raise ValidationException("Incorrect Version History in help.md.")
 
-        versions_history = raw_versions[0].replace('Version History\n\n', '').replace('\n\n', '').split('\n')
+        versions_history = raw_versions[0].replace("Version History\n\n", "").replace("\n\n", "").split("\n")
         return versions_history
 
     @staticmethod
@@ -23,10 +23,10 @@ class WorkflowChangelogValidator(KomandPluginValidator):
         violations = []
         for version in versions_history:
             version_number = version.split(" - ")
-            version_found = re.findall(r'^\*\s\d+\.\d+\.\d+$', version_number[0])
+            version_found = re.findall(r"^\*\s\d+\.\d+\.\d+$", version_number[0])
 
             if not version_found:
-                violations.append(version_number[0].replace('* ', ''))
+                violations.append(version_number[0].replace("* ", ""))
                 violated = True
 
         if violated:
@@ -48,10 +48,10 @@ class WorkflowChangelogValidator(KomandPluginValidator):
     @staticmethod
     def validate_version_history_updated(versions_history, spec):
         violation = True
-        spec_version = spec.spec_dictionary()['version']
+        spec_version = spec.spec_dictionary()["version"]
 
         for version_detail in versions_history:
-            help_version = re.search(r'^\*\s\d+\.\d+\.\d+$', version_detail.split(" - ")[0])
+            help_version = re.search(r"^\*\s\d+\.\d+\.\d+$", version_detail.split(" - ")[0])
             if spec_version in help_version.group():
                 violation = False
                 break
