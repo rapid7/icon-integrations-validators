@@ -3,37 +3,48 @@ The rules package provides the array VALIDATORS which contains all the validator
 validating InsightConnect plugins and workflows.
 """
 
-from .acronym_validator import *
-from .changelog_validator import *
-from .confidential_validator import *
-from .credentials_validator import *
-from .default_value_validator import *
-from .description_validator import *
-from .docker_validator import *
-from .dockerfile_parent_validator import *
-from .exception_validator import *
-from .files_validator import *
-from .help_input_output_validator import *
-from .help_validator import *
-from .icon_validator import *
-from .json_validator import *
-from .logging_validator import *
-from .output_validator import *
-from .password_validator import *
-from .print_validator import *
-from .profanity_validator import *
-from .regeneration_validator import *
-from .required_keys_validator import *
-from .required_validator import *
-from .spec_properties_validator import *
-from .spec_version_validator import *
-from .tag_validator import *
-from .title_validator import *
-from .url_validator import *
-from .use_case_validator import *
-from .vendor_validator import *
-from .version_validator import *
-from .workflow_help_validator import *
+# Plugin validators
+from icon_validator.rules.plugin_validators.acronym_validator import *
+from icon_validator.rules.plugin_validators.changelog_validator import *
+from icon_validator.rules.plugin_validators.confidential_validator import *
+from icon_validator.rules.plugin_validators.credentials_validator import *
+from icon_validator.rules.plugin_validators.default_value_validator import *
+from icon_validator.rules.plugin_validators.description_validator import *
+from icon_validator.rules.plugin_validators.docker_validator import *
+from icon_validator.rules.plugin_validators.dockerfile_parent_validator import *
+from icon_validator.rules.plugin_validators.exception_validator import *
+from icon_validator.rules.plugin_validators.files_validator import *
+from icon_validator.rules.plugin_validators.help_input_output_validator import *
+from icon_validator.rules.plugin_validators.help_validator import *
+from icon_validator.rules.plugin_validators.icon_validator import *
+from icon_validator.rules.plugin_validators.json_validator import *
+from icon_validator.rules.plugin_validators.logging_validator import *
+from icon_validator.rules.plugin_validators.output_validator import *
+from icon_validator.rules.plugin_validators.password_validator import *
+from icon_validator.rules.plugin_validators.print_validator import *
+from icon_validator.rules.plugin_validators.profanity_validator import *
+from icon_validator.rules.plugin_validators.regeneration_validator import *
+from icon_validator.rules.plugin_validators.required_keys_validator import *
+from icon_validator.rules.plugin_validators.required_validator import *
+from icon_validator.rules.plugin_validators.spec_properties_validator import *
+from icon_validator.rules.plugin_validators.spec_version_validator import *
+from icon_validator.rules.plugin_validators.tag_validator import *
+from icon_validator.rules.plugin_validators.title_validator import *
+from icon_validator.rules.plugin_validators.url_validator import *
+from icon_validator.rules.plugin_validators.use_case_validator import *
+from icon_validator.rules.plugin_validators.vendor_validator import *
+from icon_validator.rules.plugin_validators.version_validator import *
+from icon_validator.rules.plugin_validators.support_validator import *
+
+# Workflow validators
+from icon_validator.rules.workflow_validators.workflow_help_validator import *
+from icon_validator.rules.workflow_validators.workflow_files_validator import *
+from icon_validator.rules.workflow_validators.workflow_extension_validator import *
+from icon_validator.rules.workflow_validators.workflow_change_log_validator import *
+from icon_validator.rules.workflow_validators.workflow_vendor_validator import *
+from icon_validator.rules.workflow_validators.workflow_version_validator import *
+from icon_validator.rules.workflow_validators.workflow_support_validator import *
+from icon_validator.rules.workflow_validators.workflow_profanity_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
@@ -59,7 +70,8 @@ VALIDATORS = [
     JSONValidator(),
     OutputValidator(),
     RegenerationValidator(),
-    HelpInputOutputValidator()
+    HelpInputOutputValidator(),
+    SupportValidator()
 ]
 
 JENKINS_VALIDATORS = [
@@ -73,7 +85,12 @@ JENKINS_VALIDATORS = [
 ]
 
 WORKFLOW_VALIDATORS = [
+    WorkflowFilesValidator(),
     WorkflowHelpValidator(),
-    ChangelogValidator(),
-    ProfanityValidator()
+    WorkflowChangelogValidator(),
+    WorkflowVendorValidator(),
+    WorkflowVersionValidator(),
+    WorkflowExtensionValidator(),
+    WorkflowSupportValidator(),
+    WorkflowProfanityValidator()
 ]
