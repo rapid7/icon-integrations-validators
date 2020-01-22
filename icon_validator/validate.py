@@ -11,6 +11,7 @@ from .styling import *
 from .timing import *
 
 
+# TODO refactor this into a class to allow for easier and better testing
 def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False, run_all=False, validators=list()):
     spec = KomandPluginSpec(directory, spec_file_name)
     status = 0  # Resultant return code
@@ -31,6 +32,7 @@ def validate(directory, spec_file_name='plugin.spec.yaml', fail_fast=False, run_
             v.validate(spec)
             success = True
 
+        # TODO refactor to use ValidationException will require refactoring of all plugin validators first
         except Exception as e:
             print(f"Validator {v.name} failed!")
             ex_type, ex, tb = sys.exc_info()

@@ -49,7 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
-* 2.9.0 - Add support, workflow files, workflow vendor, workflow version, workflow changelog and workflow extension validators
+* 2.9.0 - Add unit testing support. Add support, workflow files, workflow vendor, workflow version, workflow changelog and workflow extension validators
 * 2.8.0 - Update ChangelogValidator to validate plugin's version history with latest version number |
 Update HelpInputOutputValidator error messaging
 * 2.7.0 - Add URL Validator
