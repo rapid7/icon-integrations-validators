@@ -35,7 +35,7 @@ class HelpValidator(KomandPluginValidator):
     def validate_same_actions_loop(section, help_str):
         for i in section:
             if "title" in section[i]:
-                if "#### {}".format(section[i]["title"]) not in help_str:
+                if f"#### {section[i]["title"]}" not in help_str:
                     raise Exception("Help section is missing title of: #### {}".format(section[i]["title"]))
 
     @staticmethod
