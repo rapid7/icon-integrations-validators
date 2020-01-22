@@ -53,7 +53,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
                 "|Name|Type|Required|Description|") + ".*?\n\n"
             action_output_section_temp = re.findall(regex, action_help_section_temp[0], re.DOTALL)
             action_output_section = re.findall(
-                r'#+ Output\n\n.*?' + re.escape("|Name|Type|Required|Description|") + ".*?\n\n",
+                r"#+ Output\n\n.*?" + re.escape("|Name|Type|Required|Description|") + ".*?\n\n",
                 action_output_section_temp[0], re.DOTALL)
         else:
             action_output_section = re.findall(r"#+ Output\n\n.*?\n\n", action_help_section[0], re.DOTALL)
@@ -68,12 +68,12 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
         for k, v in input_content.items():
             name_ = k
-            type_ = input_content.get(k).get('type')
-            default_ = input_content.get(k).get('default', None)
-            required = input_content.get(k).get('required')
-            description = input_content.get(k).get('description')
-            enum = input_content.get(k).get('enum', None)
-            action_input.append(f'|{name_}|{type_}|{default_}|{required}|{description}|{enum}|')
+            type_ = input_content.get(k).get("type")
+            default_ = input_content.get(k).get("default", None)
+            required = input_content.get(k).get("required")
+            description = input_content.get(k).get("description")
+            enum = input_content.get(k).get("enum", None)
+            action_input.append(f"|{name_}|{type_}|{default_}|{required}|{description}|{enum}|")
         return action_input
 
     @staticmethod
@@ -81,10 +81,10 @@ class HelpInputOutputValidator(KomandPluginValidator):
         action_output = []
         for k, v in output_content.items():
             name_ = k
-            type_ = output_content.get(k).get('type')
-            required = output_content.get(k).get('required')
-            description = output_content.get(k).get('description')
-            action_output.append(f'|{name_}|{type_}|{required}|{description}|')
+            type_ = output_content.get(k).get("type")
+            required = output_content.get(k).get("required")
+            description = output_content.get(k).get("description")
+            action_output.append(f"|{name_}|{type_}|{required}|{description}|")
         return action_output
 
     def validate(self, spec):
@@ -95,9 +95,9 @@ class HelpInputOutputValidator(KomandPluginValidator):
         for p_type in process_type:
             actions = raw_spec_yaml.get(p_type, {})
             for key, value in actions.items():
-                action_name = actions[key].get('title')
-                input_section = actions[key].get('input')
-                output_section = actions[key].get('output')
+                action_name = actions[key].get("title")
+                input_section = actions[key].get("input")
+                output_section = actions[key].get("output")
                 HelpInputOutputValidator.action_missing = 0
 
                 # Action with no input in spec file will skip input validation
@@ -107,7 +107,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
                     if HelpInputOutputValidator.violations:
                         print(
-                            f'{YELLOW}Input violations: {p_type[:-1].capitalize()} -> \"{action_name}\": Missing {HelpInputOutputValidator.violations} in help.md{RESET_ALL}')
+                            f"{YELLOW}Input violations: {p_type[:-1].capitalize()} -> \"{action_name}\": Missing {HelpInputOutputValidator.violations} in help.md{RESET_ALL}")
                         HelpInputOutputValidator.violations = []
                         HelpInputOutputValidator.violated = 1
 
@@ -118,7 +118,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
                     if HelpInputOutputValidator.violations:
                         print(
-                            f'{YELLOW}Output violations: {p_type[:-1].capitalize()}-> \"{action_name}\": Missing {HelpInputOutputValidator.violations} in help.md{RESET_ALL}')
+                            f"{YELLOW}Output violations: {p_type[:-1].capitalize()}-> \"{action_name}\": Missing {HelpInputOutputValidator.violations} in help.md{RESET_ALL}")
                         HelpInputOutputValidator.violations = []
                         HelpInputOutputValidator.violated = 1
 
