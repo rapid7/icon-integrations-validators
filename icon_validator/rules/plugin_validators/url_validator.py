@@ -1,4 +1,5 @@
 import http.client
+import os
 import urllib
 import urllib.request
 from typing import List
@@ -62,18 +63,21 @@ class URLValidator(KomandPluginValidator):
         return return_list
 
     def validate(self, spec):
-        raw_spec_contents = spec.raw_spec()
-        spec_file_bad_urls = self.inspect_file_for_urls_and_test_them(raw_spec_contents)
-        if len(spec_file_bad_urls) > 0:
-            self._violating_files_to_urls_map[spec.spec_file_name] = spec_file_bad_urls
+        specfile = spec.directory + '/' + spec.spec_file_name
+        if os.path.exists(specfile):
+            raw_spec_contents = spec.raw_spec()
+            spec_file_bad_urls = self.inspect_file_for_urls_and_test_them(raw_spec_contents)
+            if len(spec_file_bad_urls) > 0:
+                self._violating_files_to_urls_map[specfile] = spec_file_bad_urls
 
         helpfile = spec.directory + '/help.md'
-        help_file_contents = ''
-        with open(helpfile) as h:
-            help_file_contents = h.read()
-        help_file_bad_urls = self.inspect_file_for_urls_and_test_them(help_file_contents)
-        if len(help_file_bad_urls) > 0:
-            self._violating_files_to_urls_map['help.md'] = help_file_bad_urls
+        if os.path.exists(helpfile):
+            help_file_contents = ''
+            with open(helpfile) as h:
+                help_file_contents = h.read()
+                help_file_bad_urls = self.inspect_file_for_urls_and_test_them(help_file_contents)
+                if len(help_file_bad_urls) > 0:
+                    self._violating_files_to_urls_map[helpfile] = help_file_bad_urls
 
         if len(self._violating_files_to_urls_map) > 0:
             header_printed = False
@@ -93,4 +97,5 @@ class URLValidator(KomandPluginValidator):
                                                'Verify they are publicly accessible and if not, update with a working URL.'))
                             print(header)
                             header_printed = True
-                        print(f'{YELLOW}violation: {violating_file}[{actual_line_number_in_file}]: ' + str(url))
+                        file_name = os.path.basename(violating_file)
+                        print(f'{YELLOW}violation: {file_name}[{actual_line_number_in_file}]: ' + str(url))
