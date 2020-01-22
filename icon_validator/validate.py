@@ -18,7 +18,7 @@ def validate(directory, spec_file_name="plugin.spec.yaml", fail_fast=False, run_
     start_time = time_now()
     print(f"{BULLET_OK} {BOLD}Running Integration Validators...{CEND}")
 
-    if len(validators) == 0:
+    if not validators:
         if spec_file_name == "plugin.spec.yaml":
             validators = VALIDATORS
             if run_all:
