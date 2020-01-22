@@ -7,7 +7,7 @@ from icon_validator.rules.validator import KomandPluginValidator
 
 class DockerValidator(KomandPluginValidator):
     def validate(self, spec):
-        # Using subprocess so we don"t have to deal with connecting to different Docker environments
+        # Using subprocess so we don't have to deal with connecting to different Docker environments
         # e.g docker-machine vs Docker for Mac vs native Docker
         # Directory of current plugin
         d = spec.directory
