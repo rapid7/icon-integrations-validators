@@ -12,7 +12,7 @@ class WorkflowVersionValidator(KomandPluginValidator):
             raise ValidationException("Version does not match required semver format. "
                             "Version should be in form X.Y.Z with X, Y, and Z "
                             "being numbers. No special characters or spaces allowed. "
-                            "Versions start at 1.0.0 See https://semver.org/ for more information")
+                            "Versions start at 1.0.0, see https://semver.org/ for more information.")
 
     @staticmethod
     def validate_version_quotes(spec):
