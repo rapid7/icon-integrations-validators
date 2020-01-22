@@ -98,4 +98,4 @@ class URLValidator(KomandPluginValidator):
                             print(header)
                             header_printed = True
                         file_name = os.path.basename(violating_file)
-                        print(f"{YELLOW}violation: {file_name}[{actual_line_number_in_file}]: " + str(url))
+                        print(f"{YELLOW}violation: {file_name}[{actual_line_number_in_file}]: {str(url)}")
