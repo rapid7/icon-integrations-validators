@@ -6,7 +6,7 @@ class DescriptionValidator(KomandPluginValidator):
     @staticmethod
     def validate_description(description):
         if description.endswith("."):
-            raise Exception("Description ends a with period when it should not.")
+            raise Exception("Description ends with a period when it should not.")
         if description[0].islower():
             raise Exception("Description should not start with a lower case letter.")
         if description[0].isspace():
@@ -34,7 +34,7 @@ class DescriptionValidator(KomandPluginValidator):
                 try:
                     DescriptionValidator.validate_description(value["description"])
                 except Exception as e:
-                    raise Exception(f"{dict_key} key '{key}'\'s description ends a with period when it should not", e)
+                    raise Exception(f"{dict_key} key '{key}'\'s description ends with a period when it should not", e)
 
     @staticmethod
     def validate_plugin_description(spec):
