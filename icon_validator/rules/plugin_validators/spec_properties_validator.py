@@ -1,6 +1,7 @@
 from icon_plugin_spec.plugin_spec import KomandPluginSpec, PluginComponent
 
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 
 class SpecPropertiesValidator(KomandPluginValidator):
@@ -90,7 +91,7 @@ class SpecPropertiesValidator(KomandPluginValidator):
 
         # If there is an offense string at all (indicative of an offense), raise an Exception
         if all_offenses:
-            raise Exception(all_offenses)
+            raise ValidationException(all_offenses)
 
     def _add_component_offense_string(self, component: str, offenders: {str}):
         self.component_offenses.append("%s: %s" % (component, offenders))

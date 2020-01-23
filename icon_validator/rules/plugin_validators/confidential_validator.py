@@ -4,6 +4,7 @@ import re
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
 
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 
 class ConfidentialValidator(KomandPluginValidator):
@@ -64,4 +65,4 @@ class ConfidentialValidator(KomandPluginValidator):
         if len(ConfidentialValidator.violations):
             for violation in ConfidentialValidator.violations:
                 print(f"violation: {violation}")
-            raise Exception(f"Please use 'user@example.com' when including emails. The above items violated this.")
+            raise ValidationException(f"Please use 'user@example.com' when including emails. The above items violated this.")

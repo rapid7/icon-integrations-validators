@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 3.0.0 - Refactor of validate.py. Creates a Validate class and updates the validate method to use ValidationException
 * 2.9.0 - Add unit testing support. Add support, workflow files, workflow vendor, workflow version, workflow changelog and workflow extension validators
 * 2.8.1 - Bug fix for URLValidator when opening files
 * 2.8.0 - Update ChangelogValidator to validate plugin's version history with latest version number |

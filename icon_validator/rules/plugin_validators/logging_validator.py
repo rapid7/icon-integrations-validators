@@ -1,4 +1,5 @@
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 
 class LoggingValidator(KomandPluginValidator):
@@ -16,7 +17,7 @@ class LoggingValidator(KomandPluginValidator):
 
         # logging is imported without presence of logging.GetLogger
         if logging_found and not logging_getlogger_found:
-            raise Exception("One or more files imports logging, update to self.logger.")
+            raise ValidationException("One or more files imports logging, update to self.logger.")
 
     def validate(self, spec):
         # Logging update is only for Python plugins
@@ -29,12 +30,12 @@ class LoggingValidator(KomandPluginValidator):
                 break  # Only one FROM within a Dockerfile, so just exit early instead of continuing to loop
 
         if not image:
-            raise Exception("No FROM statement found within the Dockerfile.")
+            raise ValidationException("No FROM statement found within the Dockerfile.")
 
         if image == "komand/go-plugin-2":
             return None
         elif image == "komand/go-plugin":
-            raise Exception("Plugin is using a deprecated Go parent image.")
+            raise ValidationException("Plugin is using a deprecated Go parent image.")
 
         LoggingValidator.validate_import_logging(spec.raw_trigger_files())
         LoggingValidator.validate_import_logging(spec.raw_action_files())

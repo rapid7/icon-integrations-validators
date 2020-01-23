@@ -2,6 +2,7 @@ import re
 
 from icon_validator.styling import *
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 
 class HelpInputOutputValidator(KomandPluginValidator):
@@ -123,4 +124,4 @@ class HelpInputOutputValidator(KomandPluginValidator):
                         HelpInputOutputValidator.violated = 1
 
         if HelpInputOutputValidator.violated:
-            raise Exception("Help.md is not in sync with plugin.spec.yaml. Please regenerate help.md by running 'icon-plugin generate python --regenerate' to rectify violations.")
+            raise ValidationException("Help.md is not in sync with plugin.spec.yaml. Please regenerate help.md by running 'icon-plugin generate python --regenerate' to rectify violations.")

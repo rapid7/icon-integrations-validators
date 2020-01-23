@@ -1,4 +1,5 @@
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 
 class RequiredValidator(KomandPluginValidator):
@@ -6,7 +7,7 @@ class RequiredValidator(KomandPluginValidator):
     @staticmethod
     def validate_required(required):
         if not isinstance(required, bool):
-            raise Exception("required must be boolean.")
+            raise ValidationException("required must be boolean.")
 
     @staticmethod
     def validate_actions(dict_, dict_key):
@@ -30,11 +31,11 @@ class RequiredValidator(KomandPluginValidator):
 
             for key, value in dict_[dict_key].items():
                 if "required" not in value:
-                    raise Exception(f"{dict_key} key '{key}' is missing required field")
+                    raise ValidationException(f"{dict_key} key '{key}' is missing required field")
                 try:
                     RequiredValidator.validate_required(value["required"])
                 except Exception as e:
-                    raise Exception(f"{dict_key} key '{key}'\'s required must be boolean", e)
+                    raise ValidationException(f"{dict_key} key '{key}'\'s required must be boolean", e)
 
     def validate(self, spec):
         RequiredValidator.validate_actions(spec.spec_dictionary(), "actions")

@@ -1,6 +1,7 @@
 import os
 
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 
 class FilesValidator(KomandPluginValidator):
@@ -9,23 +10,23 @@ class FilesValidator(KomandPluginValidator):
         d = spec.directory
 
         # Go plugins
-        if os.path.isdir("{}/{}".format(d, "connection")):
-            if not os.path.isfile("{}/{}".format(d, "Makefile")):
-                raise Exception("File Makefile does not exist in: ", d)
-            if not os.path.isfile("{}/{}".format(d, "plugin.spec.yaml")):
-                raise Exception("File plugin.spec.yaml does not exist in: ", d)
-            if not os.path.isfile("{}/{}".format(d, "Dockerfile")):
-                raise Exception("File Dockerfile does not exist in: ", d)
+        if os.path.isdir(f"{d}/connection"):
+            if not os.path.isfile(f"{d}/Makefile"):
+                raise ValidationException("File Makefile does not exist in: ", d)
+            if not os.path.isfile(f"{d}/plugin.spec.yaml"):
+                raise ValidationException("File plugin.spec.yaml does not exist in: ", d)
+            if not os.path.isfile(f"{d}/Dockerfile"):
+                raise ValidationException("File Dockerfile does not exist in: ", d)
         else:
             # Python plugins
-            if os.path.isdir("{}/{}".format(d, "bin")):
-                if not os.path.isfile("{}/{}".format(d, "Dockerfile")):
-                    raise Exception("File Dockerfile does not exist in: ", d)
-                if not os.path.isfile("{}/{}".format(d, "Makefile")):
-                    raise Exception("File Makefile does not exist in: ", d)
-                if not os.path.isfile("{}/{}".format(d, "plugin.spec.yaml")):
-                    raise Exception("File plugin.spec.yaml does not exist in: ", d)
-                if not os.path.isfile("{}/{}".format(d, "setup.py")):
-                    raise Exception("File setup.py does not exist in: ", d)
-                if not os.path.isfile("{}/{}".format(d, "requirements.txt")):
-                    raise Exception("File requirements.txt does not exist in: ", d)
+            if os.path.isdir(f"{d}/bin"):
+                if not os.path.isfile(f"{d}/Dockerfile"):
+                    raise ValidationException("File Dockerfile does not exist in: ", d)
+                if not os.path.isfile(f"{d}/Makefile"):
+                    raise ValidationException("File Makefile does not exist in: ", d)
+                if not os.path.isfile(f"{d}/plugin.spec.yaml"):
+                    raise ValidationException("File plugin.spec.yaml does not exist in: ", d)
+                if not os.path.isfile(f"{d}/setup.py"):
+                    raise ValidationException("File setup.py does not exist in: ", d)
+                if not os.path.isfile(f"{d}/requirements.txt"):
+                    raise ValidationException("File requirements.txt does not exist in: ", d)

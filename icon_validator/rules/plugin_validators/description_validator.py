@@ -1,4 +1,5 @@
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 
 class DescriptionValidator(KomandPluginValidator):
@@ -6,11 +7,11 @@ class DescriptionValidator(KomandPluginValidator):
     @staticmethod
     def validate_description(description):
         if description.endswith("."):
-            raise Exception("Description ends a with period when it should not.")
+            raise ValidationException("Description ends a with period when it should not.")
         if description[0].islower():
-            raise Exception("Description should not start with a lower case letter.")
+            raise ValidationException("Description should not start with a lower case letter.")
         if description[0].isspace():
-            raise Exception("Description should not start with a whitespace character.")
+            raise ValidationException("Description should not start with a whitespace character.")
 
     @staticmethod
     def validate_actions(dict_, dict_key):
@@ -30,21 +31,21 @@ class DescriptionValidator(KomandPluginValidator):
 
             for key, value in dict_[dict_key].items():
                 if "description" not in value:
-                    raise Exception(f"{dict_key} key '{key}' is missing description field.")
+                    raise ValidationException(f"{dict_key} key '{key}' is missing description field.")
                 try:
                     DescriptionValidator.validate_description(value["description"])
-                except Exception as e:
-                    raise Exception(f"{dict_key} key '{key}'\'s description ends a with period when it should not", e)
+                except ValidationException as e:
+                    raise ValidationException(f"{dict_key} key '{key}'\'s description ends a with period when it should not.", e)
 
     @staticmethod
     def validate_plugin_description(spec):
         if "description" not in spec.spec_dictionary():
-            raise Exception("Plugin description is missing.")
+            raise ValidationException("Plugin description is missing.")
 
         try:
             DescriptionValidator.validate_description(spec.spec_dictionary()["description"])
-        except Exception as e:
-            raise Exception("Plugin description is not valid.", e)
+        except ValidationException as e:
+            raise ValidationException("Plugin description is not valid.", e)
 
     def validate(self, spec):
         DescriptionValidator.validate_plugin_description(spec)

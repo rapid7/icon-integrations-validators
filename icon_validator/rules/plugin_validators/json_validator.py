@@ -2,6 +2,7 @@ import json
 import os
 
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 
 class JSONValidator(KomandPluginValidator):
@@ -18,4 +19,4 @@ class JSONValidator(KomandPluginValidator):
                         except json.decoder.JSONDecodeError:
                             JSONValidator.invalid_files.append(name)
         if len(JSONValidator.invalid_files) > 0:
-            raise Exception(f"The following test files are not in proper JSON format: {JSONValidator.invalid_files}")
+            raise ValidationException(f"The following test files are not in proper JSON format: {JSONValidator.invalid_files}")

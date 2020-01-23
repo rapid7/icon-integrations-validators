@@ -1,4 +1,5 @@
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 
 class PasswordValidator(KomandPluginValidator):
@@ -11,5 +12,5 @@ class PasswordValidator(KomandPluginValidator):
                 for sub_key in connection[key]:
                     if sub_key == "type":
                         if connection[key][sub_key] == "password":
-                            raise Exception("Remove credentials using type 'password' in plugin spec connection."
-                                            " Use 'credentials' types instead.")
+                            raise ValidationException("Remove credentials using type 'password' in plugin spec connection."
+                                                      " Use 'credentials' types instead.")
