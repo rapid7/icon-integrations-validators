@@ -57,11 +57,10 @@ class Validate:
 
         extension = spec_file_name.split(".")[0].capitalize()
 
-        if not self.unit_test:
-            if status == 0:
-                print(f"{BULLET_OK} {BOLD}{extension} successfully validated!{CEND}")
-            else:
-                print(f"{BULLET_FAIL}{extension} failed validation!")
+        if status == 0:
+            print(f"{BULLET_OK} {BOLD}{extension} successfully validated!{CEND}")
+        else:
+            print(f"{BULLET_FAIL}{extension} failed validation!")
 
-            print(f"\n----\n{BULLET_OK}{BOLD} Total time elapsed: {time_elapsed}ms{CEND}")
+        print(f"\n----\n{BULLET_OK}{BOLD} Total time elapsed: {time_elapsed}ms{CEND}")
         return status
