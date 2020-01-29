@@ -5,11 +5,10 @@ import sys
 from pkg_resources import get_distribution
 
 from .styling import *
-from .validate import Validate
+from .validate import validate
 
 
 def main():
-    validator = Validate()
     version_string = (f"{BULLET_OK} " + str(get_distribution("insightconnect-integrations-validators")))
     if "--version" in sys.argv:
         print(version_string)
@@ -47,10 +46,10 @@ def main():
 
     if extension == "plugin" and the_arguments.run_all_validators:
         print(f"{BULLET_OK} Validating {extension} with all validators at {path}\n")
-        validator.validate(directory=path, run_all=True)
+        validate(directory=path, run_all=True)
     else:
         print(f"{BULLET_OK} Validating {extension} at {path}\n")
-        validator.validate(directory=path, spec_file_name=spec_file_name)
+        validate(directory=path, spec_file_name=spec_file_name)
 
 
 if __name__ == "__main__":
