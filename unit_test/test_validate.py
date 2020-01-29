@@ -1,4 +1,5 @@
 import unittest
+import logging
 from icon_validator.validate import validate
 
 # Import validators to pass to tests
@@ -34,54 +35,54 @@ class TestWorkflowValidate(unittest.TestCase):
         # Test bad workflows. This will test the workflow_vendor_validator
         directory_to_test = "workflow_examples/vendor_tests"
         file_to_test = "workflow_no_vendor.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [WorkflowVendorValidator()], True)
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowVendorValidator()])
         self.assertTrue(result)
 
     def test_version_validator(self):
         # Test bad workflows. This will test the workflow_version_validator
         directory_to_test = "workflow_examples/version_tests"
         file_to_test = "workflow_version_too_low.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [WorkflowVersionValidator()], True)
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowVersionValidator()])
         self.assertTrue(result)
 
     def test_support_validator(self):
         # Test bad workflows. This will test the workflow_support_validator
         directory_to_test = "workflow_examples/support_tests"
         file_to_test = "workflow_no_supporter.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [WorkflowSupportValidator()], True)
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowSupportValidator()])
         self.assertTrue(result)
 
     def test_extension_validator(self):
         # Test bad workflows. This will test the workflow_extension_validator
         directory_to_test = "workflow_examples/extension_tests"
         file_to_test = "workflow_extension_not_workflow.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [WorkflowExtensionValidator()], True)
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowExtensionValidator()])
         self.assertTrue(result)
 
     def test_help_validator(self):
         # Test bad workflows. This will test the workflow_help_validator
         directory_to_test = "workflow_examples/help_tests"
         file_to_test = "workflow.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [WorkflowHelpValidator()], True)
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowHelpValidator()])
         self.assertTrue(result)
 
     def test_change_log_validator(self):
         # Test bad workflows. This will test the workflow_change_log_validator
         directory_to_test = "workflow_examples/change_log_tests"
         file_to_test = "workflow.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [WorkflowChangelogValidator()], True)
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowChangelogValidator()])
         self.assertTrue(result)
 
     def test_files_validator(self):
         # Test bad workflows. This will test the workflow_files_validator
         directory_to_test = "workflow_examples/files_tests"
         file_to_test = "workflow.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [WorkflowFilesValidator()], True)
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowFilesValidator()])
         self.assertTrue(result)
 
     def test_profanity_validator(self):
         # Test bad workflows. This will test the workflow_profanity_validator
         directory_to_test = "workflow_examples/profanity_tests"
         file_to_test = "workflow_profanity.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [WorkflowProfanityValidator()], True)
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowProfanityValidator()])
         self.assertTrue(result)

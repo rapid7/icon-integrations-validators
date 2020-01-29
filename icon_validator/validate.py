@@ -11,7 +11,7 @@ from .styling import *
 from .timing import *
 
 
-def validate(directory, spec_file_name="plugin.spec.yaml", fail_fast=False, run_all=False, validators=list(), unit_test=False):
+def validate(directory, spec_file_name="plugin.spec.yaml", fail_fast=False, run_all=False, validators=list()):
     spec = KomandPluginSpec(directory, spec_file_name)
     status = 0  # Resultant return code
     start_time = time_now()
@@ -32,12 +32,8 @@ def validate(directory, spec_file_name="plugin.spec.yaml", fail_fast=False, run_
             success = True
 
         except ValidationException as e:
-            if not unit_test:
-                print(f"Validator {v.name} failed!")
-                ex_type, ex, tb = sys.exc_info()
-                traceback.print_exception(Exception, e, tb)
-            else:
-                print(e)
+            print(f"Validator {v.name} failed!")
+            print(e)
             status = 1
             success = False
 
