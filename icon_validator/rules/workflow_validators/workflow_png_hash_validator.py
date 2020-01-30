@@ -16,7 +16,7 @@ class WorkflowPNGHashValidator(KomandPluginValidator):
             hasher.update(temp)
         hash_ = hasher.hexdigest()
         if not hash_ == self._GOOD_HASH:
-            raise ValidationException(f"The extention.png file in the workflow directory is incorrect."
-                                      f" The File should have a SHA2 hash of"
+            raise ValidationException("The extention.png file in the workflow directory is incorrect."
+                                      " The File should have a SHA2 hash of"
                                       f" {self._GOOD_HASH}."
                                       f" The files hash was {hash_}")
