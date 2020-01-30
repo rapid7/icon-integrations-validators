@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.12.0 - Add validator to check that .icon filenames do not contain spaces
 * 2.11.0 - Add PNG Hash validator
 * 2.10.0 - Refactor of validate.py. Updates the validate method to use ValidationException and rework print statements to clean up unit testing
 * 2.9.0 - Add unit testing support. Add support, workflow files, workflow vendor, workflow version, workflow changelog and workflow extension validators

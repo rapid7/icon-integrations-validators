@@ -11,6 +11,7 @@ from icon_validator.rules.workflow_validators.workflow_extension_validator impor
 from icon_validator.rules.workflow_validators.workflow_files_validator import WorkflowFilesValidator
 from icon_validator.rules.workflow_validators.workflow_help_validator import WorkflowHelpValidator
 from icon_validator.rules.workflow_validators.workflow_png_hash_validator import WorkflowPNGHashValidator
+from icon_validator.rules.workflow_validators.workflow_icon_filename_validator import WorkflowICONFileNameValidator
 
 
 class TestPluginValidate(unittest.TestCase):
@@ -92,4 +93,11 @@ class TestWorkflowValidate(unittest.TestCase):
         directory_to_test = "workflow_examples/png_hash_tests"
         file_to_test = "workflow.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowPNGHashValidator()])
+        self.assertTrue(result)
+
+    def test_icon_filename_validator(self):
+        # Test bad workflows. This will test the workflow_icon_filename_validator
+        directory_to_test = "workflow_examples/icon_filename_tests"
+        file_to_test = "workflow.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowICONFileNameValidator()])
         self.assertTrue(result)
