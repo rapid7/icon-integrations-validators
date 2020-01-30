@@ -1,4 +1,5 @@
 import unittest
+import logging
 from icon_validator.validate import validate
 
 # Import validators to pass to tests
@@ -23,7 +24,6 @@ class TestPluginValidate(unittest.TestCase):
 
 class TestWorkflowValidate(unittest.TestCase):
 
-    # TODO bad tests need to run in a way where they will output cleanly to command line
     def test_good_workflow_validator(self):
         # Test good workflow. This should pass all validation
         directory_to_test = "workflow_examples/good_test"

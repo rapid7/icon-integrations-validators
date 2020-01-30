@@ -1,4 +1,5 @@
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 
 class DockerfileParentValidator(KomandPluginValidator):
@@ -19,16 +20,16 @@ class DockerfileParentValidator(KomandPluginValidator):
                 parts = parent.split(":")
                 image = parts[0].strip()
                 if image == "komand/python-plugin":
-                    raise Exception("Parent Dockerfile komand/python-plugin is no longer supported. "
-                                    "Use komand/python-2-plugin, komand/python-3-plugin, or komand/python-pypy3-plugin instead.")
+                    raise ValidationException("Parent Dockerfile komand/python-plugin is no longer supported. "
+                                              "Use komand/python-2-plugin, komand/python-3-plugin, or komand/python-pypy3-plugin instead.")
                 elif image == "komand/go-plugin":
-                    raise Exception("Parent Dockerfile komand/go-plugin is no longer supported. "
-                                    "Use komand/go-plugin-2 instead.")
+                    raise ValidationException("Parent Dockerfile komand/go-plugin is no longer supported. "
+                                              "Use komand/go-plugin-2 instead.")
                 elif image not in valid_images:
-                    raise Exception("Unrecognized parent Dockerfile")
+                    raise ValidationException("Unrecognized parent Dockerfile.")
             if line.startswith("ADD ./plugin.spec.yaml /plugin.spec.yaml"):
                 root_spec_found = True
 
         # Komand code checks for /plugin.spec.yaml in the plugin container
         if not root_spec_found:
-            raise Exception("Dockerfile missing line: ADD ./plugin.spec.yaml /plugin.spec.yaml")
+            raise ValidationException("Dockerfile missing line: ADD ./plugin.spec.yaml /plugin.spec.yaml")

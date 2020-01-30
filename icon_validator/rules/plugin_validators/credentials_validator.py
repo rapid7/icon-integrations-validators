@@ -2,6 +2,7 @@ import json
 import os
 
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 
 class CredentialsValidator(KomandPluginValidator):
@@ -37,4 +38,4 @@ class CredentialsValidator(KomandPluginValidator):
                     except AttributeError:
                         pass
         if len(violating_files) > 0:
-            raise Exception(f"Remove credentials from the following files: {violating_files}.")
+            raise ValidationException(f"Remove credentials from the following files: {violating_files}.")

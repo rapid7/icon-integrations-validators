@@ -15,4 +15,5 @@ class WorkflowFilesValidator(KomandPluginValidator):
             raise ValidationException("File help.md does not exist in: ", d)
         if not os.path.isfile(f"{d}/extension.png"):
             raise ValidationException("File extension.png does not exist in: ", d)
-        # TODO check for .icon file
+        if not any(file_name.endswith(".icon") for file_name in os.listdir(d)):
+            raise ValidationException("Workflow file does not exist in: ", d)

@@ -5,6 +5,7 @@ from typing import Optional
 
 from icon_validator.rules import KomandPluginSpec
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 MD5 = str
 JSON = str
@@ -34,7 +35,7 @@ class SchemaHash(object):
     @classmethod
     def from_dict(cls, dict_: {str: str}):
         if "identifier" not in dict_ or "hash" not in dict_:
-            raise Exception(f"Fatal: Invalid dict provided for SchemaHash! Dict was: {dict_}")
+            raise ValidationException(f"Fatal: Invalid dict provided for SchemaHash! Dict was: {dict_}")
 
         return cls(identifier=dict_["identifier"], hash_=dict_["hash"])
 
@@ -141,7 +142,7 @@ class ChecksumHandler(object):
         # Now that we have a post-regeneration Checksum, let's compare!
         # print(post_regen_checksum_file.to_json())
         if not (provided_checksum_file == post_regen_checksum_file):
-            raise Exception("Error: Hashes between provided plugin and checksum were not equal! "
+            raise ValidationException("Error: Hashes between provided plugin and checksum were not equal. "
                             "Regenerate the plugin and push to working branch.")
 
     def _hash_python_schemas(self) -> [SchemaHash]:
@@ -184,8 +185,8 @@ class ChecksumHandler(object):
             with open(file=setup_file, mode="rb") as sf:
                 return md5(sf.read()).hexdigest()
 
-        except FileNotFoundError as e:
-            raise Exception("Fatal: No %s found in Python plugin!" % self._SETUP_PY) from e
+        except FileNotFoundError:
+            raise ValidationException(f"Fatal: No {self._SETUP_PY} found in Python plugin.")
 
     def _hash_python_spec(self) -> MD5:
         spec_file: str = os.path.join(self.plugin_directory, "plugin.spec.yaml")
@@ -194,8 +195,8 @@ class ChecksumHandler(object):
             with open(file=spec_file, mode="rb") as sf:
                 return md5(sf.read()).hexdigest()
 
-        except FileNotFoundError as e:
-            raise Exception("Fatal: No %s found in Python plugin!" % "plugin spec") from e
+        except FileNotFoundError:
+            raise ValidationException("Fatal: No plugin spec found in Python plugin.")
 
     def _hash_python_manifest(self) -> MD5:
         manifest_directory: str = os.path.join(self.plugin_directory, "bin")
@@ -204,8 +205,8 @@ class ChecksumHandler(object):
             with open(file=manifest_file, mode="rb") as mf:
                 return md5(mf.read()).hexdigest()
 
-        except (FileNotFoundError, IndexError) as e:
-            raise Exception("Fatal: No binfile found in Python plugin!") from e
+        except (FileNotFoundError, IndexError):
+            raise ValidationException("Fatal: No binfile found in Python plugin.")
 
     def _hash_go_manifest(self) -> MD5:
         manifest_file: str = os.path.join(self.plugin_directory, "cmd", "main.go")
@@ -214,7 +215,7 @@ class ChecksumHandler(object):
             with open(file=manifest_file, mode="rb") as mf:
                 return md5(mf.read()).hexdigest()
         except FileNotFoundError as e:
-            raise Exception("Fatal: No main.go found in Go plugin!") from e
+            raise ValidationException("Fatal: No main.go found in Go plugin.")
 
     def _enumerate_go_schema_files(self) -> [str]:
         """
@@ -257,7 +258,7 @@ class ChecksumHandler(object):
         for a in all_:
             if os.path.isdir(a) and self.plugin_name in a:
                 return a
-        raise Exception("Fatal: Python plugin missing main directory!")
+        raise ValidationException("Fatal: Python plugin missing main directory.")
 
     def _get_hashfile(self) -> Optional[str]:
         """

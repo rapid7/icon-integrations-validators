@@ -6,6 +6,7 @@ import sys
 from jsonschema import validate
 
 from icon_validator.rules.validator import KomandPluginValidator
+from icon_validator.exceptions import ValidationException
 
 
 class OutputValidator(KomandPluginValidator):
@@ -16,7 +17,7 @@ class OutputValidator(KomandPluginValidator):
     def validate_output(self, action_output, spec_schema, action_name):
         try:
             validate(action_output, spec_schema)
-        except Exception as e:
+        except ValidationException as e:
             self.missing_outputs.append((action_name, e))
 
     @staticmethod
@@ -55,4 +56,4 @@ class OutputValidator(KomandPluginValidator):
                     self.validate_output(json.load(output), schemas[action], action)
 
         if len(self.missing_outputs) > 0:
-            raise Exception(f"Action output does not match spec. List of (ACTION, ERROR): {self.missing_outputs}")
+            raise ValidationException(f"Action output does not match spec. List of (ACTION, ERROR): {self.missing_outputs}")
