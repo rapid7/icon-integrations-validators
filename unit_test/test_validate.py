@@ -1,5 +1,4 @@
 import unittest
-import logging
 from icon_validator.validate import validate
 
 # Import validators to pass to tests
@@ -11,6 +10,7 @@ from icon_validator.rules.workflow_validators.workflow_change_log_validator impo
 from icon_validator.rules.workflow_validators.workflow_extension_validator import WorkflowExtensionValidator
 from icon_validator.rules.workflow_validators.workflow_files_validator import WorkflowFilesValidator
 from icon_validator.rules.workflow_validators.workflow_help_validator import WorkflowHelpValidator
+from icon_validator.rules.workflow_validators.workflow_png_hash_validator import WorkflowPNGHashValidator
 
 
 class TestPluginValidate(unittest.TestCase):
@@ -85,4 +85,11 @@ class TestWorkflowValidate(unittest.TestCase):
         directory_to_test = "workflow_examples/profanity_tests"
         file_to_test = "workflow_profanity.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowProfanityValidator()])
+        self.assertTrue(result)
+
+    def test_png_hash_validator(self):
+        # Test bad workflows. This will test the workflow_png_hash_validator
+        directory_to_test = "workflow_examples/png_hash_tests"
+        file_to_test = "workflow.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowPNGHashValidator()])
         self.assertTrue(result)
