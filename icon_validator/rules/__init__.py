@@ -45,6 +45,7 @@ from icon_validator.rules.workflow_validators.workflow_vendor_validator import *
 from icon_validator.rules.workflow_validators.workflow_version_validator import *
 from icon_validator.rules.workflow_validators.workflow_support_validator import *
 from icon_validator.rules.workflow_validators.workflow_profanity_validator import *
+from icon_validator.rules.workflow_validators.workflow_png_hash_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
@@ -92,5 +93,6 @@ WORKFLOW_VALIDATORS = [
     WorkflowVersionValidator(),
     WorkflowExtensionValidator(),
     WorkflowSupportValidator(),
+    WorkflowPNGHashValidator(),
     WorkflowProfanityValidator()
 ]
