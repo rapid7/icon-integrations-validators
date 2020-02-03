@@ -12,6 +12,7 @@ from icon_validator.rules.workflow_validators.workflow_files_validator import Wo
 from icon_validator.rules.workflow_validators.workflow_help_validator import WorkflowHelpValidator
 from icon_validator.rules.workflow_validators.workflow_png_hash_validator import WorkflowPNGHashValidator
 from icon_validator.rules.workflow_validators.workflow_icon_filename_validator import WorkflowICONFileNameValidator
+from icon_validator.rules.workflow_validators.workflow_screenshot_validator import WorkflowScreenshotValidator
 
 
 class TestPluginValidate(unittest.TestCase):
@@ -100,4 +101,20 @@ class TestWorkflowValidate(unittest.TestCase):
         directory_to_test = "workflow_examples/icon_filename_tests"
         file_to_test = "workflow.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowICONFileNameValidator()])
+        self.assertTrue(result)
+
+    def test_screenshots_validator(self):
+        # Test bad workflows. This will test the workflow_screenshot_validator
+        directory_to_test = "workflow_examples/screenshot_tests"
+        #file_to_test = "workflow_bad_title.spec.yaml"
+        #result = validate(directory_to_test, file_to_test, False, True, [WorkflowScreenshotValidator()])
+        #self.assertTrue(result)
+        file_to_test = "workflow_missing_key.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowScreenshotValidator()])
+        self.assertTrue(result)
+        file_to_test = "workflow_missing_name.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowScreenshotValidator()])
+        self.assertTrue(result)
+        file_to_test = "workflow_missing_title.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowScreenshotValidator()])
         self.assertTrue(result)

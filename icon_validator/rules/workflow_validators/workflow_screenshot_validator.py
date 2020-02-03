@@ -4,12 +4,12 @@ from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
 
 
-class WorkflowScreenshotKeyValidator(KomandPluginValidator):
+class WorkflowScreenshotValidator(KomandPluginValidator):
 
     def __init__(self):
         super().__init__()
-        self.files_list = list()
-        self.names_list = list()
+        self._files_list = list()
+        self._names_list = list()
 
     @staticmethod
     def validate_title(title):
@@ -53,7 +53,7 @@ class WorkflowScreenshotKeyValidator(KomandPluginValidator):
                 raise ValidationException("Each screenshot must have a 'title' key."
                                           f" {screenshot} is missing this key.")
         for item in titles_list:
-            WorkflowScreenshotKeyValidator.validate_title(item)
+            WorkflowScreenshotValidator.validate_title(item)
 
     def validate_screenshots_keys_exist(self, spec):
         try:
@@ -61,13 +61,16 @@ class WorkflowScreenshotKeyValidator(KomandPluginValidator):
         except KeyError:
             raise ValidationException("The screenshots key under the resources key dose not exist in the yaml."
                                       " please add this key.")
+        if not isinstance(screenshots, list):
+            raise ValidationException("There are no screenshots listed in the yaml."
+                                      " At lest one screenshot must be listed.")
         if len(screenshots) == 0:
             raise ValidationException("There are no screenshots listed in the yaml."
                                       " At lest one screenshot must be listed.")
 
         for screenshot in screenshots:
             try:
-                self.names_list.append(screenshot["name"])
+                self._names_list.append(screenshot["name"])
             except KeyError:
                 raise ValidationException("Each screenshot must have a 'name' key that coresposnds to the file name of the screenshot."
                                           f" {screenshot} is missing this key.")
@@ -76,25 +79,30 @@ class WorkflowScreenshotKeyValidator(KomandPluginValidator):
         directory = spec.directory
         try:
             for file_name in os.listdir(f"{directory}/screenshots"):
-                self.files_list.append(file_name)
+                self._files_list.append(file_name)
         except FileNotFoundError:
             raise ValidationException(f"The screenshots directory could not be found at: {directory}\n"
                                       "Please ensure that the screenshots directory exists.")
-        if len(self.files_list) == 0:
+        if len(self._files_list) == 0:
             raise ValidationException("There are no files in the screenshots directory."
                                       " Please add at lest one screenshot.")
-        for screenshot in self.files_list:
+        for screenshot in self._files_list:
             if not screenshot.endswith(".png"):
                 raise ValidationException(f"All screenshots must be .png files. {screenshot} is not a .png file")
 
     def validate_screenshot_files_and_keys_match(self):
-        sorted_names = sorted(self.names_list)
-        sorted_files = sorted(self.files_list)
+        sorted_names = sorted(self._names_list)
+        sorted_files = sorted(self._files_list)
         if not sorted_files == sorted_names:
             raise ValidationException("The screenshot files names and the screenshot names in the yaml do not match.")
 
     def validate(self, spec):
-        self.validate_screenshots_keys_exist(spec)
-        self.validate_screenshot_files_exist(spec)
-        self.validate_screenshot_files_and_keys_match()
-        WorkflowScreenshotKeyValidator.validate_screenshot_titles(spec)
+        # TODO At present if keys are missing this causes errors in latter validators.
+        #  Need to brake validators out so that this is more tightly controlled.
+        try:
+            self.validate_screenshots_keys_exist(spec)
+            self.validate_screenshot_files_exist(spec)
+            self.validate_screenshot_files_and_keys_match()
+            WorkflowScreenshotValidator.validate_screenshot_titles(spec)
+        except ValidationException as e:
+            raise ValidationException(e)
