@@ -13,6 +13,8 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_title(title):
+        if not isinstance(title, str):
+            raise ValidationException("Title must not be blank")
         if title.endswith("."):
             raise ValidationException("Title ends with period when it should not.")
         if title[0].islower():
@@ -90,6 +92,13 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
             if not screenshot.endswith(".png"):
                 raise ValidationException(f"All screenshots must be .png files. {screenshot} is not a .png file")
 
+    def validate_names_not_null(self):
+        for name in self._names_list:
+            if not isinstance(name, str):
+                raise ValidationException("The name key for a screenshot must may not be null")
+        if any(names == "" for names in self._names_list):
+            raise ValidationException("The name key for a screenshot may not be a blank string")
+
     def validate_screenshot_files_and_keys_match(self):
         sorted_names = sorted(self._names_list)
         sorted_files = sorted(self._files_list)
@@ -97,12 +106,8 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
             raise ValidationException("The screenshot files names and the screenshot names in the yaml do not match.")
 
     def validate(self, spec):
-        # TODO At present if keys are missing this causes errors in latter validators.
-        #  Need to brake validators out so that this is more tightly controlled.
-        try:
-            self.validate_screenshots_keys_exist(spec)
-            self.validate_screenshot_files_exist(spec)
-            self.validate_screenshot_files_and_keys_match()
-            WorkflowScreenshotValidator.validate_screenshot_titles(spec)
-        except ValidationException as e:
-            raise ValidationException(e)
+        self.validate_screenshots_keys_exist(spec)
+        self.validate_screenshot_files_exist(spec)
+        self.validate_names_not_null()
+        self.validate_screenshot_files_and_keys_match()
+        WorkflowScreenshotValidator.validate_screenshot_titles(spec)

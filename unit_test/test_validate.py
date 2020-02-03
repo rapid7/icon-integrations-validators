@@ -106,9 +106,9 @@ class TestWorkflowValidate(unittest.TestCase):
     def test_screenshots_validator(self):
         # Test bad workflows. This will test the workflow_screenshot_validator
         directory_to_test = "workflow_examples/screenshot_tests"
-        #file_to_test = "workflow_bad_title.spec.yaml"
-        #result = validate(directory_to_test, file_to_test, False, True, [WorkflowScreenshotValidator()])
-        #self.assertTrue(result)
+        file_to_test = "workflow_bad_title.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowScreenshotValidator()])
+        self.assertTrue(result)
         file_to_test = "workflow_missing_key.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowScreenshotValidator()])
         self.assertTrue(result)
