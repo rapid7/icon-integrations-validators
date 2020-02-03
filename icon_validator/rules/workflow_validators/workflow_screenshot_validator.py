@@ -95,7 +95,7 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
     def validate_names_not_null(self):
         for name in self._names_list:
             if not isinstance(name, str):
-                raise ValidationException("The name key for a screenshot must may not be null")
+                raise ValidationException("The name key for a screenshot must not be null")
         if any(names == "" for names in self._names_list):
             raise ValidationException("The name key for a screenshot may not be a blank string")
 
