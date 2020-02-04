@@ -1,7 +1,10 @@
 import unittest
 from icon_validator.validate import validate
 
-# Import validators to pass to tests
+# Import plugin validators to pass to tests
+from icon_validator.rules.plugin_validators.title_validator import TitleValidator
+
+# Import workflow validators to pass to tests
 from icon_validator.rules.workflow_validators.workflow_profanity_validator import WorkflowProfanityValidator
 from icon_validator.rules.workflow_validators.workflow_vendor_validator import WorkflowVendorValidator
 from icon_validator.rules.workflow_validators.workflow_support_validator import WorkflowSupportValidator
@@ -22,7 +25,15 @@ class TestPluginValidate(unittest.TestCase):
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/good_test"
         file_to_test = "plugin.spec.yaml"
-        validate(directory_to_test, file_to_test, False, True)
+        result = validate(directory_to_test, file_to_test, False, True)
+        self.assertFalse(result)
+
+    def test_title_validator(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/title_tests"
+        file_to_test = "plugin_no_title.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [TitleValidator()])
+        self.assertTrue(result)
 
 
 class TestWorkflowValidate(unittest.TestCase):
