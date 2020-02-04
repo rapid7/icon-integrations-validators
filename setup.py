@@ -14,15 +14,13 @@ setup(name="insightconnect_integrations_validators",
       author_email="integrationalliance@rapid7.com",
       url="https://github.com/rapid7/icon-integrations-validators",
       packages=find_packages(),
-      install_requires=[
-          "insightconnect-integrations-plugin-spec-tooling~=1.0",
-          "filetype==1.0.5",
-          "validators==0.14.2",
-          "jsonschema==2.3.0",
-          "urlextract==0.14.0",
-          "typing==3.7.4.1",
-          "requests==2.22.0",
-      ],
+      install_requires=["jsonschema==2.3.0",
+                        "validators==0.14.2",
+                        "filetype==1.0.5",
+                        "insightconnect-integrations-plugin-spec-tooling~=1.0",
+                        "requests==2.22.0",
+                        "urlextract==0.14.0",
+                        "typing==3.7.4.1"],
       entry_points={
         "console_scripts": [
             "icon-validate=icon_validator.__main__:main"

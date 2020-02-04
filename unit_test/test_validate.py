@@ -126,3 +126,9 @@ class TestWorkflowValidate(unittest.TestCase):
         file_to_test = "workflow_no_title.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()])
         self.assertTrue(result)
+        file_to_test = "workflow_ends_with_period.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()])
+        self.assertTrue(result)
+        file_to_test = "workflow_bad_caps.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()])
+        self.assertTrue(result)

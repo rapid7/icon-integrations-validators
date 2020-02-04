@@ -17,6 +17,7 @@ class TitleValidator(KomandPluginValidator):
         if len(title.split()) > 7:
             raise ValidationException(f"Title is too long, 6 words or less: contains {str(len(title.split()))}")
         for word in title.split():
+            # TODO update to match workflow title validator, which has more complete validation for titles
             if not title.startswith(word):
                 if "The" == word:
                     raise ValidationException("Title contains a capitalized 'The' when it should not.")
