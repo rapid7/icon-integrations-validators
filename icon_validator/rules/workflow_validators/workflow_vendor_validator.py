@@ -6,6 +6,12 @@ class WorkflowVendorValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_vendor(vendor):
+        """
+        Check that vendor is not komand.
+        Check that vendor dose not end with a .
+        Check that vendor dose not start with a capital letter.
+        Check that vendor dose not contain spaces.
+        """
         lvendor = vendor.lower()
         if lvendor == "komand":
             raise ValidationException("Vendor 'komand' not allowed. It's likely you meant 'rapid7'.")
@@ -18,7 +24,10 @@ class WorkflowVendorValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_vendor_quotes(spec):
-        """Requires raw spec to see the quotes"""
+        """
+        Check for quotes around the vendor.
+        """
+        # Requires raw spec to see the quotes
         for line in spec.splitlines():
             if line.startswith("vendor:"):
                 val = line[line.find(" ") + 1:]
@@ -27,6 +36,10 @@ class WorkflowVendorValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_workflow_vendor(spec):
+        """
+        Check that vendor key exists.
+        Check that vendor is a string.
+        """
         if "vendor" not in spec.spec_dictionary():
             raise ValidationException("Plugin vendor is missing.")
         if not isinstance(spec.spec_dictionary()["vendor"], str):

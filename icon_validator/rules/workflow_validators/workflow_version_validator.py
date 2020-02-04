@@ -8,15 +8,21 @@ class WorkflowVersionValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_version(version):
+        """
+        Check that version conforms to semver format.
+        """
         if re.match("[1-9]+.[0-9]+.[0-9]+$", version) is None:
             raise ValidationException("Version does not match required semver format. "
-                            "Version should be in form X.Y.Z with X, Y, and Z "
-                            "being numbers. No special characters or spaces allowed. "
-                            "Versions start at 1.0.0, see https://semver.org/ for more information.")
+                                      "Version should be in form X.Y.Z with X, Y, and Z "
+                                      "being numbers. No special characters or spaces allowed. "
+                                      "Versions start at 1.0.0, see https://semver.org/ for more information.")
 
     @staticmethod
     def validate_version_quotes(spec):
-        """Requires raw spec to see the quotes"""
+        """
+        Check for quotes around the version.
+        """
+        # Requires raw spec to see the quotes
         for line in spec.splitlines():
             if line.startswith("version:"):
                 val = line[line.find(" ") + 1:]
@@ -25,6 +31,10 @@ class WorkflowVersionValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_workflow_version(spec):
+        """
+        Check that version key exists.
+        Check that version is a string.
+        """
         if "version" not in spec.spec_dictionary():
             raise ValidationException("Plugin version is missing.")
         if not isinstance(spec.spec_dictionary()["version"], str):

@@ -7,6 +7,9 @@ from icon_validator.exceptions import ValidationException
 class WorkflowICONFileNameValidator(KomandPluginValidator):
 
     def validate(self, spec):
+        """
+        Checks that .icon file names do not contain spaces
+        """
         d = spec.directory
         for file_name in os.listdir(d):
             if file_name.endswith(".icon"):

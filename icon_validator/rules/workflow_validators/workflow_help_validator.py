@@ -6,16 +6,26 @@ class WorkflowHelpValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_help_exists(spec):
+        """
+        Checks that 'help' is not in .yaml
+        In old code help was included in the yaml. It should no longer be their
+        """
         if "help" in spec:
             raise ValidationException("Help section should exist in help.md and not in the workflow.spec.yaml file.")
 
     @staticmethod
     def validate_version_history(help_str):
+        """
+        Checks that the first line in version history is 1.0.0 - Initial workflow
+        """
         if "- Initial workflow" not in help_str:
             raise ValidationException("Initial workflow version line is missing: 1.0.0 - Initial workflow.")
 
     @staticmethod
     def validate_help_headers(help_str):
+        """
+        Checks that all the expected headers are included in help.md
+        """
         if "# Description" not in help_str:
             raise ValidationException("Help section is missing header: # Description.")
         if "# Key Features" not in help_str:

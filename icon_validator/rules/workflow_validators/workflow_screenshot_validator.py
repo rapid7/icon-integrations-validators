@@ -13,6 +13,14 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_title(title):
+        """
+        Checks that title is not blank.
+        Checks that title dose not end with a period.
+        Checks that title dose not start with a lower case letter.
+        Checks that title dose not start with a space.
+        Checks that title is 6 words or less.
+        Checks that title is properly capitalized.
+        """
         if not isinstance(title, str):
             raise ValidationException("Title must not be blank")
         if title.endswith("."):
@@ -26,6 +34,7 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
         if len(title.split()) > 7:
             raise ValidationException(f"Title is too long, 6 words or less: contains {str(len(title.split()))}")
         for word in title.split():
+            # TODO clean up to make more readable
             if not title.startswith(word):
                 if "The" == word:
                     raise ValidationException("Title contains a capitalized 'The' when it should not.")
@@ -46,6 +55,10 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_screenshot_titles(spec):
+        """
+        Checks that all screenshot objects have a title key.
+        Runs validate_title method on all title keys.
+        """
         screenshots = spec.spec_dictionary()["resources"]["screenshots"]
         titles_list = list()
         for screenshot in screenshots:
@@ -58,6 +71,10 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
             WorkflowScreenshotValidator.validate_title(item)
 
     def validate_screenshots_keys_exist(self, spec):
+        """
+        Checks that screenshots key exists.
+        Checks that screenshots key has at lest one entry.
+        """
         try:
             screenshots = spec.spec_dictionary()["resources"]["screenshots"]
         except KeyError:
@@ -78,6 +95,11 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
                                           f" {screenshot} is missing this key.")
 
     def validate_screenshot_files_exist(self, spec):
+        """
+        Check that screenshots directory exists.
+        Check that screenshots directory contains one or more files.
+        Check that all files in screenshots directory are .png files.
+        """
         directory = spec.directory
         try:
             for file_name in os.listdir(f"{directory}/screenshots"):
@@ -93,6 +115,9 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
                 raise ValidationException(f"All screenshots must be .png files. {screenshot} is not a .png file")
 
     def validate_names_not_null(self):
+        """
+        Check that name keys in yaml are not null or blank strings.
+        """
         for name in self._names_list:
             if not isinstance(name, str):
                 raise ValidationException("The name key for a screenshot must not be null")
@@ -100,6 +125,10 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
             raise ValidationException("The name key for a screenshot may not be a blank string")
 
     def validate_screenshot_files_and_keys_match(self):
+        """
+        Check that screenshot file names match name keys in yaml.
+        Check that there are not file names that do not exist in yaml and vice versa.
+        """
         sorted_names = sorted(self._names_list)
         sorted_files = sorted(self._files_list)
         if not sorted_files == sorted_names:
