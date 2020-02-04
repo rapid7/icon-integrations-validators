@@ -6,6 +6,10 @@ class TitleValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_title(title, plugin_title=False):
+        if not isinstance(title, str):
+            raise ValidationException("Title must not be blank")
+        if title == "":
+            raise ValidationException("Title must not be blank")
         if title.endswith("."):
             raise ValidationException("Title ends with period when it should not.")
         if title[0].islower() and not plugin_title:
@@ -17,24 +21,23 @@ class TitleValidator(KomandPluginValidator):
         if len(title.split()) > 7:
             raise ValidationException(f"Title is too long, 6 words or less: contains {str(len(title.split()))}")
         for word in title.split():
-            # TODO update to match workflow title validator, which has more complete validation for titles
             if not title.startswith(word):
-                if "The" == word:
-                    raise ValidationException("Title contains a capitalized 'The' when it should not.")
-                if "By" == word and not title.endswith("By"):
+                # TODO I want to pull from a list file rather than having to update this list in 3 areas every time we need a change
+                word_list = ["The", "From", "A", "An", "And", "Is", "But", "For",
+                             "Nor", "Or", "So", "Of", "To", "On", "At", "As"]
+                if word in word_list:
+                    raise ValidationException(f"Title contains a capitalized '{word}' when it should not.")
+                elif "By" == word and not title.endswith("By"):
                     # This is OK: Order By
                     # This is NOT OK: Search By String
                     raise ValidationException("Title contains a capitalized 'By' when it should not.")
-                if "From" == word:
-                    raise ValidationException("Title contains a capitalized 'From' when it should not.")
-                if "A" == word:
-                    raise ValidationException("Title contains a capitalized 'A' when it should not.")
-                if "An" == word:
-                    raise ValidationException("Title contains a capitalized 'An' when it should not.")
-                if "Of" == word and not title.endswith("Of"):
+                elif "Of" == word and not title.endswith("Of"):
                     # This is OK: Member Of
                     # This is NOT OK: Type Of String
                     raise ValidationException("Title contains a capitalized 'Of' when it should not.")
+                elif not word[0].isupper() and not word.capitalize() in word_list:
+                    if not word.lower() == "by" or word.lower() == "of":
+                        raise ValidationException(f"Title contains a lowercase '{word}' when it should not.")
 
     @staticmethod
     def validate_actions(dict_, dict_key):
