@@ -83,7 +83,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
         for k, v in output_content.items():
             name_ = k
             type_ = output_content.get(k).get("type")
-            required = output_content.get(k).get("required")
+            required = output_content.get(k).get("required", False)
             description = output_content.get(k).get("description")
             action_output.append(f"|{name_}|{type_}|{required}|{description}|")
         return action_output

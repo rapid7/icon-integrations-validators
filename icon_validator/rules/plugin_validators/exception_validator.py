@@ -57,4 +57,4 @@ class ExceptionValidator(KomandPluginValidator):
                 line_numbers = violation_content[1].split(",")
 
                 for line_number in line_numbers:
-                    print(f"{YELLOW}violation: {file_name}: line, {line_number}")
+                    print(f"{YELLOW}violation: {file_name}: line, {line_number}{RESET_ALL}")

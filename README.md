@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.14.0 - Fix issue where InputOutput validator would fail when missing required key
 * 2.13.0 - Add screenshot validator
 * 2.12.0 - Add validator to check that .icon filenames do not contain spaces
 * 2.11.0 - Add PNG Hash validator
