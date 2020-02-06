@@ -2,6 +2,7 @@ from icon_plugin_spec.plugin_spec import KomandPluginSpec
 
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
+from icon_validator.styling import *
 
 
 class RequiredKeysValidator(KomandPluginValidator):
@@ -67,7 +68,7 @@ class RequiredKeysValidator(KomandPluginValidator):
 
     @staticmethod
     def raise_exception(key: str, msg: str):
-        raise ValidationException(f"Plugin spec has missing or invalid value for key '{key}': {msg}")
+        raise ValidationException(f"{YELLOW}Plugin spec has missing or invalid value for key '{key}': {msg}{RESET_ALL}")
 
     def validate(self, spec: KomandPluginSpec):
         for required_key, message in self.missing_key_message.items():
