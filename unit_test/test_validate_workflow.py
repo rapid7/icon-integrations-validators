@@ -15,15 +15,6 @@ from icon_validator.rules.workflow_validators.workflow_icon_filename_validator i
 from icon_validator.rules.workflow_validators.workflow_screenshot_validator import WorkflowScreenshotValidator
 
 
-class TestPluginValidate(unittest.TestCase):
-
-    def test_plugin_validate(self):
-        # example workflow in plugin_examples directory. Run tests with these files
-        directory_to_test = "plugin_examples"
-        file_to_test = "plugin.spec.yaml"
-        validate(directory_to_test, file_to_test, False, True)
-
-
 class TestWorkflowValidate(unittest.TestCase):
 
     def test_good_workflow_validator(self):
