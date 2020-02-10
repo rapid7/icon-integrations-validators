@@ -15,7 +15,7 @@ class WorkflowExtensionValidator(KomandPluginValidator):
     @staticmethod
     def validate_extension_exists(spec):
         """
-        hecks that the extension key in .yaml exists.
+        Checks that the extension key in .yaml exists.
         """
         if "extension" not in spec.spec_dictionary():
             raise ValidationException("Workflow extension key is missing.")
