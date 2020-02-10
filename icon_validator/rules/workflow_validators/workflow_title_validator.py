@@ -31,7 +31,7 @@ class WorkflowTitleValidator(KomandPluginValidator):
         if title[0].isspace():
             raise ValidationException("Title should not start with a whitespace character.")
         if len(title.split()) > 7:
-            raise ValidationException(f"Title is too long, 6 words or less: contains {str(len(title.split()))}")
+            raise ValidationException(f"Title is too long, 6 words or less: contains {title.count(" ")}")
         for word in title.split():
             if not title.startswith(word):
                 # TODO I want to pull from a list file rather than having to update this list in 3 areas every time we need a change
