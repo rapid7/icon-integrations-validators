@@ -7,9 +7,9 @@ class WorkflowTitleValidator(KomandPluginValidator):
     def validate(self, spec):
         """
         Checks that title is not blank.
-        Checks that title dose not end with a period.
-        Checks that title dose not start with a lower case letter.
-        Checks that title dose not start with a space.
+        Checks that title does not end with a period.
+        Checks that title does not start with a lower case letter.
+        Checks that title does not start with a space.
         Checks that title is 6 words or less.
         Checks that title is properly capitalized.
         """
@@ -31,7 +31,7 @@ class WorkflowTitleValidator(KomandPluginValidator):
         if title[0].isspace():
             raise ValidationException("Title should not start with a whitespace character.")
         if len(title.split()) > 7:
-            raise ValidationException(f"Title is too long, 6 words or less: contains {title.count(" ")}")
+            raise ValidationException(f"Title is too long, 6 words or less: contains {title.count(' ')}")
         for word in title.split():
             if not title.startswith(word):
                 # TODO I want to pull from a list file rather than having to update this list in 3 areas every time we need a change

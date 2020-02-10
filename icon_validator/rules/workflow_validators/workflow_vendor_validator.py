@@ -9,8 +9,8 @@ class WorkflowVendorValidator(KomandPluginValidator):
         """
         Check that vendor is not komand.
         Check that vendor does not end with a period.
-        Check that vendor dose not start with a capital letter.
-        Check that vendor dose not contain spaces.
+        Check that vendor does not start with a capital letter.
+        Check that vendor does not contain spaces.
         """
         lvendor = vendor.lower()
         if lvendor == "komand":

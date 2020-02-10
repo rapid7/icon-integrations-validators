@@ -8,9 +8,9 @@ class WorkflowSupportValidator(KomandPluginValidator):
     def validate_support(support):
         """
         Check that support is not komand.
-        Check that support dose not end with a .
-        Check that support dose not start with a capital letter.
-        Check that support dose not contain spaces.
+        Check that support does not end with a .
+        Check that support does not start with a capital letter.
+        Check that support does not contain spaces.
         """
         lsupport = support.lower()
         if lsupport == "komand":

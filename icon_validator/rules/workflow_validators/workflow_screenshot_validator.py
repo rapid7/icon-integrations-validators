@@ -15,9 +15,9 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
     def validate_title(title):
         """
         Checks that title is not blank.
-        Checks that title dose not end with a period.
-        Checks that title dose not start with a lower case letter.
-        Checks that title dose not start with a space.
+        Checks that title does not end with a period.
+        Checks that title does not start with a lower case letter.
+        Checks that title does not start with a space.
         Checks that title is 6 words or less.
         Checks that title is properly capitalized.
         """
