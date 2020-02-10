@@ -35,6 +35,14 @@ class TestPluginValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [TitleValidator()])
         self.assertTrue(result)
 
+    def test_plugin_with_false_for_required_on_output(self):
+        # TODO This validator is not correctly made: fix
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_no_required_key_in_output"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True)
+        self.assertTrue(result)
+
 
 class TestWorkflowValidate(unittest.TestCase):
 
