@@ -8,7 +8,7 @@ class WorkflowVendorValidator(KomandPluginValidator):
     def validate_vendor(vendor):
         """
         Check that vendor is not komand.
-        Check that vendor dose not end with a .
+        Check that vendor does not end with a period.
         Check that vendor dose not start with a capital letter.
         Check that vendor dose not contain spaces.
         """
