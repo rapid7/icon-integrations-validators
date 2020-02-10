@@ -77,7 +77,7 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
         try:
             screenshots = spec.spec_dictionary()["resources"]["screenshots"]
         except KeyError:
-            raise ValidationException("The screenshots key under the resources key dose not exist in the yaml."
+            raise ValidationException("The screenshots key under the resources key does not exist in the yaml."
                                       " please add this key.")
         if not isinstance(screenshots, list):
             raise ValidationException("There are no screenshots listed in the yaml."
