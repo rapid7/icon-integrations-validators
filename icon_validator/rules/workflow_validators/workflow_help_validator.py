@@ -8,7 +8,7 @@ class WorkflowHelpValidator(KomandPluginValidator):
     def validate_help_exists(spec):
         """
         Checks that 'help' is not in .yaml
-        In old code help was included in the yaml. It should no longer be their
+        In old code help was included in the yaml. It should no longer be there
         """
         if "help" in spec:
             raise ValidationException("Help section should exist in help.md and not in the workflow.spec.yaml file.")
