@@ -60,7 +60,7 @@ class WorkflowChangelogValidator(KomandPluginValidator):
     @staticmethod
     def validate_version_history_updated(versions_history, spec):
         """
-
+Checks that version history has been updated
         """
         violation = True
         spec_version = spec.spec_dictionary()["version"]
