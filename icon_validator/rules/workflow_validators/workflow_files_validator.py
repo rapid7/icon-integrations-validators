@@ -7,6 +7,9 @@ from icon_validator.exceptions import ValidationException
 class WorkflowFilesValidator(KomandPluginValidator):
 
     def validate(self, spec):
+        """
+        Checks that a help.md, extension.png, workflow.spec.yaml, and a .icon file exist
+        """
         d = spec.directory
 
         if not os.path.isfile(f"{d}/workflow.spec.yaml"):

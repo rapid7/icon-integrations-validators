@@ -6,6 +6,12 @@ class WorkflowSupportValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_support(support):
+        """
+        Check that support is not komand.
+        Check that support does not end with a .
+        Check that support does not start with a capital letter.
+        Check that support does not contain spaces.
+        """
         lsupport = support.lower()
         if lsupport == "komand":
             raise ValidationException("Support 'komand' not allowed. It's likely you meant 'rapid7'.")
@@ -18,7 +24,10 @@ class WorkflowSupportValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_support_quotes(spec):
-        """Requires raw spec to see the quotes"""
+        """
+        Check for quotes around the support.
+        """
+        # Requires raw spec to see the quotes
         for line in spec.splitlines():
             if line.startswith("support:"):
                 val = line[line.find(" ") + 1:]
@@ -27,6 +36,10 @@ class WorkflowSupportValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_workflow_support(spec):
+        """
+        Check that support key exists.
+        Check that support is a string.
+        """
         if "support" not in spec.spec_dictionary():
             raise ValidationException("Plugin supporter is missing.")
         if not isinstance(spec.spec_dictionary()["support"], str):

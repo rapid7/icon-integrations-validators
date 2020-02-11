@@ -10,6 +10,10 @@ class WorkflowChangelogValidator(KomandPluginValidator):
 
     @staticmethod
     def get_versions(help_content):
+        """
+        Extracts the version history from help.md.
+        This data is used as input for the validaters.
+        """
         raw_versions = re.findall(r"Version History\n\n.*?\n\n", help_content, re.DOTALL)
         if not raw_versions:
             raise ValidationException("Incorrect Version History in help.md.")
@@ -19,6 +23,9 @@ class WorkflowChangelogValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_version_numbers(versions_history):
+        """
+        Checks that version history complies with semver format.
+        """
         violated = False
         violations = []
         for version in versions_history:
@@ -30,10 +37,15 @@ class WorkflowChangelogValidator(KomandPluginValidator):
                 violated = True
 
         if violated:
-            raise ValidationException(f"Incorrect version numbers specified in help.md: {YELLOW}{violations}.")
+            raise ValidationException(f"Incorrect version numbers specified in help.md: {YELLOW}{violations}."
+                                      " version numbers must be in semver format."
+                                      " See https://semver.org/ for more information.")
 
     @staticmethod
     def validate_order(versions_history):
+        """
+        Checks that version history is in descending order.
+        """
         versions = []
 
         for version in versions_history:
@@ -47,6 +59,9 @@ class WorkflowChangelogValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_version_history_updated(versions_history, spec):
+        """
+        Checks that version history has been updated
+        """
         violation = True
         spec_version = spec.spec_dictionary()["version"]
 

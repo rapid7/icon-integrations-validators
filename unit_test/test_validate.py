@@ -1,7 +1,10 @@
 import unittest
 from icon_validator.validate import validate
 
-# Import validators to pass to tests
+# Import plugin validators to pass to tests
+from icon_validator.rules.plugin_validators.title_validator import TitleValidator
+
+# Import workflow validators to pass to tests
 from icon_validator.rules.workflow_validators.workflow_profanity_validator import WorkflowProfanityValidator
 from icon_validator.rules.workflow_validators.workflow_vendor_validator import WorkflowVendorValidator
 from icon_validator.rules.workflow_validators.workflow_support_validator import WorkflowSupportValidator
@@ -13,6 +16,32 @@ from icon_validator.rules.workflow_validators.workflow_help_validator import Wor
 from icon_validator.rules.workflow_validators.workflow_png_hash_validator import WorkflowPNGHashValidator
 from icon_validator.rules.workflow_validators.workflow_icon_filename_validator import WorkflowICONFileNameValidator
 from icon_validator.rules.workflow_validators.workflow_screenshot_validator import WorkflowScreenshotValidator
+from icon_validator.rules.workflow_validators.workflow_title_validator import WorkflowTitleValidator
+
+
+class TestPluginValidate(unittest.TestCase):
+
+    def test_plugin_validate(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_test"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True)
+        self.assertFalse(result)
+
+    def test_title_validator(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/title_tests"
+        file_to_test = "plugin_no_title.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [TitleValidator()])
+        self.assertTrue(result)
+
+    def test_plugin_with_false_for_required_on_output(self):
+        # TODO This validator is not correctly made: fix
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_no_required_key_in_output"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True)
+        self.assertTrue(result)
 
 
 class TestWorkflowValidate(unittest.TestCase):
@@ -108,4 +137,17 @@ class TestWorkflowValidate(unittest.TestCase):
         self.assertTrue(result)
         file_to_test = "workflow_missing_title.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowScreenshotValidator()])
+        self.assertTrue(result)
+
+    def test_title_validator(self):
+        # Test bad workflows. This will test the workflow_title_validator
+        directory_to_test = "workflow_examples/title_tests"
+        file_to_test = "workflow_no_title.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()])
+        self.assertTrue(result)
+        file_to_test = "workflow_ends_with_period.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()])
+        self.assertTrue(result)
+        file_to_test = "workflow_bad_caps.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()])
         self.assertTrue(result)

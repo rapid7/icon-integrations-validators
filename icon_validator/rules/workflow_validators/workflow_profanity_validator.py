@@ -1,6 +1,7 @@
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
 
+# TODO This list needs to be updated and preferably linked to an outside source.
 bannedWords = ["anal", "anus", "arse", "ass", "ballsack", "balls", "bastard", "bitch", "biatch", "bloody", "blowjob",
                "blow job", "bollock", "bollok", "boner", "boob", "bugger", "bum", "butt", "buttplug", "clitoris",
                "cock", "coon", "crap", "cunt", "damn", "dick", "dildo", "dyke", "fag", "feck", "fellate", "fellatio",
@@ -14,6 +15,9 @@ class WorkflowProfanityValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_profanity(spec):
+        """
+        Check that yaml and help do not contain banned words.
+        """
         raw_spec = spec.raw_spec()
         spec_words = raw_spec.split()
 
