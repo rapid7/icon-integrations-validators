@@ -49,7 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
-* 2.16.0
+* 2.16.0 - Add workflow description validator
 * 2.15.0 - Fix issue in title validator, Add title validator for workflows, clean up requirements
 * 2.14.0 - Fix issue where InputOutput validator would fail when missing required key
 * 2.13.0 - Add screenshot validator
