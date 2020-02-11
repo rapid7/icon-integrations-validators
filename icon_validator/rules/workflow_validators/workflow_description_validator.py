@@ -7,16 +7,16 @@ class WorkflowDescriptionValidator(KomandPluginValidator):
     @staticmethod
     def validate_workflow_description_exists(spec):
         if "description" not in spec.spec_dictionary():
-            raise ValidationException("Plugin description is missing.")
+            raise ValidationException("Workflow description  in yaml is missing.")
 
         description = spec.spec_dictionary()["description"]
         if description == "":
-            raise ValidationException("Plugin description can not be blank")
+            raise ValidationException("Workflow description in yaml can not be blank")
 
     @staticmethod
     def validate_workflow_description_punctuation(description):
         if not description.endswith("."):
-            raise ValidationException("Description does not ends with a period when it should.")
+            raise ValidationException("Description does not end with a period when it should.")
         if description[0].islower():
             raise ValidationException("Description should not start with a lower case letter.")
         if description[0].isspace():
