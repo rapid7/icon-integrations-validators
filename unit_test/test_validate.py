@@ -17,6 +17,7 @@ from icon_validator.rules.workflow_validators.workflow_png_hash_validator import
 from icon_validator.rules.workflow_validators.workflow_icon_filename_validator import WorkflowICONFileNameValidator
 from icon_validator.rules.workflow_validators.workflow_screenshot_validator import WorkflowScreenshotValidator
 from icon_validator.rules.workflow_validators.workflow_title_validator import WorkflowTitleValidator
+from icon_validator.rules.workflow_validators.workflow_description_validator import WorkflowDescriptionValidator
 
 
 class TestPluginValidate(unittest.TestCase):
@@ -150,4 +151,23 @@ class TestWorkflowValidate(unittest.TestCase):
         self.assertTrue(result)
         file_to_test = "workflow_bad_caps.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()])
+        self.assertTrue(result)
+
+    def test_description_validator(self):
+        # Test bad workflows. This will test the workflow_description_validator
+        directory_to_test = "workflow_examples/description_tests"
+        file_to_test = "workflow_no_description.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowDescriptionValidator()])
+        self.assertTrue(result)
+        file_to_test = "workflow_no_period.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowDescriptionValidator()])
+        self.assertTrue(result)
+        file_to_test = "workflow_whitespace.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowDescriptionValidator()])
+        self.assertTrue(result)
+        file_to_test = "workflow_blank_description.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowDescriptionValidator()])
+        self.assertTrue(result)
+        file_to_test = "workflow_lower_case.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowDescriptionValidator()])
         self.assertTrue(result)
