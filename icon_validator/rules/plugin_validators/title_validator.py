@@ -1,5 +1,7 @@
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
+from os import path
+from json import load
 
 
 class TitleValidator(KomandPluginValidator):
