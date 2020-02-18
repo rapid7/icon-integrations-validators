@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.16.1 - Fix profanity filters and title filters to pull from once place
 * 2.16.0 - Add workflow description validator
 * 2.15.0 - Fix issue in title validator, Add title validator for workflows, clean up requirements
 * 2.14.0 - Fix issue where InputOutput validator would fail when missing required key

@@ -7,7 +7,7 @@ class WorkflowDescriptionValidator(KomandPluginValidator):
     @staticmethod
     def validate_workflow_description_exists(spec):
         if "description" not in spec.spec_dictionary():
-            raise ValidationException("Workflow description  in yaml is missing.")
+            raise ValidationException("Workflow description in yaml is missing.")
 
         description = spec.spec_dictionary()["description"]
         if description == "":
