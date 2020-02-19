@@ -28,7 +28,8 @@ class TitleValidator(KomandPluginValidator):
                 word_list = ["The", "From", "A", "An", "And", "Is", "But", "For",
                              "Nor", "Or", "So", "Of", "To", "On", "At", "As"]
                 if word in word_list:
-                    raise ValidationException(f"Title contains a capitalized '{word}' when it should not.")
+                    if not title.endswith(word):
+                        raise ValidationException(f"Title contains a capitalized '{word}' when it should not.")
                 elif "By" == word and not title.endswith("By"):
                     # This is OK: Order By
                     # This is NOT OK: Search By String
@@ -39,7 +40,8 @@ class TitleValidator(KomandPluginValidator):
                     raise ValidationException("Title contains a capitalized 'Of' when it should not.")
                 elif not word[0].isupper() and not word.capitalize() in word_list:
                     if not word.lower() == "by" or word.lower() == "of":
-                        raise ValidationException(f"Title contains a lowercase '{word}' when it should not.")
+                        if word.isalpha():
+                            raise ValidationException(f"Title contains a lowercase '{word}' when it should not.")
 
     @staticmethod
     def validate_actions(dict_, dict_key):
