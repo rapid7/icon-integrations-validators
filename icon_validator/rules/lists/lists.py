@@ -1,4 +1,23 @@
-[
+title_validation_list = [
+  "The",
+  "From",
+  "A",
+  "An",
+  "And",
+  "Is",
+  "But",
+  "For",
+  "Nor",
+  "Or",
+  "So",
+  "Of",
+  "To",
+  "On",
+  "At",
+  "As"
+]
+
+profanity_list = [
   "2 girls 1 cup",
   "2g1c",
   "4r5e",

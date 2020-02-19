@@ -1,17 +1,9 @@
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
-from os import path
-from json import load
+from icon_validator.rules.lists.lists import title_validation_list
 
 
 class WorkflowTitleValidator(KomandPluginValidator):
-
-    def __init__(self):
-        super().__init__()
-        # Build a path to the profanity_list.json file
-        with open(path.realpath(path.join(path.dirname(__file__), '..'))
-                  + "/lists/title_validation_list.json", "r") as file:
-            self.word_list = load(file)
 
     def validate(self, spec):
         """
@@ -43,7 +35,7 @@ class WorkflowTitleValidator(KomandPluginValidator):
             raise ValidationException(f"Title is too long, 6 words or less: contains {title.count(' ')}")
         for word in title.split():
             if not title.startswith(word):
-                if word in self.word_list:
+                if word in title_validation_list:
                     raise ValidationException(f"Title contains a capitalized '{word}' when it should not.")
                 elif "By" == word and not title.endswith("By"):
                     # This is OK: Order By
@@ -53,6 +45,6 @@ class WorkflowTitleValidator(KomandPluginValidator):
                     # This is OK: Member Of
                     # This is NOT OK: Type Of String
                     raise ValidationException("Title contains a capitalized 'Of' when it should not.")
-                elif not word[0].isupper() and not word.capitalize() in self.word_list:
+                elif not word[0].isupper() and not word.capitalize() in title_validation_list:
                     if not word.lower() == "by" or word.lower() == "of":
                         raise ValidationException(f"Title contains a lowercase '{word}' when it should not.")
