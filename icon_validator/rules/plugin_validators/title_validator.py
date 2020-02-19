@@ -6,8 +6,14 @@ from json import load
 
 class TitleValidator(KomandPluginValidator):
 
-    @staticmethod
-    def validate_title(title, plugin_title=False):
+    def __init__(self):
+        super().__init__()
+        # Build a path to the profanity_list.json file
+        with open(path.realpath(path.join(path.dirname(__file__), '..'))
+                  + "/lists/title_validation_list.json", "r") as file:
+            self.word_list = load(file)
+
+    def validate_title(self, title, plugin_title=False):
         if not isinstance(title, str):
             raise ValidationException("Title must not be blank")
         if title == "":
@@ -24,10 +30,7 @@ class TitleValidator(KomandPluginValidator):
             raise ValidationException(f"Title is too long, 6 words or less: contains {str(len(title.split()))}")
         for word in title.split():
             if not title.startswith(word):
-                # TODO I want to pull from a list file rather than having to update this list in 3 areas every time we need a change
-                word_list = ["The", "From", "A", "An", "And", "Is", "But", "For",
-                             "Nor", "Or", "So", "Of", "To", "On", "At", "As"]
-                if word in word_list:
+                if word in self.word_list:
                     raise ValidationException(f"Title contains a capitalized '{word}' when it should not.")
                 elif "By" == word and not title.endswith("By"):
                     # This is OK: Order By
@@ -37,22 +40,20 @@ class TitleValidator(KomandPluginValidator):
                     # This is OK: Member Of
                     # This is NOT OK: Type Of String
                     raise ValidationException("Title contains a capitalized 'Of' when it should not.")
-                elif not word[0].isupper() and not word.capitalize() in word_list:
+                elif not word[0].isupper() and not word.capitalize() in self.word_list:
                     if not word.lower() == "by" or word.lower() == "of":
                         raise ValidationException(f"Title contains a lowercase '{word}' when it should not.")
 
-    @staticmethod
-    def validate_actions(dict_, dict_key):
+    def validate_actions(self, dict_, dict_key):
         if dict_key in dict_:
-            TitleValidator.validate_dictionary(dict_, dict_key)
+            self.validate_dictionary(dict_, dict_key)
             for key, value in dict_[dict_key].items():
                 if "input" in value:
-                    TitleValidator.validate_dictionary(value, "input")
+                    self.validate_dictionary(value, "input")
                 if "output" in value:
-                    TitleValidator.validate_dictionary(value, "output")
+                    self.validate_dictionary(value, "output")
 
-    @staticmethod
-    def validate_dictionary(dict_, dict_key):
+    def validate_dictionary(self, dict_, dict_key):
         if dict_key in dict_:
             if not dict_[dict_key]:
                 return
@@ -62,22 +63,21 @@ class TitleValidator(KomandPluginValidator):
                     raise ValidationException(f"Deprecated 'name' key '{value}' found when 'title' should be used instead.")
                 if "title" in value:
                     try:
-                        TitleValidator.validate_title(value["title"], plugin_title=False)
+                        self.validate_title(value["title"], plugin_title=False)
                     except Exception as e:
                         raise ValidationException(f"{dict_key} key '{key}'\'s title ends with period when it should not.", e)
 
-    @staticmethod
-    def validate_plugin_title(spec):
+    def validate_plugin_title(self, spec):
         if "title" not in spec.spec_dictionary():
             raise ValidationException("Plugin title is missing.")
 
         try:
-            TitleValidator.validate_title(spec.spec_dictionary()["title"], plugin_title=True)
+            self.validate_title(spec.spec_dictionary()["title"], plugin_title=True)
         except Exception as e:
             raise ValidationException("Plugin title not valid.", e)
 
     def validate(self, spec):
-        TitleValidator.validate_plugin_title(spec)
-        TitleValidator.validate_actions(spec.spec_dictionary(), "actions")
-        TitleValidator.validate_actions(spec.spec_dictionary(), "triggers")
-        TitleValidator.validate_actions(spec.spec_dictionary(), "connection")
+        self.validate_plugin_title(spec)
+        self.validate_actions(spec.spec_dictionary(), "actions")
+        self.validate_actions(spec.spec_dictionary(), "triggers")
+        self.validate_actions(spec.spec_dictionary(), "connection")

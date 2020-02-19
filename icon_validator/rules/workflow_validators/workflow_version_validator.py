@@ -36,9 +36,9 @@ class WorkflowVersionValidator(KomandPluginValidator):
         Check that version is a string.
         """
         if "version" not in spec.spec_dictionary():
-            raise ValidationException("Plugin version is missing.")
+            raise ValidationException("Workflow version is missing.")
         if not isinstance(spec.spec_dictionary()["version"], str):
-            raise ValidationException("Plugin version does not contain a string.")
+            raise ValidationException("Workflow version does not contain a string.")
 
     def validate(self, spec):
         WorkflowVersionValidator.validate_workflow_version(spec)
