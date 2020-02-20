@@ -181,9 +181,9 @@ class TestWorkflowValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowDescriptionValidator()])
         self.assertTrue(result)
 
-    def test_icon_filename_validator(self):
+    def test_name_validator(self):
         # Test bad workflows. This will test the workflow_icon_filename_validator
         directory_to_test = "workflow_examples/name_tests"
-        file_to_test = "workflow_ban_name.spec.yaml"
+        file_to_test = "workflow_bad_name.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowNameValidator()])
         self.assertTrue(result)
