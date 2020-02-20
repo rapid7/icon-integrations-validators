@@ -558,7 +558,6 @@ profanity_list = [
   "crapola",
   "crapper",
   "crappy",
-  "crash",
   "creampie",
   "crotch",
   "crotchjockey",
