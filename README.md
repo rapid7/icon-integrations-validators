@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.16.2 - Fix title validator where it would fail on titles with numbers in it.
 * 2.16.1 - Fix profanity filters and title filters to pull from once place
 * 2.16.0 - Add workflow description validator
 * 2.15.0 - Fix issue in title validator, Add title validator for workflows, clean up requirements
