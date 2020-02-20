@@ -1,4 +1,4 @@
-name: Python Linting
+name: Unit testing
 
 on: [push]
 
