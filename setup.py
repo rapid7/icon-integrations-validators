@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setup(name="insightconnect_integrations_validators",
-      version="2.16.2",
+      version="2.17.0",
       description="Validator tooling for InsightConnect integrations",
       long_description=long_description,
       long_description_content_type="text/markdown",
@@ -14,8 +14,6 @@ setup(name="insightconnect_integrations_validators",
       author_email="integrationalliance@rapid7.com",
       url="https://github.com/rapid7/icon-integrations-validators",
       packages=find_packages(),
-      data_files=[('icon_validator', ['icon_validator/rules/lists/profanity_list.json',
-                                      'icon_validator/rules/lists/title_validation_list.json'])],
       install_requires=["jsonschema==2.3.0",
                         "validators==0.14.2",
                         "filetype==1.0.5",

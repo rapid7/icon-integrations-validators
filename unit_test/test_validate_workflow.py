@@ -15,6 +15,7 @@ from icon_validator.rules.workflow_validators.workflow_icon_filename_validator i
 from icon_validator.rules.workflow_validators.workflow_screenshot_validator import WorkflowScreenshotValidator
 from icon_validator.rules.workflow_validators.workflow_title_validator import WorkflowTitleValidator
 from icon_validator.rules.workflow_validators.workflow_description_validator import WorkflowDescriptionValidator
+from icon_validator.rules.workflow_validators.workflow_name_validator import WorkflowNameValidator
 
 class TestWorkflowValidate(unittest.TestCase):
 
@@ -141,4 +142,11 @@ class TestWorkflowValidate(unittest.TestCase):
         self.assertTrue(result)
         file_to_test = "workflow_lower_case.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowDescriptionValidator()])
+        self.assertTrue(result)
+
+    def test_name_validator(self):
+        # Test bad workflows. This will test the workflow_icon_filename_validator
+        directory_to_test = "workflow_examples/name_tests"
+        file_to_test = "workflow_bad_name.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowNameValidator()])
         self.assertTrue(result)

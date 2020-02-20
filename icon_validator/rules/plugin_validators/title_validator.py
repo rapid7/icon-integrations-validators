@@ -1,7 +1,6 @@
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
-from os import path
-from json import load
+from icon_validator.rules.lists.lists import title_validation_list
 
 
 class TitleValidator(KomandPluginValidator):
@@ -24,12 +23,10 @@ class TitleValidator(KomandPluginValidator):
             raise ValidationException(f"Title is too long, 6 words or less: contains {str(len(title.split()))}")
         for word in title.split():
             if not title.startswith(word):
-                # TODO I want to pull from a list file rather than having to update this list in 3 areas every time we need a change
-                word_list = ["The", "From", "A", "An", "And", "Is", "But", "For",
-                             "Nor", "Or", "So", "Of", "To", "On", "At", "As"]
-                if word in word_list:
+                if word in title_validation_list:
                     if not title.endswith(word):
                         raise ValidationException(f"Title contains a capitalized '{word}' when it should not.")
+
                 elif "By" == word and not title.endswith("By"):
                     # This is OK: Order By
                     # This is NOT OK: Search By String
@@ -38,7 +35,7 @@ class TitleValidator(KomandPluginValidator):
                     # This is OK: Member Of
                     # This is NOT OK: Type Of String
                     raise ValidationException("Title contains a capitalized 'Of' when it should not.")
-                elif not word[0].isupper() and not word.capitalize() in word_list:
+                elif not word[0].isupper() and not word.capitalize() in title_validation_list:
                     if not word.lower() == "by" or word.lower() == "of":
                         if word.isalpha():
                             raise ValidationException(f"Title contains a lowercase '{word}' when it should not.")
