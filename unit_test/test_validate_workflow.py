@@ -17,6 +17,7 @@ from icon_validator.rules.workflow_validators.workflow_title_validator import Wo
 from icon_validator.rules.workflow_validators.workflow_description_validator import WorkflowDescriptionValidator
 from icon_validator.rules.workflow_validators.workflow_name_validator import WorkflowNameValidator
 
+
 class TestWorkflowValidate(unittest.TestCase):
 
     def test_good_workflow_validator(self):

@@ -1,0 +1,22 @@
+name: Unit testing
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Run Unit tests
+      run: |
+        pip install .
+        pip install pytest
+        cd unit_test
+        pytest test_validate_workflow.py
+        pytest test_validate_plugin.py
