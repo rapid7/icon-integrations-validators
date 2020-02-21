@@ -17,4 +17,4 @@ jobs:
       run: |
         pip install .
         cd unit_test
-        python unit_test/test_validate_workflow.py
+        python test_validate_workflow.py
