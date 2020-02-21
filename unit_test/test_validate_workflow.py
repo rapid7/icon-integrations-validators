@@ -151,7 +151,3 @@ class TestWorkflowValidate(unittest.TestCase):
         file_to_test = "workflow_bad_name.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowNameValidator()])
         self.assertTrue(result)
-
-
-if __name__ == '__main__':
-    unittest.main()
