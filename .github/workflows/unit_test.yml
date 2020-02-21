@@ -16,5 +16,5 @@ jobs:
     - name: Run Unit tests
       run: |
         pip install .
-        ls
+        cd unit_test
         python unit_test/test_validate_workflow.py
