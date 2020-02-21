@@ -15,5 +15,4 @@ jobs:
         python-version: 3.8
     - name: Run Unit tests
       run: |
-        pip install .
         python unit_test/test_validate_workflow.py
