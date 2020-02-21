@@ -19,3 +19,4 @@ jobs:
         pip install pytest
         cd unit_test
         pytest test_validate_workflow.py
+        pytest test_validate_plugin.py
