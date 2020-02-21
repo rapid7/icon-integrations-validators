@@ -43,3 +43,7 @@ class TestPluginValidate(unittest.TestCase):
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True)
         self.assertTrue(result)
+
+
+if __name__ == '__main__':
+    unittest.main()
