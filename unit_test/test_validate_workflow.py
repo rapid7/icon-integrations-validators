@@ -154,7 +154,7 @@ class TestWorkflowValidate(unittest.TestCase):
         self.assertTrue(result)
 
     def test_icon_validator(self):
-        directory_to_test = "workflow_examples/name_tests"
-        file_to_test = "workflow_bad_name.spec.yaml"
+        directory_to_test = "workflow_examples/icon_file_tests"
+        file_to_test = "workflow_bad_icon_file.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowICONFileValidator()])
         self.assertTrue(result)
