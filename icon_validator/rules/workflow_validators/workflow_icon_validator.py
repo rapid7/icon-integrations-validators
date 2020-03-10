@@ -10,7 +10,7 @@ class WorkflowICONFileValidator(KomandPluginValidator):
     @staticmethod
     def validate_workflow_versions_steps(step, value):
         try:
-            if value["nodeId"] is None or value["nodeId"] == "" or value["nodeId"] != step:
+            if value["nodeId"] != step:
                 raise ValidationException(
                     f"The nodeId key in {step} is not defined. Try exporting the .icon file again")
         except KeyError:
