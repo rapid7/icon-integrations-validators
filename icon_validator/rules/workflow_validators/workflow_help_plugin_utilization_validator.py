@@ -29,12 +29,16 @@ class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
         try:
             for step in plugins["steps"]:
                 if "plugin" in plugins["steps"][step].keys():
+                    # The plugin_list must have a len of 1 or more for the rest of the code to work,
+                    # so the first item is just added
                     if len(plugin_list):
                         for index, d in enumerate(plugin_list):
+                            # Check if the Plugin + Version number are already in the list. If so add 1 to Count
                             if d["Plugin"] == plugins["steps"][step]["plugin"]["name"] and d["Version"] == \
                                     plugins["steps"][step]["plugin"]["slugVersion"]:
                                 plugin_list[index]["Count"] = plugin_list[index]["Count"] + 1
-
+                            # This was to check that the plugin was not in the list.
+                            # I don't think it's needed anymore but it works and I'm too scared to change it
                             elif not any(d["Plugin"] == plugins["steps"][step]["plugin"]["name"] for d in
                                          plugin_list) or not any(
                                     d["Version"] == plugins["steps"][step]["plugin"]["slugVersion"] for d in
@@ -42,6 +46,8 @@ class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
                                 plugin_list.append({"Plugin": plugins["steps"][step]["plugin"]["name"],
                                                     "Version": plugins["steps"][step]["plugin"]["slugVersion"],
                                                     "Count": 1})
+                                # When a new plugin is added plugin_list's len goes up by one. This messes up this loop,
+                                # so a break is here to stop that
                                 break
                     else:
                         plugin_list.append({"Plugin": plugins["steps"][step]["plugin"]["name"],
@@ -51,15 +57,23 @@ class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
         return plugin_list
 
     @staticmethod
-    def extract_plugins_in_help(help_str):
+    def extract_plugins_in_help(help_str: str) -> list:
+        """
+        Takes the help.md file as a string and extracts plugin version and count as a list of dictionaries
+        """
+        # regex to isolate the plugin utilization table
         regex = r"\|Plugin\|Version\|Count\|.*?#"
 
         plugins_utilized = re.findall(regex, help_str, re.DOTALL)
+        # Split each line into a sub string
         plugins_list = plugins_utilized[0].split("\n")
+        # remove trailing and leading lines so that only plugin utilization data is left
         plugins_list = list(
             filter(lambda item: item.startswith("|") and not (item.startswith("|P") or item.startswith("|-")),
                    plugins_list))
         plugins_dict_list = list()
+        # Build dictionary for each plugin e.g. {'Plugin': 'ExtractIt', 'Version': '1.1.6', 'Count': 1}
+        # then append to a list
         for plugin in plugins_list:
             temp = plugin.split("|")
             plugins_dict_list.append({"Plugin": temp[1], "Version": temp[2], "Count": int(temp[3])})
