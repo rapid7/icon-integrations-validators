@@ -9,7 +9,7 @@ import re
 class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
 
     @staticmethod
-    def extract_plugins_used(spec):
+    def extract_plugins_used(spec: object) -> list:
         value = spec.directory
         data = dict()
         for file_name in os.listdir(value):
