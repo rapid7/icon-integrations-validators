@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.19.0 - Add plugin utilization validator
 * 2.18.0 - Add .icon file validator
 * 2.17.2 - Fix to remove some common words from the profanity validator
 * 2.17.1 - Fix broken package import
