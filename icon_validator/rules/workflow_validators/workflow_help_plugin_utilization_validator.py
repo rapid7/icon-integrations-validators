@@ -9,7 +9,7 @@ import re
 class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
 
     @staticmethod
-    def extract_plugins_used(spec: object) -> list:
+    def extract_plugins_used(spec) -> list:
         value = spec.directory
         data = dict()
         for file_name in os.listdir(value):
@@ -69,7 +69,7 @@ class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
         plugins_list = plugins_utilized[0].split("\n")
         # remove trailing and leading lines so that only plugin utilization data is left
         plugins_list = list(
-            filter(lambda item: item.startswith("|") and not (item.startswith("|P") or item.startswith("|-")),
+            filter(lambda item: item.startswith("|") and not (item.startswith("|Plugin") or item.startswith("|-")),
                    plugins_list))
         plugins_dict_list = list()
         # Build dictionary for each plugin e.g. {'Plugin': 'ExtractIt', 'Version': '1.1.6', 'Count': 1}
