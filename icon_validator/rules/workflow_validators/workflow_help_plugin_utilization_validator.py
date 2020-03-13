@@ -1,54 +1,94 @@
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
+from icon_plugin_spec.plugin_spec import KomandPluginSpec
 
 import os
 import json
 import re
 
 
+class _Plugin(object):
+
+    def __init__(self, name: str, version: str):
+        self.name = name
+        self.version = version
+
+    def __eq__(self, other):
+        return (self.name == other.name) and (self.version == other.version)
+
+    def __hash__(self):
+        return hash((self.name, self.version))
+
+
 class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
 
     @staticmethod
-    def extract_plugins_used(spec) -> list:
-        value = spec.directory
-        data = dict()
-        for file_name in os.listdir(value):
-            if file_name.endswith(".icon"):
-                with open(f"{value}/{file_name}") as json_file:
-                    try:
-                        data = json.load(json_file)
-                    except json.JSONDecodeError:
-                        raise ValidationException(
-                            "The .icon file is not in JSON format. Try exporting the .icon file again")
+    def load_workflow_file(spec: KomandPluginSpec) -> dict:
+        """
+        Load a workflow file as KomandPluginSpec into a dictionary
+        :param spec: .icon workflow
+        :return: Workflow spec as a dictionary
+        """
+        workflow_directory = spec.directory
+
+        for file_name in os.listdir(workflow_directory):
+            if not (file_name.endswith(".icon") and os.path.isfile(file_name)):
+                continue
+
+            with open(f"{workflow_directory}/{file_name}") as json_file:
+                try:
+                    workflow_file = json.load(json_file)
+                except json.JSONDecodeError:
+                    raise ValidationException(
+                        "The .icon file is not in JSON format. Try exporting the .icon file again")
+
+                return workflow_file
+
+    @staticmethod
+    def extract_workflow(workflow_file: dict) -> dict:
+        """
+        Returns a workflow with metadata and step information
+        :param workflow_file: Dictionary containing workflow information
+        :return: Workflow metadata and step information as a dict
+        """
         try:
-            plugins = data["kom"]["workflowVersions"][0]
+            workflow = workflow_file["kom"]["workflowVersions"][0]
         except KeyError:
             raise ValidationException("The .icon file is not formatted correctly. Try exporting the .icon file again")
 
+        return workflow
+
+    @staticmethod
+    def extract_plugins_used(workflow_file: dict) -> [dict]:
+        workflow = WorkflowHelpPluginUtilizationValidator.extract_workflow(workflow_file=workflow_file)
+
+        # Raw list of plugins
         plugin_list = list()
         try:
-            for step in plugins["steps"]:
-                if "plugin" in plugins["steps"][step].keys():
-                    plugin_name = plugins["steps"][step]["plugin"]["name"]
-                    plugin_version = plugins["steps"][step]["plugin"]["slugVersion"]
-                    # The plugin_list must have a len of 1 or more for the rest of the code to work,
-                    # so the first item is just added
-                    if len(plugin_list):
-                        for index, d in enumerate(plugin_list):
-                            # Check if the Plugin + Version number are already in the list. If so add 1 to Count
-                            if d["Plugin"] == plugin_name and d["Version"] == plugin_version:
-                                plugin_list[index]["Count"] = plugin_list[index]["Count"] + 1
+            for step_id in workflow["steps"]:
+                step: dict = workflow["steps"][step_id]
 
-                            else:
-                                plugin_list.append({"Plugin": plugin_name, "Version": plugin_version, "Count": 1})
-                                # When a new plugin is added plugin_list's len goes up by one. This messes up this loop,
-                                # so a break is here to stop that
-                                break
-                    else:
-                        plugin_list.append({"Plugin": plugin_name, "Version": plugin_version, "Count": 1})
+                # We only care about plugin steps, so continue if it is not
+                if "plugin" not in step.keys():
+                    continue
+
+                plugin_name = step["plugin"]["name"]
+                plugin_version = step["plugin"]["slugVersion"]
+
+                plugin = _Plugin(name=plugin_name, version=plugin_version)
+                plugin_list.append(plugin)
+
+            # Once the loop is done, count unique items
+            plugins_and_counts = []
+
+            for plugin in set(plugin_list):
+                count = plugin_list.count(plugin)
+                plugins_and_counts.append({**plugin.__dict__, "count": count})
+
+            return plugins_and_counts
+
         except KeyError:
             raise ValidationException("The .icon file is not formatted correctly. Try exporting the .icon file again")
-        return plugin_list
 
     @staticmethod
     def extract_plugins_in_help(help_str: str) -> list:
