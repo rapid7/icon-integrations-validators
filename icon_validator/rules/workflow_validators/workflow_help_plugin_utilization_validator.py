@@ -10,14 +10,14 @@ import re
 class _Plugin(object):
 
     def __init__(self, name: str, version: str):
-        self.name = name
+        self.plugin = name
         self.version = version
 
     def __eq__(self, other):
-        return (self.name == other.name) and (self.version == other.version)
+        return (self.plugin == other.plugin) and (self.version == other.version)
 
     def __hash__(self):
-        return hash((self.name, self.version))
+        return hash((self.plugin, self.version))
 
 
 class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
@@ -32,7 +32,7 @@ class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
         workflow_directory = spec.directory
 
         for file_name in os.listdir(workflow_directory):
-            if not (file_name.endswith(".icon") and os.path.isfile(file_name)):
+            if not (file_name.endswith(".icon")):
                 continue
 
             with open(f"{workflow_directory}/{file_name}") as json_file:
@@ -42,7 +42,7 @@ class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
                     raise ValidationException(
                         "The .icon file is not in JSON format. Try exporting the .icon file again")
 
-                return workflow_file
+            return workflow_file
 
     @staticmethod
     def extract_workflow(workflow_file: dict) -> dict:
@@ -59,8 +59,7 @@ class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
         return workflow
 
     @staticmethod
-    def extract_plugins_used(workflow_file: dict) -> [dict]:
-        workflow = WorkflowHelpPluginUtilizationValidator.extract_workflow(workflow_file=workflow_file)
+    def extract_plugins_used(workflow: dict) -> [dict]:
 
         # Raw list of plugins
         plugin_list = list()
@@ -110,11 +109,13 @@ class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
         # then append to a list
         for plugin in plugins_list:
             temp = plugin.split("|")
-            plugins_dict_list.append({"Plugin": temp[1], "Version": temp[2], "Count": int(temp[3])})
+            plugins_dict_list.append({"plugin": temp[1], "version": temp[2], "count": int(temp[3])})
         return plugins_dict_list
 
     def validate(self, spec):
-        plugins_used = WorkflowHelpPluginUtilizationValidator.extract_plugins_used(spec)
+        workflow_file = WorkflowHelpPluginUtilizationValidator.load_workflow_file(spec)
+        workflow = WorkflowHelpPluginUtilizationValidator.extract_workflow(workflow_file)
+        plugins_used = WorkflowHelpPluginUtilizationValidator.extract_plugins_used(workflow)
         plugin_in_help = WorkflowHelpPluginUtilizationValidator.extract_plugins_in_help(spec.raw_help())
         for plugin in plugins_used:
             if plugin not in plugin_in_help:
