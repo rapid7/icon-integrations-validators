@@ -29,29 +29,23 @@ class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
         try:
             for step in plugins["steps"]:
                 if "plugin" in plugins["steps"][step].keys():
+                    plugin_name = plugins["steps"][step]["plugin"]["name"]
+                    plugin_version = plugins["steps"][step]["plugin"]["slugVersion"]
                     # The plugin_list must have a len of 1 or more for the rest of the code to work,
                     # so the first item is just added
                     if len(plugin_list):
                         for index, d in enumerate(plugin_list):
                             # Check if the Plugin + Version number are already in the list. If so add 1 to Count
-                            if d["Plugin"] == plugins["steps"][step]["plugin"]["name"] and d["Version"] == \
-                                    plugins["steps"][step]["plugin"]["slugVersion"]:
+                            if d["Plugin"] == plugin_name and d["Version"] == plugin_version:
                                 plugin_list[index]["Count"] = plugin_list[index]["Count"] + 1
-                            # This was to check that the plugin was not in the list.
-                            # I don't think it's needed anymore but it works and I'm too scared to change it
-                            elif not any(d["Plugin"] == plugins["steps"][step]["plugin"]["name"] for d in
-                                         plugin_list) or not any(
-                                    d["Version"] == plugins["steps"][step]["plugin"]["slugVersion"] for d in
-                                    plugin_list):
-                                plugin_list.append({"Plugin": plugins["steps"][step]["plugin"]["name"],
-                                                    "Version": plugins["steps"][step]["plugin"]["slugVersion"],
-                                                    "Count": 1})
+
+                            else:
+                                plugin_list.append({"Plugin": plugin_name, "Version": plugin_version, "Count": 1})
                                 # When a new plugin is added plugin_list's len goes up by one. This messes up this loop,
                                 # so a break is here to stop that
                                 break
                     else:
-                        plugin_list.append({"Plugin": plugins["steps"][step]["plugin"]["name"],
-                                            "Version": plugins["steps"][step]["plugin"]["slugVersion"], "Count": 1})
+                        plugin_list.append({"Plugin": plugin_name, "Version": plugin_version, "Count": 1})
         except KeyError:
             raise ValidationException("The .icon file is not formatted correctly. Try exporting the .icon file again")
         return plugin_list
