@@ -19,7 +19,8 @@ class SpecPropertiesValidator(KomandPluginValidator):
         "required",
         "default",
         "enum",
-        "order"
+        "order",
+        "example"
     }
 
     def __init__(self):
