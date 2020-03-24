@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.19.1 - Fix issue where numbers in screenshot titles would cause validation to fail
 * 2.19.0 - Add plugin utilization validator
 * 2.18.0 - Add .icon file validator
 * 2.17.2 - Fix to remove some common words from the profanity validator
