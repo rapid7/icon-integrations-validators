@@ -36,7 +36,6 @@ class RuntimeValidator(KomandPluginValidator):
             actions_path = glob.glob(f"{spec.directory}/*/actions")
             for root, dirs, files in os.walk(actions_path[0]):
                 for file in files:
-                    print("file = " + file)
                     with open(os.path.join(root, file), 'r') as open_file:
                         file_str = open_file.read().replace("\n", "")
 
