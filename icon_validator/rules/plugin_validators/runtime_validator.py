@@ -18,7 +18,7 @@ class RuntimeValidator(KomandPluginValidator):
                                               "Use insightconnect-plugin-runtime instead.")
 
     @staticmethod
-    def validate_icon(spec):
+    def validate_imports(spec):
         for root, dirs, files in os.walk(spec.directory):
             for file in files:
                 if file.endswith(".py"):
@@ -52,5 +52,5 @@ class RuntimeValidator(KomandPluginValidator):
 
             if any(image in docker_str for image in latest_images):
                 RuntimeValidator.validate_setup(spec)
-                RuntimeValidator.validate_icon(spec)
+                RuntimeValidator.validate_imports(spec)
                 RuntimeValidator.validate_caching(spec)
