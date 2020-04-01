@@ -13,8 +13,9 @@ class RuntimeValidator(KomandPluginValidator):
             with open(f"{spec.directory}/setup.py", "r") as file:
                 setup_str = file.read().replace("\n", "")
 
-                if "komand" in setup_str and "insightconnect-plugin-runtime" not in setup_str:
-                    raise ValidationException("Komand is no longer used in setup.py. "
+                if f'install_requires=["insightconnect-plugin-runtime"]' not in setup_str\
+                        and f"install_requires=['insightconnect-plugin-runtime']" not in setup_str:
+                    raise ValidationException("Komand is no longer used for install_requires in setup.py. "
                                               "Use insightconnect-plugin-runtime instead.")
 
     @staticmethod
@@ -25,7 +26,7 @@ class RuntimeValidator(KomandPluginValidator):
                     with open(os.path.join(root, file), "r") as open_file:
                         file_str = open_file.read().replace("\n", "")
 
-                        if "import komand" in file_str or "FROM komand" in file_str:
+                        if "import komand" in file_str or "from komand" in file_str:
                             raise ValidationException(f"Komand import found in {str(os.path.join(root, file))}. "
                                                       "Komand is no longer used here. "
                                                       "Use insightconnect-plugin-runtime instead.")
@@ -43,9 +44,24 @@ class RuntimeValidator(KomandPluginValidator):
                             raise ValidationException(f"Cloud ready plugins cannot contain caching. "
                                                       f"Update {str(os.path.join(root, file))}.")
 
+    @staticmethod
+    def validate_dockerfile(spec, latest_images):
+        if "setup.py" in os.listdir(spec.directory):
+            with open(f"{spec.directory}/setup.py", "r") as setup_file:
+                setup_str = setup_file.read().replace("\n", "")
+
+                if "insightconnect-plugin-runtime" in setup_str:
+                    with open(f"{spec.directory}/Dockerfile", "r") as docker_file:
+                        docker_str = docker_file.read().replace("\n", "")
+
+                        if not any(image in docker_str for image in latest_images):
+                            raise ValidationException("insightconnect-plugin-runtime is being used in setup.py. "
+                                                      "Update Dockerfile accordingly to use latest base image.")
+
     def validate(self, spec):
         latest_images = ["rapid7/insightconnect-python-3-38-plugin",
                          "rapid7/insightconnect-python-3-38-slim-plugin"]
+        RuntimeValidator.validate_dockerfile(spec, latest_images)
 
         with open(f"{spec.directory}/Dockerfile", "r") as file:
             docker_str = file.read().replace("\n", "")
