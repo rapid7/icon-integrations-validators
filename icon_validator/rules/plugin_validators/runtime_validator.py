@@ -13,8 +13,8 @@ class RuntimeValidator(KomandPluginValidator):
             with open(f"{spec.directory}/setup.py", "r") as file:
                 setup_str = file.read().replace("\n", "")
 
-                if f'install_requires=["insightconnect-plugin-runtime"]' not in setup_str\
-                        and f"install_requires=['insightconnect-plugin-runtime']" not in setup_str:
+                if 'install_requires=["insightconnect-plugin-runtime"]' not in setup_str\
+                        and "install_requires=['insightconnect-plugin-runtime']" not in setup_str:
                     raise ValidationException("Komand is no longer used for install_requires in setup.py. "
                                               "Use insightconnect-plugin-runtime instead.")
 
