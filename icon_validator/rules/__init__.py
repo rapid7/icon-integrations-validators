@@ -35,6 +35,7 @@ from icon_validator.rules.plugin_validators.use_case_validator import *
 from icon_validator.rules.plugin_validators.vendor_validator import *
 from icon_validator.rules.plugin_validators.version_validator import *
 from icon_validator.rules.plugin_validators.support_validator import *
+from icon_validator.rules.plugin_validators.runtime_validator import *
 
 # Workflow validators
 from icon_validator.rules.workflow_validators.workflow_help_validator import *
@@ -79,7 +80,8 @@ VALIDATORS = [
     OutputValidator(),
     RegenerationValidator(),
     HelpInputOutputValidator(),
-    SupportValidator()
+    SupportValidator(),
+    RuntimeValidator()
 ]
 
 JENKINS_VALIDATORS = [
