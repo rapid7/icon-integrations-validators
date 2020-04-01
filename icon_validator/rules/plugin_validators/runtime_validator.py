@@ -26,7 +26,7 @@ class RuntimeValidator(KomandPluginValidator):
                     with open(os.path.join(root, file), "r") as open_file:
                         file_str = open_file.read()
 
-                        if "import komand\n" in file_str or "from komand " in file_str:
+                        if "import komand\n" in file_str or "from komand " in file_str or "from komand." in file_str:
                             raise ValidationException(f"Komand import found in {str(os.path.join(root, file))}. "
                                                       "Komand is no longer used here. "
                                                       "Use insightconnect-plugin-runtime instead.")
