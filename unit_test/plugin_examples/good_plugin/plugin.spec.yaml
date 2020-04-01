@@ -28,6 +28,7 @@ actions:
       content:
         type: string
         description: Data to encode
+        example: This is a string
         required: true
     output:
       data:
@@ -47,6 +48,7 @@ actions:
         type: string
         description: How errors should be handled when decoding Base64
         default: nothing
+        example: replace
         enum:
         - replace
         - ignore
