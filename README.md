@@ -49,7 +49,6 @@ to simulate the `--all` flag.
 
 ## Changelog
 
-
 * 2.21.1 - Update HelpInputOutputValidator to validate on new Example inputs
 * 2.21.0 - Add new runtime validator to align with 4.0.0 release of InsightConnect Python Plugin Runtime 
 * 2.20.0 - Add plugin utilization workflow validator | Fix issue where numbers in screenshot titles would cause validation to fail
