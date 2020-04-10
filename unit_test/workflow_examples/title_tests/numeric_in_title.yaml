@@ -1,0 +1,16 @@
+extension: workflow
+products: ["insightconnect"]
+name: Office_365_Is_a_Valid_Title
+title: "Office_365_Is_a_Valid_Title"
+description: "This workflow triggers from directly slack messaging the chatbot to \"!investigate\" the defined indicator. To date, this workflow supports automatically looking up URLs and IPs in open source threat intelligence such as VirusTotal and Whois. Lastly, the workflow will post back results to the specific user."
+version: 0.1.0
+vendor: rapid7
+support: rapid7
+status: []
+hub_tags:
+  use_cases: [alerting_and_notifications, threat_detection_and_response]
+  keywords: [enrichment, slack, url, ip]
+  features: []
+resources:
+  source_url: https://github.com/rapid7/insightconnect-workflows/tree/master/workflows/Automated_Indicator_Enrichment
+  license_url: https://github.com/rapid7/insightconnect-workflows/blob/master/LICENSE

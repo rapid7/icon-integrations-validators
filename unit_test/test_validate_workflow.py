@@ -127,6 +127,9 @@ class TestWorkflowValidate(unittest.TestCase):
         file_to_test = "workflow_bad_caps.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()])
         self.assertTrue(result)
+        file_to_test = "numeric_in_title.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()])
+        self.assertEqual(result, 0)  # Should be a valid title
 
     def test_description_validator(self):
         # Test bad workflows. This will test the workflow_description_validator
