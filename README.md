@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.19.0 - Add workflow directory name and workflow file match validator | Fix incorrect detection of 'lowercase' numbers in filenames | Add additional words to title list
 * 2.18.0 - Add .icon file validator
 * 2.17.2 - Fix to remove some common words from the profanity validator
 * 2.17.1 - Fix broken package import

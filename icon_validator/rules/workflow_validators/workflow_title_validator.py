@@ -31,8 +31,6 @@ class WorkflowTitleValidator(KomandPluginValidator):
             raise ValidationException("Title should not start with a lower case letter.")
         if title[0].isspace():
             raise ValidationException("Title should not start with a whitespace character.")
-        if len(title.split()) > 7:
-            raise ValidationException(f"Title is too long, 6 words or less: contains {title.count(' ')}")
         for word in title.split():
             if not title.startswith(word):
                 if word in title_validation_list:

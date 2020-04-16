@@ -4,8 +4,8 @@ import sys
 
 from pkg_resources import get_distribution
 
-from .styling import *
-from .validate import validate
+from icon_validator.styling import *
+from icon_validator.validate import validate
 
 
 def main():

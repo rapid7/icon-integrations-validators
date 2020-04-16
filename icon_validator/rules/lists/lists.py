@@ -1,3 +1,4 @@
+# List of words that should always be lowercase in a title EXCEPT for when they are the first word
 title_validation_list = [
   "The",
   "From",
@@ -14,7 +15,9 @@ title_validation_list = [
   "To",
   "On",
   "At",
-  "As"
+  "As",
+  "With",
+  "In",
 ]
 
 profanity_list = [

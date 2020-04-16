@@ -15,10 +15,10 @@ class WorkflowNameValidator(KomandPluginValidator):
             if file_name.endswith(".icon"):
                 icon_file = file_name[:-5]
         if "name" not in spec.spec_dictionary():
-            raise ValidationException("The workflow name is missing in the .yaml file.")
+            raise ValidationException("The workflow name is missing in workflow.spec.yaml.")
         if not isinstance(spec.spec_dictionary()["name"], str):
             raise ValidationException("The workflow name does not contain a string.")
         name = spec.spec_dictionary()["name"]
         if not name == icon_file:
-            raise ValidationException("The workflow name in .yaml and the name of the .icon file do not match."
-                                      f" the name in the .yaml is {name}. The .icon file name is {icon_file}")
+            raise ValidationException(f"The workflow name in workflow.spec.yaml ({name}) and the name of the "
+                                      f".icon workflow file ({icon_file}) do not match.")
