@@ -44,5 +44,6 @@ class WorkflowTitleValidator(KomandPluginValidator):
                     # This is NOT OK: Type Of String
                     raise ValidationException("Title contains a capitalized 'Of' when it should not.")
                 elif not word[0].isupper() and not word.capitalize() in title_validation_list:
-                    if not word.lower() == "by" or word.lower() == "of":
-                        raise ValidationException(f"Title contains a lowercase '{word}' when it should not.")
+                    if not word.isnumeric():
+                        if not word.lower() == "by" or word.lower() == "of":
+                            raise ValidationException(f"Title contains a lowercase '{word}' when it should not.")

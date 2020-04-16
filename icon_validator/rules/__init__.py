@@ -35,6 +35,7 @@ from icon_validator.rules.plugin_validators.use_case_validator import *
 from icon_validator.rules.plugin_validators.vendor_validator import *
 from icon_validator.rules.plugin_validators.version_validator import *
 from icon_validator.rules.plugin_validators.support_validator import *
+from icon_validator.rules.plugin_validators.runtime_validator import *
 
 # Workflow validators
 from icon_validator.rules.workflow_validators.wokflow_directory_name_match_validator import *
@@ -53,6 +54,7 @@ from icon_validator.rules.workflow_validators.workflow_title_validator import *
 from icon_validator.rules.workflow_validators.workflow_description_validator import *
 from icon_validator.rules.workflow_validators.workflow_name_validator import *
 from icon_validator.rules.workflow_validators.workflow_icon_validator import *
+from icon_validator.rules.workflow_validators.workflow_help_plugin_utilization_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
@@ -79,7 +81,8 @@ VALIDATORS = [
     OutputValidator(),
     RegenerationValidator(),
     HelpInputOutputValidator(),
-    SupportValidator()
+    SupportValidator(),
+    RuntimeValidator()
 ]
 
 JENKINS_VALIDATORS = [
@@ -108,5 +111,6 @@ WORKFLOW_VALIDATORS = [
     WorkflowDescriptionValidator(),
     WorkflowNameValidator(),
     WorkflowProfanityValidator(),
+    WorkflowHelpPluginUtilizationValidator(),
     WorkflowICONFileValidator()
 ]

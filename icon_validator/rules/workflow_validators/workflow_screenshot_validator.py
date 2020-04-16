@@ -44,8 +44,8 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
                     # This is OK: Member Of
                     # This is NOT OK: Type Of String
                     raise ValidationException("Title contains a capitalized 'Of' when it should not.")
-                elif not word[0].isupper() and not word.capitalize() in title_validation_list:
-                    if word.isalpha() and not word.lower() == "by" or word.lower() == "of":
+                elif not word[0].isupper() and not word[0].isnumeric() and not word.capitalize() in title_validation_list:
+                    if not word.lower() == "by" or word.lower() == "of":
                         raise ValidationException(f"Title contains a lowercase '{word}' when it should not.")
 
     def validate_screenshot_titles(self, spec):

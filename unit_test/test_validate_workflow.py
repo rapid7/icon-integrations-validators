@@ -17,6 +17,7 @@ from icon_validator.rules.workflow_validators.workflow_title_validator import Wo
 from icon_validator.rules.workflow_validators.workflow_description_validator import WorkflowDescriptionValidator
 from icon_validator.rules.workflow_validators.workflow_name_validator import WorkflowNameValidator
 from icon_validator.rules.workflow_validators.workflow_icon_validator import WorkflowICONFileValidator
+from icon_validator.rules.workflow_validators.workflow_help_plugin_utilization_validator import WorkflowHelpPluginUtilizationValidator
 
 
 class TestWorkflowValidate(unittest.TestCase):
@@ -126,6 +127,9 @@ class TestWorkflowValidate(unittest.TestCase):
         file_to_test = "workflow_bad_caps.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()])
         self.assertTrue(result)
+        file_to_test = "numeric_in_title.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()])
+        self.assertEqual(result, 0)  # Should be a valid title
 
     def test_description_validator(self):
         # Test bad workflows. This will test the workflow_description_validator
@@ -157,4 +161,10 @@ class TestWorkflowValidate(unittest.TestCase):
         directory_to_test = "workflow_examples/icon_file_tests"
         file_to_test = "workflow_bad_icon_file.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowICONFileValidator()])
+        self.assertTrue(result)
+
+    def test_workflow_plugin_utilization_validator(self):
+        directory_to_test = "workflow_examples/plugin_utilization_tests"
+        file_to_test = "workflow_bad_utilization.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowHelpPluginUtilizationValidator()])
         self.assertTrue(result)
