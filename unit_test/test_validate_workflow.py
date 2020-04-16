@@ -24,7 +24,7 @@ class TestWorkflowValidate(unittest.TestCase):
 
     def test_good_workflow_validator(self):
         # Test good workflow. This should pass all validation
-        directory_to_test = "workflow_examples/good_test"
+        directory_to_test = "workflow_examples/Automated_Indicator_Enrichment"
         file_to_test = "workflow.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True)
         self.assertFalse(result)

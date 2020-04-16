@@ -29,8 +29,7 @@ def validate(directory, spec_file_name="plugin.spec.yaml", fail_fast=False, run_
             success = True
 
         except ValidationException as e:
-            print(f"Validator {v.name} failed!")
-            print(e)
+            print(f"Validator \"{v.name}\" failed! \n\tCause: {e}")
             status = 1
             success = False
 

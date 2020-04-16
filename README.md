@@ -49,6 +49,7 @@ to simulate the `--all` flag.
 
 ## Changelog
 
+* 2.22.0 - Add workflow directory name and workflow file match validator | Fix incorrect detection of 'lowercase' numbers in filenames | Add additional words to title list
 * 2.21.2 - Fix issue where numeric words in a title would break the title validator
 * 2.21.1 - Update HelpInputOutputValidator to validate on new Example inputs
 * 2.21.0 - Add new runtime validator to align with 4.0.0 release of InsightConnect Python Plugin Runtime 
