@@ -38,7 +38,6 @@ from icon_validator.rules.plugin_validators.support_validator import *
 from icon_validator.rules.plugin_validators.runtime_validator import *
 
 # Workflow validators
-from icon_validator.rules.workflow_validators.workflow_screenshots_spec_match_validator import *
 from icon_validator.rules.workflow_validators.workflow_directory_name_match_validator import *
 from icon_validator.rules.workflow_validators.workflow_help_validator import *
 from icon_validator.rules.workflow_validators.workflow_files_validator import *
@@ -97,7 +96,6 @@ JENKINS_VALIDATORS = [
 ]
 
 WORKFLOW_VALIDATORS = [
-    WorkflowScreenshotsSpecMatchValidator(),
     WorkflowDirectoryNameMatchValidator(),
     WorkflowFilesValidator(),
     WorkflowHelpValidator(),
