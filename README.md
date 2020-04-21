@@ -1,6 +1,8 @@
 
 # InsightConnect Integrations Validators
 
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 Tooling with a bundled suite of validator rules for
 ensuring quality across
 [Rapid7 InsightConnect](https://www.rapid7.com/products/insightconnect/) integrations.
