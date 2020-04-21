@@ -5,7 +5,6 @@ from icon_validator.exceptions import ValidationException
 
 
 class WorkflowDirectoryNameMatchValidator(KomandPluginValidator):
-
     def validate(self, spec):
         """
         Checks that a directory name matches a workflow filename (.icon file).
@@ -19,4 +18,6 @@ class WorkflowDirectoryNameMatchValidator(KomandPluginValidator):
         directory_contents = set(os.listdir(d))
 
         if f"{directory_name}.icon" not in directory_contents:
-            raise ValidationException("Workflow directory name does not match the workflow filename!")
+            raise ValidationException(
+                "Workflow directory name does not match the workflow filename!"
+            )
