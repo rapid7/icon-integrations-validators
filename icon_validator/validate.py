@@ -8,7 +8,13 @@ from .styling import *
 from .timing import *
 
 
-def validate(directory, spec_file_name="plugin.spec.yaml", fail_fast=False, run_all=False, validators=list()):
+def validate(
+    directory,
+    spec_file_name="plugin.spec.yaml",
+    fail_fast=False,
+    run_all=False,
+    validators=list(),
+):
     spec = KomandPluginSpec(directory, spec_file_name)
     status = 0  # Resultant return code
     start_time = time_now()
@@ -22,6 +28,7 @@ def validate(directory, spec_file_name="plugin.spec.yaml", fail_fast=False, run_
         elif spec_file_name == "workflow.spec.yaml":
             validators = WORKFLOW_VALIDATORS
 
+    validation_failures: [str] = []
     for v in validators:
         print(f"{BULLET_OK} Executing validator {v.name}")
         try:
@@ -29,7 +36,8 @@ def validate(directory, spec_file_name="plugin.spec.yaml", fail_fast=False, run_
             success = True
 
         except ValidationException as e:
-            print(f"Validator \"{v.name}\" failed! \n\tCause: {e}")
+            validation_failures.append(f'Validator "{v.name}" failed! \n\tCause: {e}')
+            # print(f"Validator \"{v.name}\" failed! \n\tCause: {e}")
             status = 1
             success = False
 
@@ -44,7 +52,11 @@ def validate(directory, spec_file_name="plugin.spec.yaml", fail_fast=False, run_
     if status == 0:
         print(f"{BULLET_OK} {BOLD}{extension} successfully validated!{CEND}")
     else:
-        print(f"{BULLET_FAIL}{extension} failed validation!")
+        print(
+            f"{BULLET_FAIL} {extension} failed validation! The following validation errors occurred:\n"
+        )
+        for vf in validation_failures:
+            print(f"{vf}\n")
 
     print(f"\n----\n{BULLET_OK}{BOLD} Total time elapsed: {time_elapsed}ms{CEND}")
     return status
