@@ -171,7 +171,7 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
         if mismatches:
             raise ValidationException(
                 "Mismatch between provided screenshot files and screenshots in "
-                "workflow.spec.yaml!"
+                f"workflow.spec.yaml! The following mismatches were found: {', '.join(sorted(list(mismatches)))}"
             )
 
     def validate(self, spec):
