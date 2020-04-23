@@ -1,6 +1,11 @@
 
 # InsightConnect Integrations Validators
 
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![Markdown Lint](https://github.com/rapid7/icon-integrations-validators/workflows/Markdown%20Lint/badge.svg)
+![Unit testing](https://github.com/rapid7/icon-integrations-validators/workflows/Unit%20testing/badge.svg)
+
 Tooling with a bundled suite of validator rules for
 ensuring quality across
 [Rapid7 InsightConnect](https://www.rapid7.com/products/insightconnect/) integrations.
@@ -47,8 +52,17 @@ validate("/path/to/plugin/directory", run_all=True)
 
 to simulate the `--all` flag.
 
+## Contributions
+
+Contributions are welcome! This project utilizes [black](https://github.com/psf/black)
+and [pre-commit](https://pre-commit.com/) for handling code
+style. Simply follow the instructions for installing pre-commit and 
+run `pre-commit install` in the repository after cloning and you will
+be on your way to contributing!
+
 ## Changelog
 
+* 2.22.1 - Revise Workflow Screenshots Validator
 * 2.22.0 - Add workflow directory name and workflow file match validator | Fix incorrect detection of 'lowercase' numbers in filenames | Add additional words to title list
 * 2.21.2 - Fix issue where numeric words in a title would break the title validator
 * 2.21.1 - Update HelpInputOutputValidator to validate on new Example inputs

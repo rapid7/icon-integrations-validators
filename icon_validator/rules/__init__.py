@@ -38,7 +38,7 @@ from icon_validator.rules.plugin_validators.support_validator import *
 from icon_validator.rules.plugin_validators.runtime_validator import *
 
 # Workflow validators
-from icon_validator.rules.workflow_validators.wokflow_directory_name_match_validator import *
+from icon_validator.rules.workflow_validators.workflow_directory_name_match_validator import *
 from icon_validator.rules.workflow_validators.workflow_help_validator import *
 from icon_validator.rules.workflow_validators.workflow_files_validator import *
 from icon_validator.rules.workflow_validators.workflow_extension_validator import *
@@ -82,7 +82,7 @@ VALIDATORS = [
     RegenerationValidator(),
     HelpInputOutputValidator(),
     SupportValidator(),
-    RuntimeValidator()
+    RuntimeValidator(),
 ]
 
 JENKINS_VALIDATORS = [
@@ -92,7 +92,7 @@ JENKINS_VALIDATORS = [
     PrintValidator(),
     ConfidentialValidator(),
     DockerValidator(),
-    URLValidator()
+    URLValidator(),
 ]
 
 WORKFLOW_VALIDATORS = [
@@ -112,5 +112,5 @@ WORKFLOW_VALIDATORS = [
     WorkflowNameValidator(),
     WorkflowProfanityValidator(),
     WorkflowHelpPluginUtilizationValidator(),
-    WorkflowICONFileValidator()
+    WorkflowICONFileValidator(),
 ]
