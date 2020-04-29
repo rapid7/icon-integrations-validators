@@ -81,12 +81,12 @@ VALIDATORS = [
     RegenerationValidator(),
     HelpInputOutputValidator(),
     SupportValidator(),
-    RuntimeValidator()
+    RuntimeValidator(),
+    CredentialsValidator()
 ]
 
 JENKINS_VALIDATORS = [
     ExceptionValidator(),
-    CredentialsValidator(),
     PasswordValidator(),
     PrintValidator(),
     ConfidentialValidator(),
