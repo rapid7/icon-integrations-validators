@@ -28,14 +28,13 @@ actions:
       content:
         type: string
         description: Data to encode
-        example: This is a string
         required: true
     output:
       data:
         title: Encoded Data
         description: Encoded data result
         type: bytes
-        required: true
+
   decode:
     title: Decoder
     description: Decode Base64 to data
@@ -48,7 +47,6 @@ actions:
         type: string
         description: How errors should be handled when decoding Base64
         default: nothing
-        example: replace
         enum:
         - replace
         - ignore
@@ -59,7 +57,7 @@ actions:
         title: Decoded Data
         description: Decoded data result
         type: string
-        required: true
+
   decode_with_array:
     title: Decoder With Array
     description: Decode Base64 to data

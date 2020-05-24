@@ -75,6 +75,8 @@ class HelpInputOutputValidator(KomandPluginValidator):
             description = input_content.get(k).get("description")
             enum = input_content.get(k).get("enum", None)
             example = input_content.get(k).get("example", None)
+            if isinstance(example, list):
+                example = f"{example}".replace("'", '"')
             action_input.append(f"|{name_}|{type_}|{default_}|{required}|{description}|{enum}|{example}|")
         return action_input
 
