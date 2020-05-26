@@ -49,6 +49,9 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/bad_plugin_array_in_help"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [HelpInputOutputValidator()])
+        # TODO this clear violations for other tests
+        HelpInputOutputValidator.violations = []
+        HelpInputOutputValidator.violated = 0
         self.assertEqual(result, 1, "Result should be failed")
 
     def test_plugin_with_false_for_required_on_output(self):
