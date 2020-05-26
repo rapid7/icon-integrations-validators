@@ -61,7 +61,7 @@ actions:
         type: string
         required: true
   decode_with_array:
-    title: Decoder With Array
+    title: Decoder with Array
     description: Decode Base64 to data
     input:
       base64_array:
