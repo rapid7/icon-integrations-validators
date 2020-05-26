@@ -54,7 +54,7 @@ This action is used to decode a Base64 `string` or file of type `bytes` using th
 |----|----|--------|-----------|
 |data|string|False|Decoded data result|
 
-#### Decoder With Array
+#### Decoder with Array
 
 Decode Base64 to data
 

@@ -48,7 +48,7 @@ Example output:
 ```
 ```
 
-#### Decoder With Array
+#### Decoder with Array
 
 Decode Base64 to data
 
