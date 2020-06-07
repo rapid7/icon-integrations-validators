@@ -4,6 +4,7 @@ from icon_validator.validate import validate
 # Import plugin validators to pass to tests
 from icon_validator.rules.plugin_validators.title_validator import TitleValidator
 from icon_validator.rules.plugin_validators.profanity_validator import ProfanityValidator
+from icon_validator.rules.plugin_validators.help_input_output_validator import HelpInputOutputValidator
 from icon_validator.rules.plugin_validators.version_validator import VersionValidator
 import requests
 
@@ -37,6 +38,23 @@ class TestPluginValidate(unittest.TestCase):
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [ProfanityValidator()])
         self.assertTrue(result)
+
+    def test_array_in_help(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [HelpInputOutputValidator()])
+        self.assertEqual(result, 0, "Result should be success")
+
+    def test_bad_array_in_help(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_array_in_help"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [HelpInputOutputValidator()])
+        # TODO this clear violations for other tests
+        HelpInputOutputValidator.violations = []
+        HelpInputOutputValidator.violated = 0
+        self.assertEqual(result, 1, "Result should be failed")
 
     def test_version_validator(self):
         # example workflow in plugin_examples directory. Run tests with these files
