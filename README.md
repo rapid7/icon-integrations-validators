@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.23.0 - Add Plugin Validator to identify missing version bump
 * 2.22.2 - Fix incorrect detection of 'array' in help.md
 * 2.22.1 - Revise Workflow Screenshots Validator
 * 2.22.0 - Add workflow directory name and workflow file match validator | Fix incorrect detection of 'lowercase' numbers in filenames | Add additional words to title list

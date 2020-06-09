@@ -5,6 +5,8 @@ from icon_validator.validate import validate
 from icon_validator.rules.plugin_validators.title_validator import TitleValidator
 from icon_validator.rules.plugin_validators.profanity_validator import ProfanityValidator
 from icon_validator.rules.plugin_validators.help_input_output_validator import HelpInputOutputValidator
+from icon_validator.rules.plugin_validators.version_validator import VersionValidator
+import requests
 
 
 class TestPluginValidate(unittest.TestCase):
@@ -53,6 +55,28 @@ class TestPluginValidate(unittest.TestCase):
         HelpInputOutputValidator.violations = []
         HelpInputOutputValidator.violated = 0
         self.assertEqual(result, 1, "Result should be failed")
+
+    def test_version_validator(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/version_validator"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [VersionValidator()])
+        self.assertEqual(result, 0)
+
+    def test_version_validator_should_faile_when_version_same_in_api(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        version = requests.get(
+            url=f"https://extensions-api.rapid7.com/v1/public/extensions/active_directory_ldap",
+            timeout=3
+        ).json()["version"]
+
+        f = open("plugin_examples/version_validator/plugin.spec_bad.yaml", 'w')
+        f.write(f"plugin_spec_version: v2\nname: active_directory_ldap\nversion: {version}")
+        f.close()
+        directory_to_test = "plugin_examples/version_validator"
+        file_to_test = "plugin.spec_bad.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [VersionValidator()])
+        self.assertEqual(result, 1)
 
     def test_plugin_with_false_for_required_on_output(self):
         # TODO This validator is not correctly made: fix
