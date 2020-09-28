@@ -5,6 +5,7 @@ from icon_validator.exceptions import ValidationException
 
 
 class HelpValidator(KomandPluginValidator):
+    taskExist = False
 
     @staticmethod
     def validate_help_exists(spec):
@@ -31,6 +32,8 @@ class HelpValidator(KomandPluginValidator):
             HelpValidator.validate_same_actions_loop(spec["actions"], help_)
         if "triggers" in spec:
             HelpValidator.validate_same_actions_loop(spec["triggers"], help_)
+        if "tasks" in spec:
+            HelpValidator.validate_same_actions_loop(spec["tasks"], help_)
 
     @staticmethod
     def validate_same_actions_loop(section, help_str):
@@ -82,6 +85,10 @@ class HelpValidator(KomandPluginValidator):
             raise ValidationException("Help section is missing header: ### Actions")
         if "### Triggers" not in help_str:
             raise ValidationException("Help section is missing header: ### Triggers")
+        # if plugin without tasks needs not to be regenerated, help.md won't be having Tasks section
+        # Only raise exception if plugin.spec.yaml contains task and help.md does not
+        if HelpValidator.taskExist and "### Tasks" not in help_str:
+            raise ValidationException("Help section is missing header: ### Tasks")
         if "### Custom Output Types" not in help_str:
             raise ValidationException("Help section is missing header: ### Custom Output Types")
         if "## Troubleshooting" not in help_str:
@@ -96,6 +103,8 @@ class HelpValidator(KomandPluginValidator):
     def validate(self, spec):
         HelpValidator.validate_help_exists(spec.spec_dictionary())
         HelpValidator.validate_help_headers(spec.raw_help())
+        if spec.spec_dictionary().get("tasks"):
+            HelpValidator.taskExist = True
         HelpValidator.validate_version_history(spec.raw_help())
         HelpValidator.validate_same_actions_title(spec.spec_dictionary(), spec.raw_help())
         HelpValidator.validate_title_spelling(spec.spec_dictionary(), spec.raw_help())

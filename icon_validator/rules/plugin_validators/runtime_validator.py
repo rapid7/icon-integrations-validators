@@ -34,15 +34,23 @@ class RuntimeValidator(KomandPluginValidator):
     @staticmethod
     def validate_caching(spec):
         if spec.spec_dictionary().get("cloud_ready") is True:
+            paths = []
             actions_path = glob.glob(f"{spec.directory}/*/actions")
-            for root, dirs, files in os.walk(actions_path[0]):
-                for file in files:
-                    with open(os.path.join(root, file), 'r') as open_file:
-                        file_str = open_file.read().replace("\n", "")
+            paths.append(actions_path[0])
+            tasks_path = glob.glob(f"{spec.directory}/*/tasks")
+            # It is possible for existing plugins to not have /tasks directory, It will be when code
+            # needs not to be regenerated(e.g. update action/triggers run() method) using icon-plugin-tool.
+            if tasks_path:
+                paths.append(tasks_path[0])
+            for path in paths:
+                for root, dirs, files in os.walk(path):
+                    for file in files:
+                        with open(os.path.join(root, file), 'r') as open_file:
+                            file_str = open_file.read().replace("\n", "")
 
-                        if "cache" in file_str:
-                            raise ValidationException(f"Cloud ready plugins cannot contain caching. "
-                                                      f"Update {str(os.path.join(root, file))}.")
+                            if "cache" in file_str:
+                                raise ValidationException(f"Cloud ready plugins cannot contain caching. "
+                                                          f"Update {str(os.path.join(root, file))}.")
 
     @staticmethod
     def validate_dockerfile(spec, latest_images):

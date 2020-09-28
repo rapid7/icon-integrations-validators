@@ -49,6 +49,10 @@ class TitleValidator(KomandPluginValidator):
                     TitleValidator.validate_dictionary(value, "input")
                 if "output" in value:
                     TitleValidator.validate_dictionary(value, "output")
+                if "state" in value:
+                    TitleValidator.validate_dictionary(value, "state")
+                if "schedule" in value:
+                    TitleValidator.validate_dictionary({"schedule": value}, "schedule")
 
     @staticmethod
     def validate_dictionary(dict_, dict_key):
@@ -63,7 +67,7 @@ class TitleValidator(KomandPluginValidator):
                     try:
                         TitleValidator.validate_title(value["title"], plugin_title=False)
                     except Exception as e:
-                        raise ValidationException(f"{dict_key} key '{key}'\'s title ends with period when it should not.", e)
+                        raise ValidationException(f"{dict_key} key '{key}' error.", e)
 
     @staticmethod
     def validate_plugin_title(spec):
@@ -80,3 +84,4 @@ class TitleValidator(KomandPluginValidator):
         TitleValidator.validate_actions(spec.spec_dictionary(), "actions")
         TitleValidator.validate_actions(spec.spec_dictionary(), "triggers")
         TitleValidator.validate_actions(spec.spec_dictionary(), "connection")
+        TitleValidator.validate_actions(spec.spec_dictionary(), "tasks")

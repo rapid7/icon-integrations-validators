@@ -39,5 +39,6 @@ class LoggingValidator(KomandPluginValidator):
 
         LoggingValidator.validate_import_logging(spec.raw_trigger_files())
         LoggingValidator.validate_import_logging(spec.raw_action_files())
+        LoggingValidator.validate_import_logging(spec.raw_task_files())
         LoggingValidator.validate_import_logging(spec.raw_connection_file())
         LoggingValidator.validate_import_logging(spec.raw_util_files())

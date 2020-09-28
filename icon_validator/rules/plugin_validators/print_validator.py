@@ -35,5 +35,6 @@ class PrintValidator(KomandPluginValidator):
 
         PrintValidator.validate_print(spec.raw_trigger_files())
         PrintValidator.validate_print(spec.raw_action_files())
+        PrintValidator.validate_print(spec.raw_task_files())
         PrintValidator.validate_print(spec.raw_connection_file())
         PrintValidator.validate_print(spec.raw_util_files())

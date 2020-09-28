@@ -79,7 +79,7 @@ class AcronymValidator(KomandPluginValidator):
                 content = spec.spec_dictionary()[section].split()
                 AcronymValidator.validate_line(content, bad)
 
-        subsections = ["actions", "triggers", "connection", "types"]
+        subsections = ["actions", "triggers", "tasks", "connection", "types"]
         for section in subsections:
             if section in spec.spec_dictionary():
                 AcronymValidator.validate_subsection(spec.spec_dictionary()[section], bad)

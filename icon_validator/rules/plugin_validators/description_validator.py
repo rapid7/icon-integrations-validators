@@ -22,6 +22,8 @@ class DescriptionValidator(KomandPluginValidator):
                     DescriptionValidator.validate_dictionary(value, "input")
                 if "output" in value:
                     DescriptionValidator.validate_dictionary(value, "output")
+                if "state" in value:
+                    DescriptionValidator.validate_dictionary(value, "state")
 
     @staticmethod
     def validate_dictionary(dict_, dict_key):
@@ -35,7 +37,7 @@ class DescriptionValidator(KomandPluginValidator):
                 try:
                     DescriptionValidator.validate_description(value["description"])
                 except ValidationException as e:
-                    raise ValidationException(f"{dict_key} key '{key}'\'s description ends with a period when it should not.", e)
+                    raise ValidationException(f"{dict_key} key '{key}' error.", e)
 
     @staticmethod
     def validate_plugin_description(spec):
@@ -51,6 +53,7 @@ class DescriptionValidator(KomandPluginValidator):
         DescriptionValidator.validate_plugin_description(spec)
         DescriptionValidator.validate_actions(spec.spec_dictionary(), "actions")
         DescriptionValidator.validate_actions(spec.spec_dictionary(), "triggers")
+        DescriptionValidator.validate_actions(spec.spec_dictionary(), "tasks")
 
         # Types do not have descriptions but their keys do.
         # TODO: disabling type descriptions until better plugin autogen support exists (for swagger, wasdl, etc)
