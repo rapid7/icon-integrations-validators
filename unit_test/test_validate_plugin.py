@@ -18,6 +18,13 @@ class TestPluginValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, False)
         self.assertFalse(result)
 
+    def test_plugin_validate_with_task(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin_with_task"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, False)
+        self.assertFalse(result)
+
     def test_title_validator(self):
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/title_tests"

@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.24.0 - Update validators to support validation of plugin tasks.
 * 2.23.0 - Add Plugin Validator to identify missing version bump
 * 2.22.2 - Fix incorrect detection of 'array' in help.md
 * 2.22.1 - Revise Workflow Screenshots Validator
