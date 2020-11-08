@@ -8,12 +8,12 @@ from icon_validator.exceptions import ValidationException
 class VersionPinValidator(KomandPluginValidator):
 
     @staticmethod
-    def read_schema(spec):
+    def read_requirements(spec):
         with open(os.path.join(spec.directory, "requirements.txt")) as requirements:
             return requirements.read().strip()
 
     def validate(self, spec):
-        requirements_text = self.read_schema(spec).split("\n")
+        requirements_text = self.read_requirements(spec).split("\n")
         for requirements_text_one_element in requirements_text:
             if requirements_text_one_element.startswith("#"):
                 continue
