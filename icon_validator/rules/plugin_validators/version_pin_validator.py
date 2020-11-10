@@ -14,11 +14,14 @@ class VersionPinValidator(KomandPluginValidator):
 
     def validate(self, spec):
         requirements_text = self.read_requirements(spec).split("\n")
-        for requirements_text_one_element in requirements_text:
-            if requirements_text_one_element.startswith("#"):
+        for requirements_text_elements in requirements_text:
+            requirements_text_elements = requirements_text_elements.strip()
+            if requirements_text_elements.startswith("#"):
                 continue
-            if not re.match(r'[^=]*?==[^=]*?', requirements_text_one_element):
-                raise ValidationException(
-                    "All Python dependencies must be version pinned. "
-                    "Please update all modules in requirements.txt with a specific version pin e.g. lxml==3.7.1"
-                )
+            for requirements_text_one_element in requirements_text_elements.split(","):
+                requirements_text_one_element = requirements_text_one_element.strip()
+                if not re.match(r'.*?(==|===|<|<=|!=|>=|>|~=).*?', requirements_text_one_element):
+                    raise ValidationException(
+                        "All Python dependencies must be version pinned. "
+                        "Please update all modules in requirements.txt with a specific version pin e.g. lxml==3.7.1"
+                    )
