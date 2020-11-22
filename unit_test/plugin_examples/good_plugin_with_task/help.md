@@ -16,10 +16,38 @@ _This plugin does not contain any requirements._
 ## Setup
 
 _This plugin does not contain a connection._
-
 ## Technical Details
 
 ### Actions
+
+#### Encoder
+
+This action is used to encode data to Base64.
+
+##### Input
+
+|Name|Type|Default|Required|Description|Enum|Example|
+|----|----|-------|--------|-----------|----|-------|
+|content|string|None|True|Data to encode|None|This is a string|
+
+Example input:
+
+```
+{
+  "content": "This is a string"
+}
+```
+
+##### Output
+
+|Name|Type|Required|Description|
+|----|----|--------|-----------|
+|data|bytes|True|Encoded data result|
+
+Example output:
+
+```
+```
 
 #### Decoder
 
@@ -52,35 +80,6 @@ Example output:
 ```
 ```
 
-#### Encoder
-
-This action is used to encode data to Base64.
-
-##### Input
-
-|Name|Type|Default|Required|Description|Enum|Example|
-|----|----|-------|--------|-----------|----|-------|
-|content|string|None|True|Data to encode|None|This is a string|
-
-Example input:
-
-```
-{
-  "content": "This is a string"
-}
-```
-
-##### Output
-
-|Name|Type|Required|Description|
-|----|----|--------|-----------|
-|data|bytes|True|Encoded data result|
-
-Example output:
-
-```
-```
-
 ### Triggers
 
 _This plugin does not contain any triggers._
@@ -91,7 +90,7 @@ _This plugin does not contain any triggers._
 
 This task is used to decode Base64 to data.
 
-It allows configuring schedules based on:
+Supported schedule types for this task include:
   - cron
   - minutes
   - hours
