@@ -33,26 +33,22 @@ connection:
       for SSL prefix
     type: string
     required: true
-    example: example.com
   port:
     title: Port
     description: Port, e.g. 389
     type: integer
     default: 389
     required: true
-    example: 444
   use_ssl:
     title: Use SSL
     type: boolean
     description: Use SSL?
     required: true
-    example: true
   username_password:
     title: Username and Password
     type: credential_username_password
     description: Username and password
     required: true
-    example: Password
 actions:
   query:
     title: Query
@@ -64,13 +60,11 @@ actions:
         description: 'The filter of the search request. It must conform to the LDAP
           filter syntax specified in RFC4515. Example: (accountName=joesmith)'
         required: true
-        example: '(accountName=joesmith)'
       search_base:
         title: Search Base
         type: string
         description: The base of the search request
         required: true
-        example: Search Base
     output:
       results:
         description: Results returned
@@ -85,7 +79,6 @@ actions:
         type: string
         description: The distinguished name of the object to delete. Example CN=user,OU=domain_users,DC=mydomain,DC=com
         required: true
-        example: CN=user
     output:
       success:
         description: Operation status
@@ -100,38 +93,32 @@ actions:
         type: string
         description: The domain name this user will belong to, e.g. mydomain.com
         required: true
-        example: example.com
       logon_name:
         title: Logon Name
         type: string
         description: The logon name for the account
         required: true
-        example: Example
       first_name:
         title: First Name
         type: string
         description: User's first name
         required: true
-        example: Example
       last_name:
         title: Last Name
         type: string
         description: User's last name
         required: true
-        example: Example
       user_ou:
         title: User OU
         type: string
         description: The OU that the user account will be created in
         required: true
         default: Users
-        example: Users
       password:
         title: Password
         type: password
         description: The account's starting password
         required: true
-        example: password
       account_disabled:
         title: Account Disabled
         type: string
@@ -141,20 +128,17 @@ actions:
         description: Set this to true to disable the user account at creation
         required: true
         default: 'true'
-        example: true
       user_principal_name:
         title: User Principal Name
         description: The users principal name, e.g. user@example.com
         type: string
         required: true
-        example: user@example.com
       additional_parameters:
         title: Additional Parameters
         description: 'Add additional user parameters in JSON format e.g. {''telephoneNumber'':
           ''(617)555-1234''}'
         type: object
         required: false
-        example: '{''telephoneNumber'':''(617)555-1234''}'
     output:
       success:
         description: Operation status
@@ -169,7 +153,6 @@ actions:
         type: string
         description: The distinguished name of the user to enable e.g. CN=user,OU=domain_users,DC=mydomain,DC=com
         required: true
-        example: CN=user
     output:
       success:
         description: Operation status
@@ -184,7 +167,6 @@ actions:
         type: string
         description: The distinguished name of the user to disable e.g. CN=user,OU=domain_users,DC=mydomain,DC=com
         required: true
-        example: CN=user
     output:
       success:
         description: Operation status
@@ -200,13 +182,11 @@ actions:
         description: The distinguished name of the user whose membership will be modified
           e.g. CN=user,OU=domain_users,DC=mydomain,DC=com
         required: true
-        example: CN=user
       group_dn:
         title: Group DN
         type: string
         description: The Distinguished Name of the group to add or remove
         required: true
-        example: Insight Group
       add_remove:
         title: Add or Remove
         description: Add or remove the group
@@ -215,7 +195,6 @@ actions:
         - add
         - remove
         required: true
-        example: add
     output:
       success:
         description: Operation status
@@ -231,13 +210,11 @@ actions:
         description: The distinguished name of the user whose membership will be modified
           e.g. CN=user,OU=domain_users,DC=mydomain,DC=com
         required: true
-        example: CN=user
       new_ou:
         title: New OU
         type: string
         description: The distinguished name of the OU to move the object to e.g. OU=disabled_users,DC=mydomain,DC=com
         required: true
-        example: OU=disabled_users
     output:
       success:
         description: Operation status
@@ -253,13 +230,11 @@ actions:
         description: The distinguished name of the user whose membership will be modified
           e.g. CN=user,OU=domain_users,DC=mydomain,DC=com
         required: true
-        example: CN=user
       new_password:
         title: New Password
         description: The new password
         type: password
         required: true
-        example: newpassword
     output:
       success:
         description: Operation status
@@ -275,7 +250,6 @@ actions:
         description: The distinguished name of the user who will be forced to reset
           their password  e.g. CN=user,OU=domain_users,DC=mydomain,DC=com
         required: true
-        example: name
     output:
       success:
         title: Success
@@ -293,21 +267,18 @@ triggers:
         type: string
         required: true
         order: 1
-        example: InsightConnect Team
       channel_name:
         title: Channel Name
         description: Channel
         type: string
         required: true
         order: 2
-        example: InsightConnect Channel
       message_content:
         title: Message Content
         description: Regex to match new messages against
         type: string
         required: false
         order: 3
-        example: "[Tt]est"
     output:
       message:
         title: Message

@@ -7,6 +7,7 @@ from icon_validator.rules.plugin_validators.profanity_validator import Profanity
 from icon_validator.rules.plugin_validators.help_input_output_validator import HelpInputOutputValidator
 from icon_validator.rules.plugin_validators.version_validator import VersionValidator
 from icon_validator.rules.plugin_validators.version_pin_validator import VersionPinValidator
+from icon_validator.rules.plugin_validators.example_input_validator import ExampleInputValidator
 import requests
 
 
@@ -203,6 +204,27 @@ class TestPluginValidate(unittest.TestCase):
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True)
         self.assertTrue(result)
+
+    def test_example_input_validator_should_success(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_test"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [ExampleInputValidator()])
+        self.assertEqual(result, 0)
+
+    def test_example_input_validator_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_no_example_in_spec"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [ExampleInputValidator()])
+        self.assertEqual(result, 1)
+
+    def test_example_input_validator_should_fail_when_not_all_exists(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [ExampleInputValidator()])
+        self.assertEqual(result, 1)
 
     @staticmethod
     def replace_requirements(path, text):
