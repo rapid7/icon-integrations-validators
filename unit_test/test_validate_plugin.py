@@ -203,7 +203,7 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/bad_plugin_no_required_key_in_output"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True)
-        self.assertTrue(result)
+        self.assertEqual(result, 1)
 
     def test_example_input_validator_should_success(self):
         # example workflow in plugin_examples directory. Run tests with these files
