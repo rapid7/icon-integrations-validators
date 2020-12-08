@@ -18,6 +18,7 @@ from icon_validator.rules.workflow_validators.workflow_description_validator imp
 from icon_validator.rules.workflow_validators.workflow_name_validator import WorkflowNameValidator
 from icon_validator.rules.workflow_validators.workflow_icon_validator import WorkflowICONFileValidator
 from icon_validator.rules.workflow_validators.workflow_help_plugin_utilization_validator import WorkflowHelpPluginUtilizationValidator
+from icon_validator.rules.workflow_validators.workflow_encoding_validator import WorkflowEncodingValidator
 
 
 class TestWorkflowValidate(unittest.TestCase):
@@ -168,3 +169,12 @@ class TestWorkflowValidate(unittest.TestCase):
         file_to_test = "workflow_bad_utilization.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowHelpPluginUtilizationValidator()])
         self.assertTrue(result)
+
+    def test_encoding_validator(self):
+        directory_to_test = "workflow_examples/encoding_tests"
+        file_to_test = "workflow_bad_encoding.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowEncodingValidator()])
+        self.assertEqual(result, 1)
+        file_to_test = "workflow_good_encoding.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowEncodingValidator()])
+        self.assertEqual(result, 0)

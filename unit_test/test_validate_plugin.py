@@ -7,6 +7,7 @@ from icon_validator.rules.plugin_validators.profanity_validator import Profanity
 from icon_validator.rules.plugin_validators.help_input_output_validator import HelpInputOutputValidator
 from icon_validator.rules.plugin_validators.version_validator import VersionValidator
 from icon_validator.rules.plugin_validators.version_pin_validator import VersionPinValidator
+from icon_validator.rules.plugin_validators.encoding_validator import EncodingValidator
 import requests
 
 
@@ -63,6 +64,15 @@ class TestPluginValidate(unittest.TestCase):
         HelpInputOutputValidator.violations = []
         HelpInputOutputValidator.violated = 0
         self.assertEqual(result, 1, "Result should be failed")
+
+    def test_encoding_validator(self):
+        directory_to_test = "plugin_examples/encoding_tests"
+        file_to_test = "plugin_bad_encoding.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [EncodingValidator()])
+        self.assertEqual(result, 1)
+        file_to_test = "plugin_good_encoding.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [EncodingValidator()])
+        self.assertEqual(result, 0)
 
     def test_version_validator(self):
         # example workflow in plugin_examples directory. Run tests with these files

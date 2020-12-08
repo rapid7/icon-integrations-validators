@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.26.0 - Add Encoding Validators to ensure there are no forbidden characters in spec files
 * 2.25.0 - Add Version Pin Validator to validate if dependency versions are pinned in requirements.txt
 * 2.24.0 - Update validators to support validation of plugin tasks.
 * 2.23.0 - Add Plugin Validator to identify missing version bump
