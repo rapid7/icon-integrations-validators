@@ -12,6 +12,7 @@ from icon_validator.rules.plugin_validators.default_value_validator import *
 from icon_validator.rules.plugin_validators.description_validator import *
 from icon_validator.rules.plugin_validators.docker_validator import *
 from icon_validator.rules.plugin_validators.dockerfile_parent_validator import *
+from icon_validator.rules.plugin_validators.encoding_validator import *
 from icon_validator.rules.plugin_validators.exception_validator import *
 from icon_validator.rules.plugin_validators.files_validator import *
 from icon_validator.rules.plugin_validators.help_input_output_validator import *
@@ -34,6 +35,7 @@ from icon_validator.rules.plugin_validators.url_validator import *
 from icon_validator.rules.plugin_validators.use_case_validator import *
 from icon_validator.rules.plugin_validators.vendor_validator import *
 from icon_validator.rules.plugin_validators.version_validator import *
+from icon_validator.rules.plugin_validators.version_pin_validator import *
 from icon_validator.rules.plugin_validators.support_validator import *
 from icon_validator.rules.plugin_validators.runtime_validator import *
 
@@ -55,6 +57,7 @@ from icon_validator.rules.workflow_validators.workflow_description_validator imp
 from icon_validator.rules.workflow_validators.workflow_name_validator import *
 from icon_validator.rules.workflow_validators.workflow_icon_validator import *
 from icon_validator.rules.workflow_validators.workflow_help_plugin_utilization_validator import *
+from icon_validator.rules.workflow_validators.workflow_encoding_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
@@ -83,6 +86,8 @@ VALIDATORS = [
     HelpInputOutputValidator(),
     SupportValidator(),
     RuntimeValidator(),
+    VersionPinValidator(),
+    EncodingValidator(),
 ]
 
 JENKINS_VALIDATORS = [
@@ -113,4 +118,5 @@ WORKFLOW_VALIDATORS = [
     WorkflowProfanityValidator(),
     WorkflowHelpPluginUtilizationValidator(),
     WorkflowICONFileValidator(),
+    WorkflowEncodingValidator(),
 ]
