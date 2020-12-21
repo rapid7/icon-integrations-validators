@@ -19,7 +19,7 @@ class AcronymValidator(KomandPluginValidator):
         "JPEG", "JQL", "JSON", "JWT",
         "KML", "KMS",
         "LAN", "LDAP",
-        "MAC", "MD5", "MFA", "MIME", "MISP", "MITRE", "MIT", "MHR", "MSI", "MSSQL", "MX",
+        "MAC", "MD5", "MFA", "MIME", "MISP", "MIT", "MHR", "MSI", "MSSQL", "MX",
         "NFS", "NOERROR", "NTLM", "NXDOMAIN",
         "OSSEC", "OSI", "OTRS",
         "PCI", "PCAP", "PDF", "PEM", "PHP", "PKI", "PID", "PNG",

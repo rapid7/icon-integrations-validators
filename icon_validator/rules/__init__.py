@@ -36,6 +36,8 @@ from icon_validator.rules.plugin_validators.vendor_validator import *
 from icon_validator.rules.plugin_validators.version_validator import *
 from icon_validator.rules.plugin_validators.support_validator import *
 from icon_validator.rules.plugin_validators.runtime_validator import *
+from icon_validator.rules.plugin_validators.version_pin_validator import *
+from icon_validator.rules.plugin_validators.example_input_validator import *
 
 # Workflow validators
 from icon_validator.rules.workflow_validators.workflow_directory_name_match_validator import *
@@ -83,6 +85,8 @@ VALIDATORS = [
     HelpInputOutputValidator(),
     SupportValidator(),
     RuntimeValidator(),
+    VersionPinValidator(),
+    ExampleInputValidator(),
 ]
 
 JENKINS_VALIDATORS = [
