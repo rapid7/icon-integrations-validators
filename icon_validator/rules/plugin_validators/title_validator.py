@@ -7,6 +7,7 @@ class TitleValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_title(title, plugin_title=False):
+        title_validation_list_lowercase = '", "'.join(title_validation_list).lower()
         if not isinstance(title, str):
             raise ValidationException("Title must not be blank")
         if title == "":
@@ -25,7 +26,10 @@ class TitleValidator(KomandPluginValidator):
             if not title.startswith(word):
                 if word in title_validation_list:
                     if not title.endswith(word):
-                        raise ValidationException(f"Title contains a capitalized '{word}' when it should not.")
+                        raise ValidationException(
+                            'English articles and conjunctions should be lowercase, when in the middle of the sentence:'
+                            f' "{title_validation_list_lowercase}"'
+                        )
 
                 elif "By" == word and not title.endswith("By"):
                     # This is OK: Order By
@@ -62,7 +66,8 @@ class TitleValidator(KomandPluginValidator):
 
             for key, value in dict_[dict_key].items():
                 if "name" in value:
-                    raise ValidationException(f"Deprecated 'name' key '{value}' found when 'title' should be used instead.")
+                    raise ValidationException(
+                        f"Deprecated 'name' key '{value}' found when 'title' should be used instead.")
                 if "title" in value:
                     try:
                         TitleValidator.validate_title(value["title"], plugin_title=False)
