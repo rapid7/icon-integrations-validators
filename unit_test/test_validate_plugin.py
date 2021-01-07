@@ -8,6 +8,7 @@ from icon_validator.rules.plugin_validators.help_input_output_validator import H
 from icon_validator.rules.plugin_validators.version_validator import VersionValidator
 from icon_validator.rules.plugin_validators.version_pin_validator import VersionPinValidator
 from icon_validator.rules.plugin_validators.example_input_validator import ExampleInputValidator
+from icon_validator.rules.plugin_validators.cloud_ready_connection_credential_token_validator import CloudReadyConnectionCredentialTokenValidator
 import requests
 
 
@@ -225,6 +226,12 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/bad_plugin_array_in_help"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [ExampleInputValidator()])
+        self.assertEqual(result, 1)
+
+    def test_cloud_ready_connection_credential_token_validator_should_fail(self):
+        directory_to_test = "plugin_examples/cloud_ready_connection_credential_token_validator"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [CloudReadyConnectionCredentialTokenValidator()])
         self.assertEqual(result, 1)
 
     @staticmethod
