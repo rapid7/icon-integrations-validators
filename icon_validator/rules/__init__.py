@@ -7,6 +7,7 @@ validating InsightConnect plugins and workflows.
 from icon_validator.rules.plugin_validators.acronym_validator import *
 from icon_validator.rules.plugin_validators.changelog_validator import *
 from icon_validator.rules.plugin_validators.confidential_validator import *
+from icon_validator.rules.plugin_validators.connection_validator import *
 from icon_validator.rules.plugin_validators.credentials_validator import *
 from icon_validator.rules.plugin_validators.default_value_validator import *
 from icon_validator.rules.plugin_validators.description_validator import *
@@ -62,6 +63,7 @@ from icon_validator.rules.workflow_validators.workflow_help_plugin_utilization_v
 VALIDATORS = [
     HelpValidator(),
     ChangelogValidator(),
+    ConnectionValidator(),
     RequiredKeysValidator(),
     UseCaseValidator(),
     SpecPropertiesValidator(),

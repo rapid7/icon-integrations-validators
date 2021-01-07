@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.27.0 - Add Connection Validator
 * 2.26.0 - Add Example Input Validator to validate if example field exist in plugin.spec | Remove Mitre from AcronymValidator
 * 2.25.0 - Add Version Pin Validator to validate if dependency versions are pinned in requirements.txt
 * 2.24.0 - Update validators to support validation of plugin tasks.
