@@ -2,7 +2,7 @@ from icon_validator.exceptions import ValidationException
 from icon_validator.rules.validator import KomandPluginValidator
 
 
-class ConnectionValidator(KomandPluginValidator):
+class CloudReadyConnectionCredentialTokenValidator(KomandPluginValidator):
     def validate(self, plugin_spec):
         cloud_ready = plugin_spec.spec_dictionary().get("cloud_ready")
         connection = plugin_spec.spec_dictionary().get("connection")

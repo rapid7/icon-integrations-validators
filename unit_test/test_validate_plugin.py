@@ -228,8 +228,8 @@ class TestPluginValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [ExampleInputValidator()])
         self.assertEqual(result, 1)
 
-    def test_connection_validator_should_fail_for_credential_token(self):
-        directory_to_test = "plugin_examples/connection_validator"
+    def test_cloud_ready_connection_credential_token_validator_should_fail(self):
+        directory_to_test = "plugin_examples/cloud_ready_connection_credential_token_validator"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [ConnectionValidator()])
         self.assertEqual(result, 1)
