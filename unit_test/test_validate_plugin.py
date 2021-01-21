@@ -8,6 +8,7 @@ from icon_validator.rules.plugin_validators.help_input_output_validator import H
 from icon_validator.rules.plugin_validators.version_validator import VersionValidator
 from icon_validator.rules.plugin_validators.version_pin_validator import VersionPinValidator
 from icon_validator.rules.plugin_validators.encoding_validator import EncodingValidator
+from icon_validator.rules.plugin_validators.example_input_validator import ExampleInputValidator
 import requests
 
 
@@ -18,21 +19,21 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/good_plugin"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, False)
-        self.assertFalse(result)
+        self.assertEqual(result, 0)
 
     def test_plugin_validate_with_task(self):
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/good_plugin_with_task"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, False)
-        self.assertFalse(result)
+        self.assertEqual(result, 0)
 
     def test_title_validator(self):
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/title_tests"
         file_to_test = "plugin_no_title.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [TitleValidator()])
-        self.assertTrue(result)
+        self.assertEqual(result, 1)
 
     def test_title_validator_with_number_in_title(self):
         # example workflow in plugin_examples directory. Run tests with these files
@@ -46,7 +47,7 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/profanity_tests"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [ProfanityValidator()])
-        self.assertTrue(result)
+        self.assertEqual(result, 1)
 
     def test_array_in_help(self):
         # example workflow in plugin_examples directory. Run tests with these files
@@ -94,6 +95,7 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/version_validator"
         file_to_test = "plugin.spec_bad.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [VersionValidator()])
+        self.assertEqual(result, 1)
 
     def test_version_pin_validator_should_success(self):
         # example workflow in plugin_examples directory. Run tests with these files
@@ -212,7 +214,28 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/bad_plugin_no_required_key_in_output"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True)
-        self.assertTrue(result)
+        self.assertEqual(result, 1)
+
+    def test_example_input_validator_should_success(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_test"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [ExampleInputValidator()])
+        self.assertEqual(result, 0)
+
+    def test_example_input_validator_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_no_example_in_spec"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [ExampleInputValidator()])
+        self.assertEqual(result, 1)
+
+    def test_example_input_validator_should_fail_when_not_all_exists(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_array_in_help"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [ExampleInputValidator()])
+        self.assertEqual(result, 1)
 
     @staticmethod
     def replace_requirements(path, text):
