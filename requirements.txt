@@ -5,3 +5,5 @@ insightconnect-integrations-plugin-spec-tooling~=1.0
 requests==2.22.0
 urlextract==0.14.0
 typing==3.7.4.1
+setuptools~=51.1.1
+spellchecker==0.4

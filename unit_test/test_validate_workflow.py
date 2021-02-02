@@ -18,6 +18,7 @@ from icon_validator.rules.workflow_validators.workflow_description_validator imp
 from icon_validator.rules.workflow_validators.workflow_name_validator import WorkflowNameValidator
 from icon_validator.rules.workflow_validators.workflow_icon_validator import WorkflowICONFileValidator
 from icon_validator.rules.workflow_validators.workflow_help_plugin_utilization_validator import WorkflowHelpPluginUtilizationValidator
+from icon_validator.rules.workflow_validators.workflow_spelling_validator import WorkflowSpellingValidator
 
 
 class TestWorkflowValidate(unittest.TestCase):
@@ -167,4 +168,11 @@ class TestWorkflowValidate(unittest.TestCase):
         directory_to_test = "workflow_examples/plugin_utilization_tests"
         file_to_test = "workflow_bad_utilization.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowHelpPluginUtilizationValidator()])
+        self.assertTrue(result)
+
+    def test_spelling_validator(self):
+        # Test bad workflows. This will test the workflow_spelling_validator
+        directory_to_test = "workflow_examples/spelling_tests"
+        file_to_test = "workflow_spelling.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowSpellingValidator()])
         self.assertTrue(result)

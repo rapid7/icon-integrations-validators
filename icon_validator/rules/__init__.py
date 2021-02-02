@@ -24,6 +24,7 @@ from icon_validator.rules.plugin_validators.output_validator import *
 from icon_validator.rules.plugin_validators.password_validator import *
 from icon_validator.rules.plugin_validators.print_validator import *
 from icon_validator.rules.plugin_validators.profanity_validator import *
+from icon_validator.rules.plugin_validators.spelling_validator import *
 from icon_validator.rules.plugin_validators.regeneration_validator import *
 from icon_validator.rules.plugin_validators.required_keys_validator import *
 from icon_validator.rules.plugin_validators.required_validator import *
@@ -50,6 +51,7 @@ from icon_validator.rules.workflow_validators.workflow_vendor_validator import *
 from icon_validator.rules.workflow_validators.workflow_version_validator import *
 from icon_validator.rules.workflow_validators.workflow_support_validator import *
 from icon_validator.rules.workflow_validators.workflow_profanity_validator import *
+from icon_validator.rules.workflow_validators.workflow_spelling_validator import *
 from icon_validator.rules.workflow_validators.workflow_png_hash_validator import *
 from icon_validator.rules.workflow_validators.workflow_icon_filename_validator import *
 from icon_validator.rules.workflow_validators.workflow_screenshot_validator import *
@@ -79,6 +81,7 @@ VALIDATORS = [
     VersionValidator(),
     DockerfileParentValidator(),
     LoggingValidator(),
+    WorkflowSpellingValidator(),
     ProfanityValidator(),
     AcronymValidator(),
     JSONValidator(),
@@ -117,6 +120,7 @@ WORKFLOW_VALIDATORS = [
     WorkflowDescriptionValidator(),
     WorkflowNameValidator(),
     WorkflowProfanityValidator(),
+    WorkflowSpellingValidator(),
     WorkflowHelpPluginUtilizationValidator(),
     WorkflowICONFileValidator(),
 ]
