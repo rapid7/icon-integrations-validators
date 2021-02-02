@@ -9,6 +9,7 @@ from icon_validator.rules.plugin_validators.version_validator import VersionVali
 from icon_validator.rules.plugin_validators.version_pin_validator import VersionPinValidator
 from icon_validator.rules.plugin_validators.example_input_validator import ExampleInputValidator
 from icon_validator.rules.plugin_validators.cloud_ready_connection_credential_token_validator import CloudReadyConnectionCredentialTokenValidator
+from icon_validator.rules.plugin_validators.spelling_validator import SpellingValidator
 import requests
 
 
@@ -232,6 +233,18 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/cloud_ready_connection_credential_token_validator"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [CloudReadyConnectionCredentialTokenValidator()])
+        self.assertEqual(result, 1)
+
+    def test_example_spell_check_should_success(self):
+        directory_to_test = "plugin_examples/good_spell_check"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [SpellingValidator()])
+        self.assertEqual(result, 0)
+
+    def test_example_spell_check_should_fail(self):
+        directory_to_test = "plugin_examples/bad_spell_check"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [SpellingValidator()])
         self.assertEqual(result, 1)
 
     @staticmethod
