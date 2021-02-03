@@ -17,6 +17,7 @@ jobs:
       run: |
         pip install .
         pip install pytest
+        pip install -r requirements.txt
         cd unit_test
         pytest test_validate_workflow.py
         pytest test_validate_plugin.py
