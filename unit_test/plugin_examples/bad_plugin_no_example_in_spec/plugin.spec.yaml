@@ -89,7 +89,7 @@ actions:
     description: Adds the specified Active Directory user
     input:
       domain_name:
-        title: Domain Name
+        title: Domain A Name
         type: string
         description: The domain name this user will belong to, e.g. mydomain.com
         required: true
