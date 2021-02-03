@@ -27,7 +27,7 @@ class TitleValidator(KomandPluginValidator):
                 if word in title_validation_list:
                     if not title.endswith(word):
                         raise ValidationException(
-                            'English articles and conjunctions should be lowercase, when in the middle of the sentence:'
+                            'English articles and conjunctions should be lowercase when in the middle of the sentence:'
                             f' "{title_validation_list_lowercase}"'
                         )
 
