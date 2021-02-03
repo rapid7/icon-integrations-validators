@@ -62,7 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
-* 2.27.1 - Update Workflow Description Validator to validate exist `description` in .icon file | Update Workflow Description Validator to validate that the workflow `description` in .icon file matches the description in workflow.spec.yaml
+* 2.27.1 - Update Workflow Description Validator to validate existence of `description` in workflow .icon file | Update Workflow Description Validator to validate that the workflow `description` in workflow .icon file matches the description in workflow.spec.yaml
 * 2.27.0 - Add CloudReadyConnectionCredentialToken Validator
 * 2.26.0 - Add Example Input Validator to validate if example field exist in plugin.spec | Remove Mitre from AcronymValidator
 * 2.25.0 - Add Version Pin Validator to validate if dependency versions are pinned in requirements.txt

@@ -18,18 +18,18 @@ class WorkflowDescriptionValidator(KomandPluginValidator):
     @staticmethod
     def validate_icon_description_exist_callback(spec, workflow_version):
         if "description" not in workflow_version:
-            raise ValidationException("Workflow description in icon file is missing.")
+            raise ValidationException("Workflow description in workflow .icon file is missing.")
 
     @staticmethod
     def validate_icon_description_empty_callback(spec, workflow_version):
         if workflow_version.get("description") == "":
-            raise ValidationException("Workflow description in icon file can not be blank")
+            raise ValidationException("Workflow description in workflow .icon file can not be blank")
 
     @staticmethod
     def validate_icon_description_match_callback(spec, workflow_version):
         spec_description = spec.spec_dictionary()["description"]
         if workflow_version.get("description") != spec_description:
-            raise ValidationException("Workflow description not match icon file description")
+            raise ValidationException("Workflow description mismatch between workflow.spec.yaml and workflow .icon file")
 
     @staticmethod
     def validate_icon_description_exists(spec):
