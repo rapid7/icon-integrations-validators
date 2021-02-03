@@ -7,6 +7,7 @@ from icon_validator.rules.plugin_validators.profanity_validator import Profanity
 from icon_validator.rules.plugin_validators.help_input_output_validator import HelpInputOutputValidator
 from icon_validator.rules.plugin_validators.version_validator import VersionValidator
 from icon_validator.rules.plugin_validators.version_pin_validator import VersionPinValidator
+from icon_validator.rules.plugin_validators.encoding_validator import EncodingValidator
 from icon_validator.rules.plugin_validators.example_input_validator import ExampleInputValidator
 from icon_validator.rules.plugin_validators.cloud_ready_connection_credential_token_validator import CloudReadyConnectionCredentialTokenValidator
 import requests
@@ -42,6 +43,13 @@ class TestPluginValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [TitleValidator()])
         self.assertEqual(result, 0)
 
+    def test_title_validator_validator_capitalized_word_where_should_not_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_no_example_in_spec"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [TitleValidator()])
+        self.assertEqual(result, 1)
+
     def test_profanity_validator(self):
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/profanity_tests"
@@ -65,6 +73,15 @@ class TestPluginValidate(unittest.TestCase):
         HelpInputOutputValidator.violations = []
         HelpInputOutputValidator.violated = 0
         self.assertEqual(result, 1, "Result should be failed")
+
+    def test_encoding_validator(self):
+        directory_to_test = "plugin_examples/encoding_tests"
+        file_to_test = "plugin_bad_encoding.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [EncodingValidator()])
+        self.assertEqual(result, 1)
+        file_to_test = "plugin_good_encoding.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [EncodingValidator()])
+        self.assertEqual(result, 0)
 
     def test_version_validator(self):
         # example workflow in plugin_examples directory. Run tests with these files
