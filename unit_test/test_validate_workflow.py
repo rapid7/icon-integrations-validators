@@ -19,6 +19,7 @@ from icon_validator.rules.workflow_validators.workflow_name_validator import Wor
 from icon_validator.rules.workflow_validators.workflow_icon_validator import WorkflowICONFileValidator
 from icon_validator.rules.workflow_validators.workflow_help_plugin_utilization_validator import WorkflowHelpPluginUtilizationValidator
 from icon_validator.rules.workflow_validators.workflow_spelling_validator import WorkflowSpellingValidator
+from icon_validator.rules.workflow_validators.workflow_encoding_validator import WorkflowEncodingValidator
 
 
 class TestWorkflowValidate(unittest.TestCase):
@@ -176,3 +177,30 @@ class TestWorkflowValidate(unittest.TestCase):
         file_to_test = "workflow_spelling.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowSpellingValidator()])
         self.assertTrue(result)
+
+    def test_encoding_validator(self):
+        directory_to_test = "workflow_examples/encoding_tests"
+        file_to_test = "workflow_bad_encoding.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowEncodingValidator()])
+        self.assertEqual(result, 1)
+        file_to_test = "workflow_good_encoding.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowEncodingValidator()])
+        self.assertEqual(result, 0)
+
+    def test_icon_validator_description_should_success(self):
+        directory_to_test = "workflow_examples/description_validator_good"
+        file_to_test = "workflow.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowDescriptionValidator()])
+        self.assertEqual(result, 0)
+
+    def test_icon_validator_description_empty_icon_description_should_fail(self):
+        directory_to_test = "workflow_examples/description_validator_empty_description_in_icon"
+        file_to_test = "workflow.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowDescriptionValidator()])
+        self.assertEqual(result, 1)
+
+    def test_icon_validator_description_not_match_descriptions_should_fail(self):
+        directory_to_test = "workflow_examples/description_validator_bad"
+        file_to_test = "workflow.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowDescriptionValidator()])
+        self.assertEqual(result, 1)

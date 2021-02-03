@@ -9,8 +9,11 @@ class VersionPinValidator(KomandPluginValidator):
 
     @staticmethod
     def read_requirements(spec):
-        with open(os.path.join(spec.directory, "requirements.txt")) as requirements:
-            return requirements.read().strip()
+        try:
+            with open(os.path.join(spec.directory, "requirements.txt")) as requirements:
+                return requirements.read().strip()
+        except FileNotFoundError:
+            raise ValidationException("requirements.txt not found. Please be sure to include this file in your plugin directory.")
 
     def validate(self, spec):
         requirements_text = self.read_requirements(spec).split("\n")
