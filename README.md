@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.29.0 - Update UseCaseValidator to print valid use cases | Update UseCaseValidator to identify duplicates use cases in keywords
 * 2.28.0 - Add Encoding Validators to look for problematic characters | Update Workflow Description Validator to validate existence of `description` in workflow .icon file | Update Workflow Description Validator to validate that the workflow `description` in workflow .icon file matches the description in workflow.spec.yaml | Update `title_validation_list` | Change error message in `title_validator` for capitalized word when it should not
 * 2.27.0 - Add CloudReadyConnectionCredentialToken Validator
 * 2.26.0 - Add Example Input Validator to validate if example field exist in plugin.spec | Remove Mitre from AcronymValidator

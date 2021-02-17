@@ -19,6 +19,7 @@ from icon_validator.rules.workflow_validators.workflow_name_validator import Wor
 from icon_validator.rules.workflow_validators.workflow_icon_validator import WorkflowICONFileValidator
 from icon_validator.rules.workflow_validators.workflow_help_plugin_utilization_validator import WorkflowHelpPluginUtilizationValidator
 from icon_validator.rules.workflow_validators.workflow_encoding_validator import WorkflowEncodingValidator
+from icon_validator.rules.plugin_validators.use_case_validator import UseCaseValidator
 
 
 class TestWorkflowValidate(unittest.TestCase):
@@ -195,4 +196,28 @@ class TestWorkflowValidate(unittest.TestCase):
         directory_to_test = "workflow_examples/description_validator_bad"
         file_to_test = "workflow.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowDescriptionValidator()])
+        self.assertEqual(result, 1)
+
+    def test_use_case_validator_should_success(self):
+        directory_to_test = "workflow_examples/description_validator_good"
+        file_to_test = "workflow.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [UseCaseValidator()])
+        self.assertEqual(result, 0)
+
+    def test_use_case_validator_use_case_not_from_list_should_fail(self):
+        directory_to_test = "workflow_examples/description_validator_use_case_not_from_list_bad"
+        file_to_test = "workflow.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [UseCaseValidator()])
+        self.assertEqual(result, 1)
+
+    def test_use_case_validator_use_case_empty_should_fail(self):
+        directory_to_test = "workflow_examples/description_validator_empty_use_case_bad"
+        file_to_test = "workflow.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [UseCaseValidator()])
+        self.assertEqual(result, 1)
+
+    def test_use_case_validator_keywords_from_use_case_list_should_fail(self):
+        directory_to_test = "workflow_examples/description_validator_keywords_from_use_case_list_bad"
+        file_to_test = "workflow.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [UseCaseValidator()])
         self.assertEqual(result, 1)
