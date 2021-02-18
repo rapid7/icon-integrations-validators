@@ -190,9 +190,3 @@ class TestWorkflowValidate(unittest.TestCase):
         file_to_test = "workflow.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowDescriptionValidator()])
         self.assertEqual(result, 1)
-
-    def test_icon_validator_description_not_match_descriptions_should_fail(self):
-        directory_to_test = "workflow_examples/description_validator_bad"
-        file_to_test = "workflow.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [WorkflowDescriptionValidator()])
-        self.assertEqual(result, 1)
