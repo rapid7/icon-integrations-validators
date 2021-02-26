@@ -26,12 +26,6 @@ class WorkflowDescriptionValidator(KomandPluginValidator):
             raise ValidationException("Workflow description in workflow .icon file can not be blank")
 
     @staticmethod
-    def validate_icon_description_match_callback(spec, workflow_version):
-        spec_description = spec.spec_dictionary()["description"]
-        if workflow_version.get("description") != spec_description:
-            raise ValidationException("Workflow description mismatch between workflow.spec.yaml and workflow .icon file")
-
-    @staticmethod
     def validate_icon_description_exists(spec):
         WorkflowDescriptionValidator.walk_icon_workflows(
             spec,
@@ -40,13 +34,6 @@ class WorkflowDescriptionValidator(KomandPluginValidator):
         WorkflowDescriptionValidator.walk_icon_workflows(
             spec,
             WorkflowDescriptionValidator.validate_icon_description_empty_callback
-        )
-
-    @staticmethod
-    def validate_icon_description_match_spec(spec):
-        WorkflowDescriptionValidator.walk_icon_workflows(
-            spec,
-            WorkflowDescriptionValidator.validate_icon_description_match_callback
         )
 
     @staticmethod
@@ -71,7 +58,6 @@ class WorkflowDescriptionValidator(KomandPluginValidator):
         WorkflowDescriptionValidator.validate_workflow_description_exists(spec)
         WorkflowDescriptionValidator.validate_workflow_description_punctuation(spec.spec_dictionary()["description"])
         WorkflowDescriptionValidator.validate_icon_description_exists(spec)
-        WorkflowDescriptionValidator.validate_icon_description_match_spec(spec)
 
     @staticmethod
     def read_icon(spec, file_name):
