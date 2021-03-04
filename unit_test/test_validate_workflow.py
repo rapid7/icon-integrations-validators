@@ -19,9 +19,11 @@ from icon_validator.rules.workflow_validators.workflow_name_validator import Wor
 from icon_validator.rules.workflow_validators.workflow_icon_validator import WorkflowICONFileValidator
 from icon_validator.rules.workflow_validators.workflow_help_plugin_utilization_validator import WorkflowHelpPluginUtilizationValidator
 from icon_validator.rules.workflow_validators.workflow_encoding_validator import WorkflowEncodingValidator
+from icon_validator.rules.workflow_validators.workflow_parameters_keyword_validator import WorkflowParametersKeywordValidator
 
 
 class TestWorkflowValidate(unittest.TestCase):
+
 
     def test_good_workflow_validator(self):
         # Test good workflow. This should pass all validation
@@ -29,6 +31,18 @@ class TestWorkflowValidate(unittest.TestCase):
         file_to_test = "workflow.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True)
         self.assertFalse(result)
+
+    def test_parameters_keyword_good(self):
+        directory_to_test = "workflow_examples/parameters_good"
+        file_to_test = "workflow.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowParametersKeywordValidator()])
+        self.assertFalse(result)
+
+    def test_parameters_keyword_bad(self):
+        directory_to_test = "workflow_examples/parameters_bad"
+        file_to_test = "workflow.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowParametersKeywordValidator()])
+        self.assertTrue(result)
 
     def test_vendor_validator(self):
         # Test bad workflows. This will test the workflow_vendor_validator
