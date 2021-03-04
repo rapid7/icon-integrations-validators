@@ -17,8 +17,9 @@ class WorkflowParametersKeywordValidator(KomandPluginValidator):
             workflow_version = icon_content.get("kom").get("workflowVersions")[0]
             workflow_version_keys = list(workflow_version.keys())
         except Exception as e:
-            raise ValidationException("The .icon Workflow file may be corrupt, could not validate keys.")
+            raise ValidationException("The .icon workflow file may be corrupt, could not validate keys.")
 
+        # See if we have a parameters section in the WF and verify it isn't empty
         if "parameters" in workflow_version_keys:
             parameters = workflow_version.get("parameters")
             if parameters:
