@@ -15,7 +15,7 @@ class WorkflowTitleValidator(KomandPluginValidator):
         Checks that title is properly capitalized.
         """
         if "title" not in spec.spec_dictionary():
-            raise ValidationException("Plugin title is missing.")
+            raise ValidationException("Workflow title is missing.")
 
         title = spec.spec_dictionary()["title"]
 
