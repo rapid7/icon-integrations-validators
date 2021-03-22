@@ -10,6 +10,7 @@ from icon_validator.rules.plugin_validators.version_pin_validator import Version
 from icon_validator.rules.plugin_validators.encoding_validator import EncodingValidator
 from icon_validator.rules.plugin_validators.example_input_validator import ExampleInputValidator
 from icon_validator.rules.plugin_validators.cloud_ready_connection_credential_token_validator import CloudReadyConnectionCredentialTokenValidator
+from icon_validator.rules.plugin_validators.use_case_validator import UseCaseValidator
 import requests
 
 
@@ -249,6 +250,34 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/cloud_ready_connection_credential_token_validator"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [CloudReadyConnectionCredentialTokenValidator()])
+        self.assertEqual(result, 1)
+
+    def test_use_case_validator_should_success(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [UseCaseValidator()])
+        self.assertEqual(result, 0)
+
+    def test_use_case_validator_use_case_not_from_list_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_bad_use_case_in_spec"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [UseCaseValidator()])
+        self.assertEqual(result, 1)
+
+    def test_use_case_validator_use_case_empty_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_no_use_case_in_spec"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [UseCaseValidator()])
+        self.assertEqual(result, 1)
+
+    def test_use_case_validator_keywords_from_use_case_list_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_keywords_from_use_case_list_in_spec"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [UseCaseValidator()])
         self.assertEqual(result, 1)
 
     @staticmethod

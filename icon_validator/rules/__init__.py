@@ -124,4 +124,5 @@ WORKFLOW_VALIDATORS = [
     WorkflowHelpPluginUtilizationValidator(),
     WorkflowICONFileValidator(),
     WorkflowEncodingValidator(),
+    UseCaseValidator(),
 ]
