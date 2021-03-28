@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.32.0 - Update HelpValidator to identify duplicate headings | Update ConfidentialValidator to allow more e-mail examples
 * 2.31.0 - Update UseCaseValidator to print valid use cases | Update UseCaseValidator to identify duplicate use cases in keywords
 * 2.30.0 - Add WorkflowParametersKeywordValidator
 * 2.29.0 - Remove Workflow Description Validator to validate that the workflow `description` in workflow .icon file matches the description in workflow.spec.yaml
