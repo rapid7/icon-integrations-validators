@@ -41,7 +41,7 @@ class ExampleInputValidator(KomandPluginValidator):
     def get_empty_example_message(elements: dict, element_type: str, name: str = None):
         empty_example_messages = []
         for input_name, input_item in elements.items():
-            if not input_item.get("example"):
+            if "example" not in input_item:
                 msg = f"In {element_type}"
                 if name:
                     msg += f" \"{name}\""

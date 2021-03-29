@@ -99,6 +99,9 @@ class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
 
         plugins_utilized = re.findall(regex, help_str, re.DOTALL)
         # Split each line into a sub string
+        if not plugins_utilized:
+            return []
+
         plugins_list = plugins_utilized[0].split("\n")
         # remove trailing and leading lines so that only plugin utilization data is left
         plugins_list = list(
@@ -110,6 +113,7 @@ class WorkflowHelpPluginUtilizationValidator(KomandPluginValidator):
         for plugin in plugins_list:
             temp = plugin.split("|")
             plugins_dict_list.append({"plugin": temp[1], "version": temp[2], "count": int(temp[3])})
+
         return plugins_dict_list
 
     def validate(self, spec):

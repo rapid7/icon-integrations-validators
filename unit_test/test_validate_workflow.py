@@ -184,6 +184,18 @@ class TestWorkflowValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [WorkflowHelpPluginUtilizationValidator()])
         self.assertTrue(result)
 
+    def test_workflow_plugin_utilization_validator_no_plugin_in_help_should_success(self):
+        directory_to_test = "workflow_examples/help_plugin_utilization_validator_no_plugin_in_help"
+        file_to_test = "workflow_bad_utilization.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowHelpPluginUtilizationValidator()])
+        self.assertEqual(result, 0)
+
+    def test_workflow_plugin_utilization_validator_in_help_should_fail(self):
+        directory_to_test = "workflow_examples/bad_help_plugin_utilization_validator_bad_plugin_version"
+        file_to_test = "workflow_bad_utilization.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [WorkflowHelpPluginUtilizationValidator()])
+        self.assertEqual(result, 1)
+
     def test_encoding_validator(self):
         directory_to_test = "workflow_examples/encoding_tests"
         file_to_test = "workflow_bad_encoding.spec.yaml"
