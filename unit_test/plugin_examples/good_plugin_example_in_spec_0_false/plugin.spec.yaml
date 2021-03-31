@@ -1,0 +1,170 @@
+plugin_spec_version: v2
+extension: plugin
+products: [insightconnect]
+name: active_directory_ldap
+title: Active Directory LDAP
+description: This plugin utilizes Microsoft\'s Active Directory service to create and manage domains, users, and objects within a network
+version: 3.2.8
+vendor: rapid7
+support: rapid7
+status: []
+resources:
+  source_url: https://github.com/rapid7/insightconnect-plugins/tree/master/active_directory_ldap
+  license_url: https://github.com/rapid7/insightconnect-plugins/blob/master/LICENSE
+  vendor_url: https://www.microsoft.com
+tags:
+- ldap
+- active directory
+- microsoft
+hub_tags:
+  use_cases: [user_management, credential_management, application_management, threat_detection_and_response]
+  keywords: [ldap, active directory, microsoft]
+  features: []
+types:
+  result:
+    attributes:
+      type: object
+    dn:
+      type: string
+connection:
+  host:
+    title: Host
+    description: Server Host, e.g. ldap://192.5.5.5. Must use either ldap:// or ldaps://
+      for SSL prefix
+    type: string
+    required: true
+    example: 0
+  port:
+    title: Port
+    description: Port, e.g. 389
+    type: integer
+    default: 389
+    required: true
+    example: 0
+  use_ssl:
+    title: Use SSL
+    type: boolean
+    description: Use SSL?
+    required: true
+    example: False
+  username_password:
+    title: Username and Password
+    type: credential_username_password
+    description: Username and password
+    required: true
+    example: None
+actions:
+  query:
+    title: Query
+    description: Run an LDAP query
+    input:
+      search_filter:
+        title: Search Filter
+        type: string
+        description: 'The filter of the search request. It must conform to the LDAP
+          filter syntax specified in RFC4515. Example: (accountName=joesmith)'
+        required: true
+        example: test
+      search_base:
+        title: Search Base
+        type: string
+        description: The base of the search request
+        required: true
+        example: test
+    output:
+      results:
+        description: Results returned
+        type: '[]result'
+        required: false
+  delete:
+    title: Delete
+    description: Deletes the LDAP object specified
+    input:
+      distinguished_name:
+        title: Distinguished Name
+        type: string
+        description: The distinguished name of the object to delete. Example CN=user,OU=domain_users,DC=mydomain,DC=com
+        required: true
+        example: 0
+    output:
+      success:
+        description: Operation status
+        type: boolean
+        required: false
+  add_user:
+    title: Add
+    description: Adds the specified Active Directory user
+    input:
+      domain_name:
+        title: Domain A Name
+        type: string
+        description: The domain name this user will belong to, e.g. mydomain.com
+        required: true
+        example: ""
+      logon_name:
+        title: Logon Name
+        type: string
+        description: The logon name for the account
+        required: true
+        example: 0
+      first_name:
+        title: First Name
+        type: string
+        description: User's first name
+        required: true
+        example: 0
+      last_name:
+        title: Last Name
+        type: string
+        description: User's last name
+        required: true
+        example: 0
+      user_ou:
+        title: User OU
+        type: string
+        description: The OU that the user account will be created in
+        required: true
+        default: Users
+        example: 0
+      password:
+        title: Password
+        type: password
+        description: The account's starting password
+        required: true
+        example: 0
+      account_disabled:
+        title: Account Disabled
+        type: string
+        enum:
+        - 'true'
+        - 'false'
+        description: Set this to true to disable the user account at creation
+        required: true
+        default: 'true'
+        example: True
+      user_principal_name:
+        title: User Principal Name
+        description: The users principal name, e.g. user@example.com
+        type: string
+        required: true
+        example: 0
+      additional_parameters:
+        title: Additional Parameters
+        description: 'Add additional user parameters in JSON format e.g. {''telephoneNumber'':
+          ''(617)555-1234''}'
+        type: object
+        required: false
+        example: {}
+    output:
+      success:
+        description: Operation status
+        type: boolean
+        required: false
+  move_object:
+    title: Move Object
+    description: Move an Active Directory object from one organizational unit to another
+    output:
+      success:
+        description: Operation status
+        type: boolean
+        required: false

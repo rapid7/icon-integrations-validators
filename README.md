@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.32.0 - Fix problem when ExampleInputValidator fail if in `example` field are 0, False or None | Update WorkflowHelpPluginUtilizationValidator to not fail when plugin not in `help.md` and in `.icon` file
 * 2.31.0 - Update UseCaseValidator to print valid use cases | Update UseCaseValidator to identify duplicate use cases in keywords
 * 2.30.0 - Add WorkflowParametersKeywordValidator
 * 2.29.0 - Remove Workflow Description Validator to validate that the workflow `description` in workflow .icon file matches the description in workflow.spec.yaml
