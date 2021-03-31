@@ -324,19 +324,19 @@ class TestPluginValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [HelpValidator()])
         self.assertEqual(result, 1)
 
-    def test_confidential_validator_validate_email_should_success(self):
-        # example workflow in plugin_examples directory. Run tests with these files
-        directory_to_test = "plugin_examples/good_plugin_validate_email"
-        file_to_test = "plugin.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [ConfidentialValidator()])
-        self.assertEqual(result, 0)
-
     def test_confidential_validator_validate_email_should_fail(self):
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/bad_plugin_validate_email"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [ConfidentialValidator()])
         self.assertEqual(result, 1)
+
+    def test_confidential_validator_validate_email_should_success(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin_validate_email"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [ConfidentialValidator()])
+        self.assertEqual(result, 0)
 
     @staticmethod
     def replace_requirements(path, text):

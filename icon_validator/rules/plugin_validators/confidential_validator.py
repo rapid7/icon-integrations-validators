@@ -58,6 +58,7 @@ class ConfidentialValidator(KomandPluginValidator):
                     ConfidentialValidator.validate_emails(contents, path_to_file)
 
     def validate(self, spec: KomandPluginSpec):
+        ConfidentialValidator.violations = []
         ConfidentialValidator.validate_help(spec.directory)
         # ConfidentialValidator.validate_code(spec.directory)
         ConfidentialValidator.validate_tests(spec.directory)
