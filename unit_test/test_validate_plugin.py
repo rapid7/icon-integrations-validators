@@ -11,6 +11,8 @@ from icon_validator.rules.plugin_validators.encoding_validator import EncodingVa
 from icon_validator.rules.plugin_validators.example_input_validator import ExampleInputValidator
 from icon_validator.rules.plugin_validators.cloud_ready_connection_credential_token_validator import CloudReadyConnectionCredentialTokenValidator
 from icon_validator.rules.plugin_validators.use_case_validator import UseCaseValidator
+from icon_validator.rules.plugin_validators.help_validator import HelpValidator
+from icon_validator.rules.plugin_validators.confidential_validator import ConfidentialValidator
 import requests
 
 
@@ -286,6 +288,55 @@ class TestPluginValidate(unittest.TestCase):
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [UseCaseValidator()])
         self.assertEqual(result, 1)
+
+    def test_help_validator_duplicate_headings_should_success(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [HelpValidator()])
+        self.assertEqual(result, 0)
+
+    def test_help_validator_duplicate_headings_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_duplicate_headings_in_help"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [HelpValidator()])
+        self.assertEqual(result, 1)
+
+    def test_help_validator_help_headers_should_success(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [HelpValidator()])
+        self.assertEqual(result, 0)
+
+    def test_help_validator_help_headers_missing_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_missing_headings_in_help"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [HelpValidator()])
+        self.assertEqual(result, 1)
+
+    def test_help_validator_help_headers_not_found_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_headings_not_found_in_help"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [HelpValidator()])
+        self.assertEqual(result, 1)
+
+    def test_confidential_validator_validate_email_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_validate_email"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [ConfidentialValidator()])
+        self.assertEqual(result, 1)
+
+    def test_confidential_validator_validate_email_should_success(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin_validate_email"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [ConfidentialValidator()])
+        self.assertEqual(result, 0)
 
     @staticmethod
     def replace_requirements(path, text):
