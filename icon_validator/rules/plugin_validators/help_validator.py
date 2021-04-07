@@ -7,6 +7,22 @@ from icon_validator.exceptions import ValidationException
 class HelpValidator(KomandPluginValidator):
     taskExist = False
 
+    HELP_HEADERS_LIST = [
+        "# Description",
+        "# Key Features",
+        "# Requirements",
+        "# Documentation",
+        "## Setup",
+        "## Technical Details",
+        "### Actions",
+        "### Triggers",
+        "### Custom Output Types",
+        "## Troubleshooting",
+        "# Version History",
+        "# Links",
+        "## References"
+    ]
+
     @staticmethod
     def validate_help_exists(spec):
         if "help" in spec:
@@ -65,40 +81,36 @@ class HelpValidator(KomandPluginValidator):
                             elif line.startswith(">>>"):
                                 pass
                             else:
-                                raise ValidationException("Help section contains non-matching title in line: {}".format(line))
+                                raise ValidationException(
+                                    "Help section contains non-matching title in line: {}".format(line))
 
     @staticmethod
     def validate_help_headers(help_str):
-        if "# Description" not in help_str:
-            raise ValidationException("Help section is missing header: # Description")
-        if "# Key Features" not in help_str:
-            raise ValidationException("Help section is missing header: # Key Features")
-        if "# Requirements" not in help_str:
-            raise ValidationException("Help section is missing header: # Requirements")
-        if "# Documentation" not in help_str:
-            raise ValidationException("Help section is missing header: # Documentation")
-        if "## Setup" not in help_str:
-            raise ValidationException("Help section is missing header: ## Setup")
-        if "## Technical Details" not in help_str:
-            raise ValidationException("Help section is missing header: ## Technical Details")
-        if "### Actions" not in help_str:
-            raise ValidationException("Help section is missing header: ### Actions")
-        if "### Triggers" not in help_str:
-            raise ValidationException("Help section is missing header: ### Triggers")
         # if plugin without tasks needs not to be regenerated, help.md won't be having Tasks section
         # Only raise exception if plugin.spec.yaml contains task and help.md does not
         if HelpValidator.taskExist and "### Tasks" not in help_str:
             raise ValidationException("Help section is missing header: ### Tasks")
-        if "### Custom Output Types" not in help_str:
-            raise ValidationException("Help section is missing header: ### Custom Output Types")
-        if "## Troubleshooting" not in help_str:
-            raise ValidationException("Help section is missing header: ## Troubleshooting")
-        if "# Version History" not in help_str:
-            raise ValidationException("Help section is missing header: # Version History")
-        if "# Links" not in help_str:
-            raise ValidationException("Help section is missing header: # Links")
-        if "## References" not in help_str:
-            raise ValidationException("Help section is missing header: ## References")
+
+        help_headers_errors = []
+        for header in HelpValidator.HELP_HEADERS_LIST:
+            if header not in help_str:
+                help_headers_errors.append(f"Help section is missing header: {header}")
+
+        if help_headers_errors:
+            raise ValidationException("\n".join(help_headers_errors))
+
+    @staticmethod
+    def validate_duplicate_headings(help_raw: str):
+        header_errors = []
+        for header in HelpValidator.HELP_HEADERS_LIST:
+            normalize_header = header.strip(" #")
+            pattern = re.compile(f"#[ ]*{normalize_header}")
+            if len(pattern.findall(help_raw)) > 1:
+                header_errors.append(f"Please check {header} headings and remove duplicates.")
+
+        if header_errors:
+            joined_errors = "\n".join(header_errors)
+            raise ValidationException(f"More than one headings in type was found. \n{joined_errors}")
 
     def validate(self, spec):
         HelpValidator.validate_help_exists(spec.spec_dictionary())
@@ -108,3 +120,4 @@ class HelpValidator(KomandPluginValidator):
         HelpValidator.validate_version_history(spec.raw_help())
         HelpValidator.validate_same_actions_title(spec.spec_dictionary(), spec.raw_help())
         HelpValidator.validate_title_spelling(spec.spec_dictionary(), spec.raw_help())
+        HelpValidator.validate_duplicate_headings(spec.raw_help())

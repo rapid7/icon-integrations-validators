@@ -62,7 +62,11 @@ be on your way to contributing!
 
 ## Changelog
 
-* 2.31.0 - Fix issue where WorkflowParametersKeywordValidator was not being called
+
+* 2.34.0 - Fix issue where WorkflowParametersKeywordValidator was not being called
+* 2.33.0 - Update HelpValidator to identify duplicate headings | Update ConfidentialValidator to allow more e-mail examples
+* 2.32.0 - Fix problem when ExampleInputValidator fail if in `example` field are 0, False or None | Update WorkflowHelpPluginUtilizationValidator to not fail when plugin not in `help.md` and in `.icon` file
+* 2.31.0 - Update UseCaseValidator to print valid use cases | Update UseCaseValidator to identify duplicate use cases in keywords
 * 2.30.0 - Add WorkflowParametersKeywordValidator
 * 2.29.0 - Remove Workflow Description Validator to validate that the workflow `description` in workflow .icon file matches the description in workflow.spec.yaml
 * 2.28.0 - Add Encoding Validators to look for problematic characters | Update Workflow Description Validator to validate existence of `description` in workflow .icon file | Update Workflow Description Validator to validate that the workflow `description` in workflow .icon file matches the description in workflow.spec.yaml | Update `title_validation_list` | Change error message in `title_validator` for capitalized word when it should not

@@ -31,9 +31,9 @@ class ConfidentialValidator(KomandPluginValidator):
             while "" in matches:
                 matches.remove("")
             for match in matches:
-                if match not in ConfidentialValidator.emails:
+                user_email_pattern = re.compile(r"user\d*\@example.com")
+                if not user_email_pattern.search(match):
                     ConfidentialValidator.violations.append(f"{path_to_file}, line: {i + 1}")
-                    break
 
     # Search code base
     @staticmethod
@@ -58,11 +58,12 @@ class ConfidentialValidator(KomandPluginValidator):
                     ConfidentialValidator.validate_emails(contents, path_to_file)
 
     def validate(self, spec: KomandPluginSpec):
+        ConfidentialValidator.violations = []
         ConfidentialValidator.validate_help(spec.directory)
         # ConfidentialValidator.validate_code(spec.directory)
         ConfidentialValidator.validate_tests(spec.directory)
 
-        if len(ConfidentialValidator.violations):
+        if ConfidentialValidator.violations:
             for violation in ConfidentialValidator.violations:
                 print(f"violation: {violation}")
             raise ValidationException(f"Please use 'user@example.com' when including emails. The above items violated this.")
