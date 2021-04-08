@@ -61,6 +61,7 @@ from icon_validator.rules.workflow_validators.workflow_name_validator import *
 from icon_validator.rules.workflow_validators.workflow_icon_validator import *
 from icon_validator.rules.workflow_validators.workflow_help_plugin_utilization_validator import *
 from icon_validator.rules.workflow_validators.workflow_encoding_validator import *
+from icon_validator.rules.workflow_validators.workflow_parameters_keyword_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
@@ -124,5 +125,6 @@ WORKFLOW_VALIDATORS = [
     WorkflowHelpPluginUtilizationValidator(),
     WorkflowICONFileValidator(),
     WorkflowEncodingValidator(),
-    UseCaseValidator(),
+    WorkflowParametersKeywordValidator(),
+    UseCaseValidator()
 ]
