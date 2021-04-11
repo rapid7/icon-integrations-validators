@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.35.0 - Update DescriptionValidator to print list of missing description field | Update VersionPinValidator to not fail when `git+` is in requirements.txt
 * 2.34.0 - Fix issue where WorkflowParametersKeywordValidator was not being called
 * 2.33.0 - Update HelpValidator to identify duplicate headings | Update ConfidentialValidator to allow more e-mail examples
 * 2.32.0 - Fix problem when ExampleInputValidator fail if in `example` field are 0, False or None | Update WorkflowHelpPluginUtilizationValidator to not fail when plugin not in `help.md` and in `.icon` file

@@ -23,7 +23,7 @@ class VersionPinValidator(KomandPluginValidator):
                 continue
             for requirements_text_one_element in requirements_text_elements.split(","):
                 requirements_text_one_element = requirements_text_one_element.strip()
-                if not re.match(r'.*?(==|===|<|<=|!=|>=|>|~=).*?', requirements_text_one_element):
+                if not requirements_text_one_element.startswith("git+") and not re.match(r'.*?(==|===|<|<=|!=|>=|>|~=).*?', requirements_text_one_element):
                     raise ValidationException(
                         "All Python dependencies must be version pinned. "
                         "Please update all modules in requirements.txt with a specific version pin e.g. lxml==3.7.1"
