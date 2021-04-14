@@ -13,6 +13,7 @@ from icon_validator.rules.plugin_validators.cloud_ready_connection_credential_to
 from icon_validator.rules.plugin_validators.use_case_validator import UseCaseValidator
 from icon_validator.rules.plugin_validators.help_validator import HelpValidator
 from icon_validator.rules.plugin_validators.confidential_validator import ConfidentialValidator
+from icon_validator.rules.plugin_validators.description_validator import DescriptionValidator
 import requests
 
 
@@ -179,6 +180,14 @@ class TestPluginValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [VersionPinValidator()])
         self.assertEqual(result, 0)
 
+    def test_version_pin_validator_should_success_when_git(self):
+        self.replace_requirements("plugin_examples/version_pin_validator/requirements.txt", "git+git://github.com/komand/pycrits@1.0.0#egg=pycrits")
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/version_pin_validator"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [VersionPinValidator()])
+        self.assertEqual(result, 0)
+
     def test_version_pin_validator_should_success_when_majority_sign(self):
         self.replace_requirements("plugin_examples/version_pin_validator/requirements.txt", "ldap3>1.2.3")
         # example workflow in plugin_examples directory. Run tests with these files
@@ -336,6 +345,20 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/good_plugin_validate_email"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [ConfidentialValidator()])
+        self.assertEqual(result, 0)
+
+    def test_description_validator_validate_existed_description_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_no_description"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [DescriptionValidator()])
+        self.assertEqual(result, 1)
+
+    def test_description_validator_validate_existed_description_should_success(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [DescriptionValidator()])
         self.assertEqual(result, 0)
 
     @staticmethod
