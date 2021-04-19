@@ -68,7 +68,7 @@ class CloudReadyValidator(KomandPluginValidator):
                             raise ValidationException(
                                 f"In file {os.path.join(relative_directory_name, filename)} "
                                 "system level command line utilities was found. "
-                                "Cloud Ready plugin can't have any system level command line utilities. "
+                                "A Cloud Ready plugin cannot have any calls to system-level command-line utilities. "
                                 "Please check this file and try again."
                             )
                 except FileNotFoundError:
