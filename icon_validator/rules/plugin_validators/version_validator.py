@@ -22,7 +22,7 @@ class VersionValidator(KomandPluginValidator):
             if line.startswith("version:"):
                 val = line[line.find(" ") + 1:]
                 if "'" in val or '"' in val:
-                    raise ValidationException("Vendor is surrounded by or contains quotes when it should not.")
+                    raise ValidationException("Version is surrounded by or contains quotes when it should not.")
 
     @staticmethod
     def validate_plugin_version(spec):
