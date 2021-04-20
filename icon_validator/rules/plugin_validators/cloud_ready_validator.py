@@ -28,7 +28,7 @@ class CloudReadyValidator(KomandPluginValidator):
     def validate_user_set_to_nobody_in_dockerfile(dockerfile: str):
         if "USER nobody" not in dockerfile:
             raise ValidationException(
-                "Plugin 'USER' must be set to 'nobody' in Dockerfile to be Cloud Ready"
+                "Plugin 'USER' must be set to 'nobody' in Dockerfile to be Cloud Ready."
                 "Please check this field and try again."
             )
 
