@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.36.0 - Add CloudReadyValidator
 * 2.35.0 - Update DescriptionValidator to print list of missing description field | Update VersionPinValidator to not fail when `git+` is in requirements.txt
 * 2.34.0 - Fix issue where WorkflowParametersKeywordValidator was not being called
 * 2.33.0 - Update HelpValidator to identify duplicate headings | Update ConfidentialValidator to allow more e-mail examples

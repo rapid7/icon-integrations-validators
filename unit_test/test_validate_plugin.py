@@ -14,6 +14,7 @@ from icon_validator.rules.plugin_validators.use_case_validator import UseCaseVal
 from icon_validator.rules.plugin_validators.help_validator import HelpValidator
 from icon_validator.rules.plugin_validators.confidential_validator import ConfidentialValidator
 from icon_validator.rules.plugin_validators.description_validator import DescriptionValidator
+from icon_validator.rules.plugin_validators.cloud_ready_validator import CloudReadyValidator
 import requests
 
 
@@ -359,6 +360,48 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/good_plugin"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [DescriptionValidator()])
+        self.assertEqual(result, 0)
+
+    def test_cloud_ready_validator_bad_python_image_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_cloud_ready_bad_docker_image"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [CloudReadyValidator()])
+        self.assertEqual(result, 1)
+
+    def test_cloud_ready_validator_user_root_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_cloud_ready_user_root"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [CloudReadyValidator()])
+        self.assertEqual(result, 1)
+
+    def test_cloud_ready_validator_dockerfile_apt_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_cloud_ready_dockerfile_apt_apk"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [CloudReadyValidator()])
+        self.assertEqual(result, 1)
+
+    def test_cloud_ready_validator_enable_cache_true_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_cloud_ready_enable_cache_true"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [CloudReadyValidator()])
+        self.assertEqual(result, 1)
+
+    def test_cloud_ready_validator_system_command_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_cloud_ready_system_command"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [CloudReadyValidator()])
+        self.assertEqual(result, 1)
+
+    def test_cloud_ready_validator_should_success(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin_cloud_ready"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [CloudReadyValidator()])
         self.assertEqual(result, 0)
 
     @staticmethod
