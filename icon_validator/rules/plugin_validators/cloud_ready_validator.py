@@ -20,7 +20,7 @@ class CloudReadyValidator(KomandPluginValidator):
         if not re.compile(r"FROM rapid7/insightconnect-python-3-38(-slim)?-plugin:(([0-9][0-9]+)|[4-9])")\
                 .match(dockerfile):
             raise ValidationException(
-                "The python runtime must be in 4+ version to be Cloud Ready"
+                "The python runtime must be in 4+ version to be Cloud Ready."
                 "Update Dockerfile and try again."
             )
 
