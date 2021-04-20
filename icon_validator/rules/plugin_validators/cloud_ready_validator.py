@@ -11,7 +11,7 @@ class CloudReadyValidator(KomandPluginValidator):
     def validate_enable_cache_in_plugin_spec(plugin_spec: dict):
         if plugin_spec.get("enable_cache", False):
             raise ValidationException(
-                "'enable_cache' must set to 'false' for a plugin to be Cloud Ready"
+                "'enable_cache' must set to 'false' for a plugin to be Cloud Ready."
                 "Please check this field in plugin.spec and try again."
             )
 
