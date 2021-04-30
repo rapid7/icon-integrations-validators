@@ -18,7 +18,7 @@ tags:
 - utilities
 hub_tags:
   use_cases: [data_utility]
-  keywords: [base64, encoder, decoder]
+  keywords: [base64, encoder, decoder, utilities]
   features: []
 actions:
   encode:

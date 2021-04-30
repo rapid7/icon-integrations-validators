@@ -42,6 +42,7 @@ from icon_validator.rules.plugin_validators.runtime_validator import *
 from icon_validator.rules.plugin_validators.version_pin_validator import *
 from icon_validator.rules.plugin_validators.example_input_validator import *
 from icon_validator.rules.plugin_validators.cloud_ready_validator import *
+from icon_validator.rules.plugin_validators.unapproved_keywords_validator import *
 
 # Workflow validators
 from icon_validator.rules.workflow_validators.workflow_directory_name_match_validator import *
@@ -95,7 +96,8 @@ VALIDATORS = [
     VersionPinValidator(),
     EncodingValidator(),
     ExampleInputValidator(),
-    CloudReadyValidator()
+    CloudReadyValidator(),
+    UnapprovedKeywordsValidator()
 ]
 
 JENKINS_VALIDATORS = [
@@ -128,5 +130,6 @@ WORKFLOW_VALIDATORS = [
     WorkflowICONFileValidator(),
     WorkflowEncodingValidator(),
     WorkflowParametersKeywordValidator(),
-    UseCaseValidator()
+    UseCaseValidator(),
+    UnapprovedKeywordsValidator()
 ]

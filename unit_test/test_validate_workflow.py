@@ -21,6 +21,7 @@ from icon_validator.rules.workflow_validators.workflow_help_plugin_utilization_v
 from icon_validator.rules.workflow_validators.workflow_encoding_validator import WorkflowEncodingValidator
 from icon_validator.rules.workflow_validators.workflow_parameters_keyword_validator import WorkflowParametersKeywordValidator
 from icon_validator.rules.plugin_validators.use_case_validator import UseCaseValidator
+from icon_validator.rules.plugin_validators.unapproved_keywords_validator import UnapprovedKeywordsValidator
 
 
 class TestWorkflowValidate(unittest.TestCase):
@@ -258,3 +259,23 @@ class TestWorkflowValidate(unittest.TestCase):
             directory_to_test, file_to_test, False, True, [UseCaseValidator()]
         )
         self.assertEqual(result, 1)
+
+    def test_unapproved_keywords_validator_should_success_without_warning(self):
+        directory_to_test = (
+            "workflow_examples/description_validator_good_keywords"
+        )
+        file_to_test = "workflow.spec.yaml"
+        result = validate(
+            directory_to_test, file_to_test, False, True, [UnapprovedKeywordsValidator()]
+        )
+        self.assertEqual(result, 0)
+
+    def test_unapproved_keywords_validator_should_print_warning(self):
+        directory_to_test = (
+            "workflow_examples/description_validator_good"
+        )
+        file_to_test = "workflow.spec.yaml"
+        result = validate(
+            directory_to_test, file_to_test, False, True, [UnapprovedKeywordsValidator()]
+        )
+        self.assertEqual(result, 0)
