@@ -15,6 +15,8 @@ from icon_validator.rules.plugin_validators.help_validator import HelpValidator
 from icon_validator.rules.plugin_validators.confidential_validator import ConfidentialValidator
 from icon_validator.rules.plugin_validators.description_validator import DescriptionValidator
 from icon_validator.rules.plugin_validators.cloud_ready_validator import CloudReadyValidator
+from icon_validator.rules.plugin_validators.acronym_validator import AcronymValidator
+from icon_validator.rules.plugin_validators.unapproved_keywords_validator import UnapprovedKeywordsValidator
 import requests
 
 
@@ -402,6 +404,41 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/good_plugin_cloud_ready"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [CloudReadyValidator()])
+        self.assertEqual(result, 0)
+
+    def test_acronym_validator_should_success(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [AcronymValidator()])
+        self.assertEqual(result, 0)
+
+    def test_acronym_validator_lower_acronym_help_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/acronym_validator_help_bad"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [AcronymValidator()])
+        self.assertEqual(result, 1)
+
+    def test_acronym_validator_lower_acronym_plugin_spec_should_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/acronym_validator_spec_bad"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [AcronymValidator()])
+        self.assertEqual(result, 1)
+
+    def test_unapproved_keywords_validator_should_success_without_warning(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [UnapprovedKeywordsValidator()])
+        self.assertEqual(result, 0)
+
+    def test_unapproved_keywords_validator_should_print_warning(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin_warning_keywords"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [UnapprovedKeywordsValidator()])
         self.assertEqual(result, 0)
 
     @staticmethod
