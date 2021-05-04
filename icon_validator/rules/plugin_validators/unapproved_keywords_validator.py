@@ -52,7 +52,7 @@ class UnapprovedKeywordsValidator(KomandPluginValidator):
 
         if invalid_keywords:
             err = ", ".join(invalid_keywords)
-            print(f"{YELLOW}WARNING: Invalid keywords: {err}. Update the keywords array with valid keywords.")
+            print(f"{YELLOW}WARNING: Unsupported keywords found: {err}. The following keywords will not be searchable by the Extension Library. Please remove or update the invalid keywords from the keywords array in the plugin.spec.yaml file.")
 
     def validate(self, spec: KomandPluginSpec):
         UnapprovedKeywordsValidator.validate_keywords_exists(spec)
