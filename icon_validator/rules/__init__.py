@@ -83,7 +83,6 @@ VALIDATORS = [
     RequiredValidator(),
     VersionValidator(),
     DockerfileParentValidator(),
-    LoggingValidator(),
     ProfanityValidator(),
     AcronymValidator(),
     JSONValidator(),
