@@ -4,3 +4,4 @@ build/
 dist/
 insightconnect_integrations_validators.egg-info/
 .DS_STORE
+venv/
