@@ -20,7 +20,6 @@ from icon_validator.rules.plugin_validators.help_input_output_validator import *
 from icon_validator.rules.plugin_validators.help_validator import *
 from icon_validator.rules.plugin_validators.icon_validator import *
 from icon_validator.rules.plugin_validators.json_validator import *
-from icon_validator.rules.plugin_validators.logging_validator import *
 from icon_validator.rules.plugin_validators.output_validator import *
 from icon_validator.rules.plugin_validators.password_validator import *
 from icon_validator.rules.plugin_validators.print_validator import *
@@ -84,7 +83,6 @@ VALIDATORS = [
     RequiredValidator(),
     VersionValidator(),
     DockerfileParentValidator(),
-    LoggingValidator(),
     ProfanityValidator(),
     AcronymValidator(),
     JSONValidator(),
