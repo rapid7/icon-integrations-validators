@@ -29,8 +29,7 @@ class EncodingValidator(KomandPluginValidator):
             EncodingValidator.validator_errors.append(f"A forbidden characters was found in the '{key}' field of the spec.yaml file: {set(wrong_characters)}")
 
     def validate(self, spec):
+        EncodingValidator.validator_errors = []
         EncodingValidator.validate_encoding(spec.spec_dictionary())
         if EncodingValidator.validator_errors:
-            errors = EncodingValidator.validator_errors
-            EncodingValidator.validator_errors = []
-            raise ValidationException("\n\t\t".join(errors))
+            raise ValidationException("\n\t\t".join(EncodingValidator.validator_errors))
