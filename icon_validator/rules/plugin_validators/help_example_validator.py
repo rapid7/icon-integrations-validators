@@ -62,6 +62,7 @@ class HelpExampleValidator(KomandPluginValidator):
                         self.validate_spaces(input_output, function_type, json_object[0], title)
 
     def validate(self, spec):
+        HelpExampleValidator.validate_errors = []
         actions_objects = self.get_objects(r"###[ ]*Actions.*?\n### ", spec.raw_help())
         trigger_objects = self.get_objects(r"###[ ]*Triggers.*?\n### ", spec.raw_help())
 
@@ -72,5 +73,3 @@ class HelpExampleValidator(KomandPluginValidator):
             raise ValidationException(
                 "\n\t".join(HelpExampleValidator.validate_errors)
             )
-
-        HelpExampleValidator.validate_errors = []
