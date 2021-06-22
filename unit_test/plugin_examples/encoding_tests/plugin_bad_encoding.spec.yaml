@@ -42,7 +42,7 @@ actions:
     input:
       base64:
         type: bytes
-        description: Data to decode
+        description: Data to decode “awdß_÷
         required: true
       errors:
         type: string

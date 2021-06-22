@@ -17,6 +17,8 @@ from icon_validator.rules.plugin_validators.description_validator import Descrip
 from icon_validator.rules.plugin_validators.cloud_ready_validator import CloudReadyValidator
 from icon_validator.rules.plugin_validators.acronym_validator import AcronymValidator
 from icon_validator.rules.plugin_validators.unapproved_keywords_validator import UnapprovedKeywordsValidator
+from icon_validator.rules.plugin_validators.help_example_validator import HelpExampleValidator
+
 import requests
 
 
@@ -81,14 +83,18 @@ class TestPluginValidate(unittest.TestCase):
         HelpInputOutputValidator.violated = 0
         self.assertEqual(result, 1, "Result should be failed")
 
+    def test_encoding_validator_should_success(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/encoding_tests"
+        file_to_test = "plugin_good_encoding.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [EncodingValidator()])
+        self.assertEqual(result, 0)
+
     def test_encoding_validator(self):
         directory_to_test = "plugin_examples/encoding_tests"
         file_to_test = "plugin_bad_encoding.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [EncodingValidator()])
         self.assertEqual(result, 1)
-        file_to_test = "plugin_good_encoding.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [EncodingValidator()])
-        self.assertEqual(result, 0)
 
     def test_version_validator(self):
         # example workflow in plugin_examples directory. Run tests with these files
@@ -440,6 +446,27 @@ class TestPluginValidate(unittest.TestCase):
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [UnapprovedKeywordsValidator()])
         self.assertEqual(result, 0)
+
+    def test_help_example_spaces_and_json_should_success(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [HelpExampleValidator()])
+        self.assertEqual(result, 0)
+
+    def test_help_example_spaces_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_help_example_wrong_spaces"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [HelpExampleValidator()])
+        self.assertEqual(result, 1)
+
+    def test_help_example_json_fail(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_help_example_wrong_json"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [HelpExampleValidator()])
+        self.assertEqual(result, 1)
 
     @staticmethod
     def replace_requirements(path, text):
