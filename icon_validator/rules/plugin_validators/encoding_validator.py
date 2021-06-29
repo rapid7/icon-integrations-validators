@@ -26,7 +26,7 @@ class EncodingValidator(KomandPluginValidator):
             wrong_characters = wrong_characters.replace(decoded, '')
 
         if unicode_string != decoded_string:
-            EncodingValidator.validator_errors.append(f"A forbidden characters was found in the '{key}' field of the spec.yaml file: {set(wrong_characters)}")
+            EncodingValidator.validator_errors.append(f"A forbidden character(s) was found in the '{key}' field of the spec.yaml file: {set(wrong_characters)}")
 
     def validate(self, spec):
         EncodingValidator.validator_errors = []
