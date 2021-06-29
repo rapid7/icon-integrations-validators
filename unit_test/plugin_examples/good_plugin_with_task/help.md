@@ -47,6 +47,9 @@ Example input:
 Example output:
 
 ```
+{
+  "errors": "replace"
+}
 ```
 
 #### Decoder
@@ -78,6 +81,9 @@ Example input:
 Example output:
 
 ```
+{
+  "errors": "replace"
+}
 ```
 
 ### Triggers
@@ -120,6 +126,9 @@ Example input:
 Example output:
 
 ```
+{
+  "errors": "replace"
+}
 ```
 
 ### Custom Output Types

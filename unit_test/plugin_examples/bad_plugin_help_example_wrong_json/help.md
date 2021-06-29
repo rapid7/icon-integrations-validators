@@ -11,42 +11,48 @@
 
 _This plugin does not contain any requirements._
 
-# Documentation
+
 
 ## Setup
 
 _This plugin does not contain a connection._
 
-## Technical Details
+
 
 ### Actions
 
-#### Decoder
+#### Encoder
 
-This action is used to decode Base64 to data.
+This action is used to Base64 encode a `string` using the standard Base64 alphabet.
 
 ##### Input
 
-|Name|Type|Default|Required|Description||Enum|Example|
-|----|----|-------|--------|-----------|-----|-------|
-|base64|bytes|None|True|Data to decode|None|base64|
-|errors|string|nothing|False|How errors should be handled when decoding Base64|['replace', 'ignore', 'nothing']|replace|
-
-Example input:
-
-```
-```
+|Name|Type|Default|Required|Description|Enum|
+|----|----|-------|--------|-----------|----|
+|content|string|None|True|Data to encode|None|None|
 
 ##### Output
 
 |Name|Type|Required|Description|
 |----|----|--------|-----------|
-|data|string|True|Decoded data result|
+|data|bytes|False|Encoded data result|
 
-Example output:
+#### Decoder
 
-```
-```
+This action is used to decode a Base64 `string` or file of type `bytes` using the standard Base64 alphabet.
+
+##### Input
+
+|Name|Type|Default|Required|Description|Enum|
+|----|----|-------|--------|-----------|----|
+|base64|bytes|None|True|Data to decode|None|
+|errors|string|nothing|False|How errors should be handled when decoding Base64|['replace', 'ignore', 'nothing']|
+
+##### Output
+
+|Name|Type|Required|Description|
+|----|----|--------|-----------|
+|data|string|False|Decoded data result|
 
 #### Decoder with Array
 
@@ -56,22 +62,13 @@ Decode Base64 to data
 
 |Name|Type|Default|Required|Description||Enum|Example|
 |----|----|-------|--------|-----------|-----|-------|
-|base64_array|[]string|None|True|Data to decode|None|["MQ==", "Mg=="]|
+|base64_array|[]string|None|True|Data to decode|None|['MQ==', 'Mg==']|
 
 Example input:
 
 ```
 {
-  "base64_array": "MQ=="
-}
-```
-
-Example input:
-
-```
-{
-  "base64_array": "MQ=="
-}
+  "base64_array": ["MQ=="]
 ```
 
 ##### Output
@@ -83,36 +80,9 @@ Example input:
 Example output:
 
 ```
-{
-  "data": "1"
-}
 ```
 
-#### Encoder
 
-This action is used to encode data to Base64.
-
-##### Input
-
-|Name|Type|Default|Required|Description|Enum|Example|
-|----|----|-------|--------|-----------|----|-------|
-|content|string|None|True|Data to encode|None|This is a string|
-
-Example input:
-
-```
-```
-
-##### Output
-
-|Name|Type|Required|Description|
-|----|----|--------|-----------|
-|data|bytes|True|Encoded data result|
-
-Example output:
-
-```
-```
 
 ### Triggers
 

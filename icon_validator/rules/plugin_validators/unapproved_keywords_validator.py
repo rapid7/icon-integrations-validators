@@ -30,7 +30,6 @@ class UnapprovedKeywordsValidator(KomandPluginValidator):
 
             query = f"after={response_json['pageInfo']['endCursor']}"
 
-        print(len(approved_keywords))
         return approved_keywords
 
     @staticmethod
