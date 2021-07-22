@@ -22,6 +22,7 @@ from icon_validator.rules.workflow_validators.workflow_encoding_validator import
 from icon_validator.rules.workflow_validators.workflow_parameters_keyword_validator import WorkflowParametersKeywordValidator
 from icon_validator.rules.plugin_validators.use_case_validator import UseCaseValidator
 from icon_validator.rules.plugin_validators.unapproved_keywords_validator import UnapprovedKeywordsValidator
+from icon_validator.rules.workflow_validators.workflow_python_script_use_validator import WorkflowPythonScriptUseValidator
 
 
 class TestWorkflowValidate(unittest.TestCase):
@@ -277,5 +278,15 @@ class TestWorkflowValidate(unittest.TestCase):
         file_to_test = "workflow.spec.yaml"
         result = validate(
             directory_to_test, file_to_test, False, True, [UnapprovedKeywordsValidator()]
+        )
+        self.assertEqual(result, 0)
+
+    def test_workflow_python_script_use(self):
+        directory_to_test = (
+            "workflow_examples/python_plugin_used"
+        )
+        file_to_test = "workflow.spec.yaml"
+        result = validate(
+            directory_to_test, file_to_test, False, True, [WorkflowPythonScriptUseValidator()]
         )
         self.assertEqual(result, 0)
