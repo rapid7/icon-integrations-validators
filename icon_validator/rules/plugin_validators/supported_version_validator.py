@@ -1,8 +1,5 @@
-import re
-
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
-import requests
 
 
 class SupportedVersionValidator(KomandPluginValidator):
