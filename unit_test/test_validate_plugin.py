@@ -488,6 +488,12 @@ class TestPluginValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [SupportedVersionValidator()])
         self.assertEqual(result, 1)
 
+    def test_supported_version_validator_should_fail_when_aspect_empty(self):
+        directory_to_test = "plugin_examples/supported_version_validator"
+        file_to_test = "plugin.spec_bad_missing_value.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [SupportedVersionValidator()])
+        self.assertEqual(result, 1)
+
     @staticmethod
     def replace_requirements(path, text):
         f = open(path, 'w')
