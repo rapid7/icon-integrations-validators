@@ -5,6 +5,7 @@ from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
 from icon_validator.workflow.marshal import read_workflow
 from icon_validator.workflow.model import Workflow
+from icon_validator.styling import YELLOW
 
 
 class WorkflowPythonScriptUseValidator(KomandPluginValidator):
@@ -43,9 +44,9 @@ class WorkflowPythonScriptUseValidator(KomandPluginValidator):
         findings = WorkflowPythonScriptUseValidator.python_plugin_used(wf)
 
         if len(findings) > 0:
-            results = "Python Plugin use found in these steps\n"
+            results = f"\t{YELLOW}Python Plugin use found in these steps\n"
 
             for f in findings:
-                results += f'\t\t[*] Step Name - {f["node_name"]}\n'
+                results += f'\t\t[-] Step Name - {f["node_name"]}\n'
             results += "\tPlease review these steps carefully before use"
-            raise ValidationException(results)
+            print(results)
