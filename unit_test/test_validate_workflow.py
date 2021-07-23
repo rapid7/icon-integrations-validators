@@ -472,5 +472,4 @@ class TestWorkflowValidate(unittest.TestCase):
             True,
             [WorkflowPythonScriptUseValidator()],
         )
-        print(result)
         self.assertEqual(result, 0)
