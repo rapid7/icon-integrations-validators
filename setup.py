@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="insightconnect_integrations_validators",
-    version="2.39.0",
+    version="2.40.0",
     description="Validator tooling for InsightConnect integrations",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -24,6 +24,7 @@ setup(
         "urlextract==0.14.0",
         "typing==3.7.4.1",
         "PyYAML~=5.4.1",
+        "dacite==1.6.0",
     ],
     entry_points={"console_scripts": ["icon-validate=icon_validator.__main__:main"]},
     classifiers=[
