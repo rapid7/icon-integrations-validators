@@ -40,7 +40,7 @@ class WorkflowPythonScriptUseValidator(KomandPluginValidator):
                     wf = read_workflow(spec=spec, file_name=file_name)
                 except json.JSONDecodeError:
                     raise ValidationException(
-                        "ICON file is not in JSON format try exporting the workflow file again"
+                        "ICON file is not in JSON format, try exporting the workflow file again"
                     )
 
         findings = WorkflowPythonScriptUseValidator.python_plugin_used(wf)
