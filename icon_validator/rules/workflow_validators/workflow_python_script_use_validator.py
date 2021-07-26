@@ -32,7 +32,7 @@ class WorkflowPythonScriptUseValidator(KomandPluginValidator):
         Checks if the workflow contains the usage of the python script plugin and warns
         of its use
         """
-        wf = dict()
+        wf = Workflow
         d = spec.directory
         for file_name in os.listdir(d):
             if file_name.endswith(".icon"):
@@ -43,7 +43,7 @@ class WorkflowPythonScriptUseValidator(KomandPluginValidator):
                         "ICON file is not in JSON format try exporting the workflow file again"
                     )
 
-        findings = WorkflowPythonScriptUseValidator.python_plugin_used(wf)
+        findings = self.python_plugin_used(workflow=wf)
 
         if len(findings) > 0:
             results = f"\t{YELLOW}{self._PLUGIN_NAME} use found in these steps\n"
