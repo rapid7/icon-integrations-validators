@@ -24,6 +24,7 @@ setup(
         "urlextract==0.14.0",
         "typing==3.7.4.1",
         "PyYAML~=5.4.1",
+        "dacite==1.6.0",
     ],
     entry_points={"console_scripts": ["icon-validate=icon_validator.__main__:main"]},
     classifiers=[
