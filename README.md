@@ -63,6 +63,7 @@ be on your way to contributing!
 ## Changelog
 
 * 2.41.0 - Add SupportedVersionValidator
+* 2.40.0 - Add PythonScriptUseValidator for workflows
 * 2.39.0 - Add HelpExampleValidator | Improve EncodingValidator by printing all forbidden characters at one time
 * 2.38.0 - Remove LoggingValidator | Update dependency versions
 * 2.37.0 - Add UnapprovedKeywordsValidator | Add unit tests for AcronymValidator
