@@ -3,7 +3,7 @@ import json
 from typing import List
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
-from icon_validator.workflow.marshal import read_workflow
+from icon_validator.workflow.unmarshal import read_workflow
 from icon_validator.workflow.model import Workflow
 from icon_validator.styling import YELLOW
 

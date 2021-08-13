@@ -1,7 +1,7 @@
 import os
 import json
 from icon_validator.workflow.model import Workflow
-
+from pydantic import parse_obj_as
 
 def read_workflow(spec: dict, file_name: str) -> Workflow:
     """
@@ -15,5 +15,6 @@ def read_workflow(spec: dict, file_name: str) -> Workflow:
             wf = json.load(workflow_file)
         except Exception as e:
             raise Exception('Unable to read workflow', e)
-        return from_dict(data_class=Workflow, data=wf)
+        return parse_obj_as(Workflow, wf)
+
 

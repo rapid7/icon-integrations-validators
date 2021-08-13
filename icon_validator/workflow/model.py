@@ -213,7 +213,7 @@ class Kom(BaseModel):
 
     def get_latest_workflow_version(
             self,
-    ) -> Union[Type[WorkflowVersion], WorkflowVersion]:
+    ) -> WorkflowVersion:
         if len(self.workflowVersions) <= 0:
             return WorkflowVersion
         return self.workflowVersions[0]
