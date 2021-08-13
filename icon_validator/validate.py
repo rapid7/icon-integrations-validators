@@ -3,7 +3,7 @@
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
 from icon_validator.exceptions import ValidationException
 
-from .rules import VALIDATORS, JENKINS_VALIDATORS, WORKFLOW_VALIDATORS
+from .rules import VALIDATORS, JENKINS_VALIDATORS, WORKFLOW_VALIDATORS, TEMPLATE_VALIDATORS
 from .styling import *
 from .timing import *
 
@@ -14,6 +14,7 @@ def validate(
     fail_fast=False,
     run_all=False,
     validators=list(),
+    template_validate=False,
 ):
     spec = KomandPluginSpec(directory, spec_file_name)
     status = 0  # Resultant return code
@@ -27,6 +28,9 @@ def validate(
                 validators += JENKINS_VALIDATORS
         elif spec_file_name == "workflow.spec.yaml":
             validators = WORKFLOW_VALIDATORS
+            if template_validate:
+                validators += TEMPLATE_VALIDATORS
+
 
     validation_failures: [str] = []
     for v in validators:

@@ -11,5 +11,8 @@ disttest: package
 distprod: package
 	python3 -m twine upload dist/*
 
+localinstall:
+    pip3 install -e .
+
 clean:
 	rm -rf .pytest_cache *.egg-info

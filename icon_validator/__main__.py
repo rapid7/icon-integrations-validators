@@ -23,7 +23,9 @@ def main():
     arguments_parser.add_argument("--all", help="Run all Validators", default=False,
                                   dest="run_all_validators", action="store_true")
     arguments_parser.add_argument("-a", help="Run all validators", default=False,
-                                  dest="run_all_validators", action="store_true")
+                                  dest="run_all_validators", action="store_true"),
+    arguments_parser.add_argument("--tv", help="Run only template validators",
+                                  dest="run_template_validators", default=False)
 
     the_arguments = arguments_parser.parse_args()
 
@@ -46,10 +48,10 @@ def main():
 
     if extension == "plugin" and the_arguments.run_all_validators:
         print(f"{BULLET_OK} Validating {extension} with all validators at {path}\n")
-        validate(directory=path, run_all=True)
+        validate(directory=path, run_all=True, template_validate=the_arguments.run_template_validators)
     else:
         print(f"{BULLET_OK} Validating {extension} at {path}\n")
-        validate(directory=path, spec_file_name=spec_file_name)
+        validate(directory=path, spec_file_name=spec_file_name, template_validate=the_arguments.run_template_validators)
 
 
 if __name__ == "__main__":

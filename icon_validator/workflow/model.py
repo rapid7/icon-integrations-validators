@@ -1,65 +1,167 @@
 from typing import List, Optional, Type, Union
-from dataclasses import dataclass, field
+from dataclasses import field
+from pydantic import BaseModel
 
 
 # Kom/Icon file
-@dataclass
-class TriggersInputActorProperties:
-    assets: dict = field(default_factory=lambda: {})
-    users: dict = field(default_factory=lambda: {})
+
+class TriggersOutputJsonSchemaPropertiesType(BaseModel):
+    description: str = ""
+    order: int = 0
+    title: str = ""
+    type: str = ""
+
+class TriggersOutputJsonSchemaPropertiesTimeStamp(BaseModel):
+    description: str = ""
+    order: int = 0
+    title: str = ""
+    type: str = ""
+
+class TriggersOutputJsonSchemaPropertiesMessage(BaseModel):
+   ref: str = ""
+   description: str = ""
+   order: int = 0
+   title: str = ""
+
+class TriggersOutputJsonSchemaProperties(BaseModel):
+    message: TriggersOutputJsonSchemaPropertiesMessage = TriggersOutputJsonSchemaPropertiesMessage
+    timeStamp: TriggersOutputJsonSchemaPropertiesTimeStamp = TriggersOutputJsonSchemaPropertiesTimeStamp
+    type: TriggersOutputJsonSchemaPropertiesType = TriggersOutputJsonSchemaPropertiesType
+
+class  OutputJsonSchemaMessagePropertiesUserId(BaseModel):
+    description: str = ""
+    order: int = 0
+    title: str = ""
+    type: str = ""
+
+class OutputJsonSchemaMessagePropertiesUser(BaseModel):
+    description: str = ""
+    order: int = 0
+    title: str = ""
+    type: str = ""
+
+class OutputJsonSchemaMessagePropertiesTs(BaseModel):
+    description: str = ""
+    order: int = 0
+    title: str = ""
+    type: str = ""
+
+class OutputJsonSchemaMessagePropertiesText(BaseModel):
+    description: str = ""
+    order: int = 0
+    title: str = ""
+    type: str = ""
+
+class OutputJsonSchemaMessagePropertiesChannelId(BaseModel):
+    description: str = ""
+    order: int = 0
+    title: str = ""
+    type: str = ""
+
+class TriggersOutputJsonSchemaDefinitionsMessagePropertiesChannel(BaseModel):
+    description: str = ""
+    order: int = 0
+    title: str = ""
+    type: str = ""
+
+class TriggersDefinitionsChannel(BaseModel):
+    description: str = ""
+    order: int = 0
+    title: str = ""
+    type: str = ""
+
+class OutputJsonSchemaMessageProperties(BaseModel):
+    channel: TriggersDefinitionsChannel = TriggersDefinitionsChannel
+    channel_id: OutputJsonSchemaMessagePropertiesChannelId = OutputJsonSchemaMessagePropertiesChannelId
+    text: OutputJsonSchemaMessagePropertiesText = OutputJsonSchemaMessagePropertiesText
+    ts: dict = {}
+    user: dict = {}
+    user_id: dict = {}
 
 
-@dataclass
-class TriggersInputActor:
-    properties: TriggersInputActorProperties = TriggersInputActorProperties
+class OutputJsonSchemaMessage(BaseModel):
+    properties: OutputJsonSchemaMessageProperties = OutputJsonSchemaMessageProperties
+    title: str = ""
+    type: str = ""
+
+class OutputJsonSchemaProperties(BaseModel):
+    message: OutputJsonSchemaMessage = OutputJsonSchemaMessage
+
+class OutputJsonSchemaDefinitions(BaseModel):
+    message: OutputJsonSchemaMessage = OutputJsonSchemaMessage
+
+
+class Type(BaseModel):
+    default: str = ""
+    description: str = ""
+    enum: List = []
+    order: str = ""
+    title: str = ""
+    type: str = ""
+
+class MatchText(BaseModel):
+    description: str = ""
+    order: int = 0
+    title: str = ""
+    type: str = ""
+
+class MatchChannel(BaseModel):
+    description: str = ""
+    order: int = 0
     title: str = ""
     type: str = ""
 
 
-@dataclass
-class TriggersDefinitions:
-    actor: TriggersInputActor = TriggersInputActor
-    asset: dict = field(default_factory=lambda: {})
-    user: dict = field(default_factory=lambda: {})
+class TriggersInputJsonSchemaProperties(BaseModel):
+    matchChannel: dict = {}
+    matchText: dict = {}
+    type: dict = {}
 
 
-@dataclass
-class TriggersInputJsonSchema:
-    definitions: dict = field(default_factory=lambda: {})
-    properties: dict = field(default_factory=lambda: {})
+
+class TriggersOutputJsonSchema(BaseModel):
+    definitions: OutputJsonSchemaDefinitions = OutputJsonSchemaDefinitions
+    properties: OutputJsonSchemaProperties = OutputJsonSchemaProperties
     title: str = ""
     type: str = ""
 
+class TriggersInputJsonSchema(BaseModel):
+    properties: MatchChannel = MatchChannel
+    required: List = []
+    title: str = ""
+    type: str = ""
 
-@dataclass
-class Trigger:
+class TriggerInput(BaseModel):
+    matchChannel: str = ""
+    matchText: str = ""
+    type: str = ""
+
+class Trigger(BaseModel):
     id: str = ""
     name: str = ""
     description: str = ""
-    input: Optional[dict] = field(default_factory=lambda: {})
+    input: Optional[TriggerInput] = [TriggerInput]
     inputJsonSchema: TriggersInputJsonSchema = TriggersInputJsonSchema
-    outputJsonSchema: dict = field(default_factory=lambda: {})
+    outputJsonSchema: TriggersOutputJsonSchema = TriggersOutputJsonSchema
+    tags: List = []
     type: str = ""
+    chatOpsAppName: str = ""
+    chatOpsAppIdentifier: str = ""
 
 
-@dataclass
-class WorkflowVersionGraph:
-    edges: dict = field(default_factory=lambda: {})
-    nodes: dict = field(default_factory=lambda: {})
+class WorkflowVersionGraph(BaseModel):
+    edges: dict = {}
+    nodes: dict = {}
 
 
-@dataclass
-class WorkflowVersion:
-    id: str = ""
-    workflowId: str = ""
+class WorkflowVersion(BaseModel):
     name: str = ""
-    tags: Optional[List[str]] = field(default_factory=lambda: [])
     type: str = ""
     version: str = ""
     description: str = ""
-    meta: dict = field(default_factory=lambda: {})
     graph: WorkflowVersionGraph = WorkflowVersionGraph
-    steps: dict = field(default_factory=lambda: {})
+    steps: dict = {}
+    tags: Optional[List[str]] = []
     humanCostSeconds: int = 0
     humanCostDisplayUnit: str = ""
 
@@ -102,32 +204,27 @@ class WorkflowVersion:
         return plugins
 
 
-@dataclass
-class Kom:
-    workflowVersions: List[WorkflowVersion] = field(
-        default_factory=lambda: [WorkflowVersion]
-    )
-    triggers: List[Trigger] = field(default_factory=lambda: [Trigger])
+class Kom(BaseModel):
+    workflowVersions: List[WorkflowVersion] = [WorkflowVersion]
+    triggers: List[Trigger] = [Trigger]
     komandVersion: str = ""
     komFileVersion: str = ""
     exportedAt: str = ""
 
     def get_latest_workflow_version(
-        self,
+            self,
     ) -> Union[Type[WorkflowVersion], WorkflowVersion]:
         if len(self.workflowVersions) <= 0:
             return WorkflowVersion
         return self.workflowVersions[0]
 
 
-@dataclass
-class Workflow:
+class Workflow(BaseModel):
     kom: Kom
 
 
 # Workflow Spec
-@dataclass
-class WorkflowSpec:
+class WorkflowSpec(BaseModel):
     status: List[str]
     tags: List[str]
     name: str = ""
@@ -138,7 +235,6 @@ class WorkflowSpec:
     support: str = ""
 
 
-@dataclass
-class Plugin:
+class Plugin(BaseModel):
     name: str = ""
     version: str = ""

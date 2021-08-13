@@ -1,7 +1,6 @@
 import os
 import json
 from icon_validator.workflow.model import Workflow
-from dacite import from_dict
 
 
 def read_workflow(spec: dict, file_name: str) -> Workflow:
