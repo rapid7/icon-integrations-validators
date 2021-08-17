@@ -1,6 +1,6 @@
 import unittest
 from icon_validator.validate import validate
-from icon_validator.rules.template_validator.template_id_validator import(
+from icon_validator.rules.template_validators.template_id_validator import(
     TemplateIDValidator,
 )
 

@@ -66,6 +66,7 @@ from icon_validator.rules.workflow_validators.workflow_icon_validator import *
 from icon_validator.rules.workflow_validators.workflow_help_plugin_utilization_validator import *
 from icon_validator.rules.workflow_validators.workflow_encoding_validator import *
 from icon_validator.rules.workflow_validators.workflow_parameters_keyword_validator import *
+from icon_validator.rules.workflow_validators.workflow_id_validator import *
 
 # template imports
 from icon_validator.rules.template_validators.template_id_validator import *
@@ -143,4 +144,5 @@ WORKFLOW_VALIDATORS = [
     UseCaseValidator(),
     UnapprovedKeywordsValidator(),
     WorkflowPythonScriptUseValidator(),
+    WorkflowIDValidator()
 ]
