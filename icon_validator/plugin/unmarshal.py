@@ -4,6 +4,7 @@ from pydantic import parse_obj_as
 from yaml import load, SafeLoader
 from icon_validator.plugin.model import Plugin, Action, Trigger
 
+
 def parse_actions(actions: dict) -> List[Action]:
     """
     Parser for actions extracted from a plugin spec
@@ -55,3 +56,5 @@ def from_file(spec_file_path: str) -> Plugin:
         # Cobble plugin and actions together
         p.actions = a_list
         p.triggers = t_list
+
+        return p
