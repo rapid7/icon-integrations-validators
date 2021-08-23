@@ -5,91 +5,89 @@ from pydantic import BaseModel
 
 # Kom/Icon file
 
-class TriggersOutputJsonSchemaPropertiesType(BaseModel):
+class PropertiesType(BaseModel):
     description: str = ""
     order: int = 0
     title: str = ""
     type: str = ""
 
-class TriggersOutputJsonSchemaPropertiesTimeStamp(BaseModel):
+class PropertiesTimeStamp(BaseModel):
     description: str = ""
     order: int = 0
     title: str = ""
     type: str = ""
 
-class TriggersOutputJsonSchemaPropertiesMessage(BaseModel):
+class PropertiesMessage(BaseModel):
    ref: str = ""
    description: str = ""
    order: int = 0
    title: str = ""
 
 class TriggersOutputJsonSchemaProperties(BaseModel):
-    message: TriggersOutputJsonSchemaPropertiesMessage = TriggersOutputJsonSchemaPropertiesMessage
-    timeStamp: TriggersOutputJsonSchemaPropertiesTimeStamp = TriggersOutputJsonSchemaPropertiesTimeStamp
-    type: TriggersOutputJsonSchemaPropertiesType = TriggersOutputJsonSchemaPropertiesType
+    message: PropertiesMessage = PropertiesMessage
+    timeStamp: PropertiesTimeStamp = PropertiesTimeStamp
+    type: PropertiesType = PropertiesType
 
-class  OutputJsonSchemaMessagePropertiesUserId(BaseModel):
+class UserId(BaseModel):
     description: str = ""
     order: int = 0
     title: str = ""
     type: str = ""
 
-class OutputJsonSchemaMessagePropertiesUser(BaseModel):
+class PropertiesUser(BaseModel):
     description: str = ""
     order: int = 0
     title: str = ""
     type: str = ""
 
-class OutputJsonSchemaMessagePropertiesTs(BaseModel):
+class PropertiesTs(BaseModel):
     description: str = ""
     order: int = 0
     title: str = ""
     type: str = ""
 
-class OutputJsonSchemaMessagePropertiesText(BaseModel):
+class PropertiesText(BaseModel):
     description: str = ""
     order: int = 0
     title: str = ""
     type: str = ""
 
-class OutputJsonSchemaMessagePropertiesChannelId(BaseModel):
+class ChannelId(BaseModel):
     description: str = ""
     order: int = 0
     title: str = ""
     type: str = ""
 
-class TriggersOutputJsonSchemaDefinitionsMessagePropertiesChannel(BaseModel):
+class PropertiesChannel(BaseModel):
     description: str = ""
     order: int = 0
     title: str = ""
     type: str = ""
 
-class TriggersDefinitionsChannel(BaseModel):
+class Channel(BaseModel):
     description: str = ""
     order: int = 0
     title: str = ""
     type: str = ""
 
-class OutputJsonSchemaMessageProperties(BaseModel):
-    channel: TriggersDefinitionsChannel = TriggersDefinitionsChannel
-    channel_id: OutputJsonSchemaMessagePropertiesChannelId = OutputJsonSchemaMessagePropertiesChannelId
-    text: OutputJsonSchemaMessagePropertiesText = OutputJsonSchemaMessagePropertiesText
-    ts: dict = {}
-    user: dict = {}
-    user_id: dict = {}
+class MessageProperties(BaseModel):
+    channel: Channel = Channel
+    channel_id: ChannelId = ChannelId
+    text: PropertiesText = PropertiesText
+    ts: PropertiesTs = PropertiesTs
+    user:PropertiesUser = PropertiesUser
+    user_id: UserId = UserId
 
-
-class OutputJsonSchemaMessage(BaseModel):
-    properties: OutputJsonSchemaMessageProperties = OutputJsonSchemaMessageProperties
+class Message(BaseModel):
+    properties: MessageProperties = MessageProperties
     title: str = ""
     type: str = ""
 
 class OutputJsonSchemaProperties(BaseModel):
     message: OutputJsonSchemaMessage = OutputJsonSchemaMessage
 
-class OutputJsonSchemaDefinitions(BaseModel):
-    message: OutputJsonSchemaMessage = OutputJsonSchemaMessage
-
+class Definitions(BaseModel):
+    message: Message = Message
 
 class Type(BaseModel):
     default: str = ""
@@ -111,16 +109,13 @@ class MatchChannel(BaseModel):
     title: str = ""
     type: str = ""
 
-
 class TriggersInputJsonSchemaProperties(BaseModel):
-    matchChannel: dict = {}
+    matchChannel: MatchChannel = MatchChannel
     matchText: dict = {}
     type: dict = {}
 
-
-
 class TriggersOutputJsonSchema(BaseModel):
-    definitions: OutputJsonSchemaDefinitions = OutputJsonSchemaDefinitions
+    definitions: Definitions = Definitions
     properties: OutputJsonSchemaProperties = OutputJsonSchemaProperties
     title: str = ""
     type: str = ""
