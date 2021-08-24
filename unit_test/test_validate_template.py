@@ -14,6 +14,6 @@ class TestTemplateValidator(unittest.TestCase):
             spec_file_name=file_to_test,
             fail_fast=False,
             run_all=False,
-            validators=[TemplateIDValidator]
+            validators=[TemplateIDValidator()]
         )
         self.assertFalse(result)

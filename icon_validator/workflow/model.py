@@ -84,7 +84,7 @@ class Message(BaseModel):
     type: str = ""
 
 class OutputJsonSchemaProperties(BaseModel):
-    message: OutputJsonSchemaMessage = OutputJsonSchemaMessage
+    message: Message = Message
 
 class Definitions(BaseModel):
     message: Message = Message
@@ -148,7 +148,6 @@ class WorkflowVersionGraph(BaseModel):
     edges: dict = {}
     nodes: dict = {}
 
-
 class WorkflowVersion(BaseModel):
     name: str = ""
     type: str = ""
@@ -198,7 +197,6 @@ class WorkflowVersion(BaseModel):
             )
         return plugins
 
-
 class Kom(BaseModel):
     workflowVersions: List[WorkflowVersion] = [WorkflowVersion]
     triggers: List[Trigger] = [Trigger]
@@ -217,7 +215,6 @@ class Kom(BaseModel):
 class Workflow(BaseModel):
     kom: Kom
 
-
 # Workflow Spec
 class WorkflowSpec(BaseModel):
     status: List[str]
@@ -228,7 +225,6 @@ class WorkflowSpec(BaseModel):
     version: str = ""
     vendor: str = ""
     support: str = ""
-
 
 class Plugin(BaseModel):
     name: str = ""
