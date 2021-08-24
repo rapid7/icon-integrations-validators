@@ -5,7 +5,7 @@ from icon_validator.rules.template_validators.template_id_validator import(
 )
 
 class TestTemplateValidator(unittest.TestCase):
-    def test_workflow_id_missing_validator(self):
+    def test_workflow_validator_good(self):
         # Test good workflow. This should pass all validation
         directory_to_test = "template_examples/id_tests"
         file_to_test = "workflow.spec.yaml"
@@ -16,4 +16,4 @@ class TestTemplateValidator(unittest.TestCase):
             run_all=False,
             validators=[TemplateIDValidator()]
         )
-        self.assertFalse(result)
+        self.assertEqual(result, 1)

@@ -149,6 +149,7 @@ class WorkflowVersionGraph(BaseModel):
     nodes: dict = {}
 
 class WorkflowVersion(BaseModel):
+    id: str = ""
     name: str = ""
     type: str = ""
     version: str = ""
