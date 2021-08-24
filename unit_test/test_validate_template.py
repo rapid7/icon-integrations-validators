@@ -17,3 +17,5 @@ class TestTemplateValidator(unittest.TestCase):
             validators=[TemplateIDValidator()]
         )
         self.assertEqual(result, 1)
+
+        #check missing values from workflow.spec.yaml -ask mike what are things we want this validator to explicitly fail on

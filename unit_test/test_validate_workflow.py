@@ -63,22 +63,8 @@ from icon_validator.rules.plugin_validators.unapproved_keywords_validator import
 from icon_validator.rules.workflow_validators.workflow_python_script_use_validator import (
     WorkflowPythonScriptUseValidator,
 )
-from icon_validator.rules.workflow_validators.workflow_id_validator import (
-WorkflowIDValidator
-)
 
 class TestWorkflowValidate(unittest.TestCase):
-    def test_workflow_id_exists(self):
-        directory_to_test = "template_examples/id_tests"
-        file_to_test = "workflow.spec.yaml"
-        result = validate(
-            directory=directory_to_test,
-            spec_file_name=file_to_test,
-            fail_fast=False,
-            run_all=False,
-            validators=[WorkflowIDValidator]
-        )
-        self.assertFalse(result)
     def test_good_workflow_validator(self):
         # Test good workflow. This should pass all validation
         directory_to_test = "workflow_examples/Automated_Indicator_Enrichment"
