@@ -6,11 +6,13 @@ class SupportedVersionValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_spec(spec):
-        if "supported_versions" not in spec.spec_dictionary():
+        sup_vers = "supported_versions"
+
+        if sup_vers not in spec.spec_dictionary():
             raise ValidationException("Plugin supported_versions is missing.")
-        if not isinstance(spec.spec_dictionary()["supported_versions"], list):
+        if not isinstance(spec.spec_dictionary()[sup_vers], list):
             raise ValidationException("Plugin supported_versions does not contain a list of values.")
-        if len(spec.spec_dictionary()["supported_versions"]) == 0:
+        if len(spec.spec_dictionary()[sup_vers]) == 0:
             raise ValidationException("Plugin supported_versions list does not contain values.")
 
     def validate(self, spec):
