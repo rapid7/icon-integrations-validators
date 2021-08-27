@@ -1,16 +1,13 @@
-import os
-import json
-from typing import List
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
-from icon_validator.workflow.unmarshal import read_workflow
 from icon_validator.workflow.model import Workflow
-from icon_validator.styling import YELLOW
 from icon_validator.workflow.unmarshal import read_workflow
+
 
 class TemplateIDValidator(KomandPluginValidator):
 
-    def id_exists(self, workflow: Workflow):
+    @staticmethod
+    def id_exists(workflow: Workflow):
         if workflow.kom.workflowVersions[0].id:
             return True
         return False
@@ -19,8 +16,7 @@ class TemplateIDValidator(KomandPluginValidator):
         """
         Validates template ensuring ID
         """
-        wf = read_workflow(spec=spec)
-        d = spec.directory
+        wf: Workflow = read_workflow(spec=spec)
 
         if not self.id_exists(workflow=wf):
             raise ValidationException(
