@@ -1,0 +1,3 @@
+extension: workflow
+name: Block_Host_with_Cisco_ASA_Firewall_from_Slack
+version: 1.0.1

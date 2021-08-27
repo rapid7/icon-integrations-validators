@@ -1,0 +1,19 @@
+extension: in_product
+products: [insightidr]
+name: InsightIDR_Create_Incident_Report_in_ServiceNow
+title: "Create Incident Report in ServiceNow"
+description: "This workflow creates an incident report in ServiceNow."
+version: 1.0.1
+vendor: rapid7
+support: rapid7
+status: []
+tags:
+- servicenow
+- ticket
+- insightidr
+hub_tags:
+  use_cases: [remediation_management, threat_detection_and_response]
+  keywords: [servicenow, ticket, insightidr]
+  features: []
+resources:
+  external_url: /automation/workflows/add/e32f0a24-9788-47ce-b18e-24f2d7d9d8c4/b1640284-4a93-44de-890d-9fd8629055e6

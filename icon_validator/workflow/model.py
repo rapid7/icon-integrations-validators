@@ -8,7 +8,7 @@ class Trigger(BaseModel):
     id: str = ""
     name: str = ""
     description: str = ""
-    input: dict = {}
+    input: Optional[dict] = {}
     inputJsonSchema: dict = {}
     outputJsonSchema: dict = {}
     tags: List = []

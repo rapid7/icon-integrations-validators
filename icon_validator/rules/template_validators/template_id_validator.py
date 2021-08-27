@@ -6,6 +6,7 @@ from icon_validator.exceptions import ValidationException
 from icon_validator.workflow.unmarshal import read_workflow
 from icon_validator.workflow.model import Workflow
 from icon_validator.styling import YELLOW
+from icon_validator.workflow.unmarshal import read_workflow
 
 class TemplateIDValidator(KomandPluginValidator):
 
@@ -18,16 +19,9 @@ class TemplateIDValidator(KomandPluginValidator):
         """
         Validates template ensuring ID
         """
-        wf = Workflow
+        wf = read_workflow(spec=spec)
         d = spec.directory
-        for file_name in os.listdir(d):
-            if file_name.endswith(".icon"):
-                try:
-                    wf = read_workflow(spec=spec, file_name=file_name)
-                except json.JSONDecodeError:
-                    raise ValidationException(
-                        "ICON file is not in JSON format, try exporting the workflow file again"
-                    )
+
         if not self.id_exists(workflow=wf):
             raise ValidationException(
                 "Template Validator: Template missing ID"
