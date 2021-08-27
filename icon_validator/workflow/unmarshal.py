@@ -1,9 +1,11 @@
 import os
 import json
 from icon_validator.workflow.model import Workflow
+from icon_plugin_spec.plugin_spec import KomandPluginSpec
 from pydantic import parse_obj_as
 
-def read_workflow(spec: dict, file_name: str = None) -> Workflow:
+
+def read_workflow(spec: KomandPluginSpec, file_name: str = None) -> Workflow:
     """
     read_workflow takes a raw file and tries to load into a Workflow dataclass
     :param spec: workflow spec
@@ -12,14 +14,12 @@ def read_workflow(spec: dict, file_name: str = None) -> Workflow:
     """
 
     if not file_name:
-
         directory = os.listdir(spec.directory)
         for f in directory:
             if f.endswith(".icon"):
                 file_name = f
         if not file_name:
             print("Not found")
-
 
     with open(os.path.join(spec.directory, file_name)) as workflow_file:
         try:
