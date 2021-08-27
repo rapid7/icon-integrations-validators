@@ -13,7 +13,7 @@ class TemplateWorkflowVersionValidator(KomandPluginValidator):
 
     def validate(self, spec):
         """
-        Validates template ensuring ID
+        Validates template ensuring version
         """
         wf: Workflow = read_workflow(spec=spec)
 
