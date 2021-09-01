@@ -3,9 +3,12 @@ from icon_validator.exceptions import ValidationException
 from icon_validator.workflow.model import Workflow
 from icon_validator.workflow.unmarshal import read_workflow
 
+
 class TemplateRegionWorkflowIDValidator(KomandPluginValidator):
     @staticmethod
-    def workflowid_and_region_exists(wf: Workflow, template: dict = None, templates: dict = None)-> None:
+    def workflowid_and_region_exists(
+        wf: Workflow, template: dict = None, templates: dict = None
+    ) -> None:
         # get workflow info
         workflow_id = workflow.kom.workflowVersions[0].workflowId
         workflow_name = workflow.kom.workflowVersions[0].name
