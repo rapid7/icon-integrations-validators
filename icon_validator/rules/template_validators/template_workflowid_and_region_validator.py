@@ -7,3 +7,8 @@ class TemplateRegionWorkflowIDValidator(KomandPluginValidator):
 
     def validate(self, spec):
         wf: Workflow = read_workflow(spec=spec)
+        if not self.valid_id_and_region(wf=wf):
+            raise ValidationException(
+                "Template Validator: Workflow ID did not match the template ID and/or the Worklow ID did not match the template available"
+            )
+
