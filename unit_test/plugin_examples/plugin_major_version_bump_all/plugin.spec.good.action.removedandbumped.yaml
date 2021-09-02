@@ -1,0 +1,535 @@
+plugin_spec_version: v2
+extension: plugin
+products: [insightconnect]
+name: active_directory_ldap
+title: Active Directory LDAP
+description: "This plugin utilizes Microsoft's Active Directory service to create and manage domains, users, and objects within a network"
+version: 6.0.0
+vendor: rapid7
+support: rapid7
+status: []
+resources:
+  source_url: https://github.com/rapid7/insightconnect-plugins/tree/master/plugins/active_directory_ldap
+  license_url: https://github.com/rapid7/insightconnect-plugins/blob/master/LICENSE
+  vendor_url: https://www.microsoft.com
+tags:
+- ldap
+- active directory
+- microsoft
+hub_tags:
+  use_cases: [user_management, credential_management, application_management, threat_detection_and_response]
+  keywords: [ldap, microsoft]
+  features: []
+types:
+  attributes:
+    accountExpires:
+      title: Account Expires
+      type: string
+      description: Account expires
+      required: false
+    adminCount:
+      title: Admin Count
+      type: integer
+      description: Admin count
+      required: false
+    badPasswordTime:
+      title: Bad Password Time
+      type: string
+      description: Bad password time
+      required: false
+    badPwdCount:
+      title:  Bad PWD Count
+      type: integer
+      description: Bad PWD count
+      required: false
+    cn:
+      title: CN
+      type: string
+      description: CN
+      required: false
+    codePage:
+      title: Code Page
+      type: integer
+      description: Code page
+      required: false
+    countryCode:
+      title: Country Code
+      type: integer
+      description: Country code
+      required: false
+    dSCorePropagationData:
+      title: DS Core Propagation Data
+      type: "[]string"
+      description: DS core propagation data
+      required: false
+    description:
+      title: Description
+      type: "[]string"
+      description: Description
+      required: false
+    distinguishedName:
+      title: Distinguished Name
+      type: string
+      description: Distinguished name
+      required: false
+    instanceType:
+      title: Instance Type
+      type: integer
+      description: Instance type
+      required: false
+    isCriticalSystemObject:
+      title: Is Critical System Object
+      type: boolean
+      description: Is critical system object
+      required: false
+    lastLogoff:
+      title: Last Log Off
+      type: string
+      description: Last log off
+      required: false
+    lastLogon:
+      title: Last Log On
+      type: string
+      description: Last log on
+      required: false
+    lastLogonTimestamp:
+      title: Last Log On Timestamp
+      type: string
+      description: Last log on timestamp
+      required: false
+    logonCount:
+      title: Log On Count
+      type: integer
+      description: Log on count
+      required: false
+    memberOf:
+      title: Member Of
+      type: "[]string"
+      description: Member of
+      required: false
+    name:
+      title: Name
+      type: string
+      description: Name
+      required: false
+    objectCategory:
+      title: Object Category
+      type: string
+      description: Object category
+      required: false
+    objectClass:
+      title: Object Class
+      type: "[]string"
+      description: Object class
+      required: false
+    objectGUID:
+      title: Object GUID
+      type: string
+      description: Object GUID
+      required: false
+    objectSid:
+      title: Object SID
+      type: string
+      description: Object SID
+      required: false
+    primaryGroupID:
+      title: Primary Group ID
+      type: integer
+      description: Primary group ID
+      required: false
+    pwdLastSet:
+      title: PWD Last Set
+      type: string
+      description: PWD last set
+      required: false
+    sAMAccountName:
+      title: SAM Account Name
+      type: string
+      description: SAM account name
+      required: false
+    sAMAccountType:
+      title: SAM Account Type
+      type: integer
+      description: SAM account type
+      required: false
+    uSNChanged:
+      title: USN changed
+      type: integer
+      description: USN changed
+      required: false
+    uSNCreated:
+      title: USN created
+      type: integer
+      description: USN created
+      required: false
+    userAccountControl:
+      title: User Account Control
+      type: integer
+      description: User account control
+      required: false
+    whenChanged:
+      title: When Changed
+      type: string
+      description: When changed
+      required: false
+    whenCreated:
+      title: When Created
+      type: string
+      description: When created
+      required: false
+  results:
+    attributes:
+      title: Attributes
+      type: attributes
+      description: Attributes
+      required: false
+    dn:
+      title: DN
+      type: string
+      description: DN
+      required: false
+  result:
+    attributes:
+      type: object
+    dn:
+      type: string
+connection:
+  host:
+    title: Host
+    description: Server Host, e.g. example.com
+    type: string
+    required: true
+    example: example.com
+  port:
+    title: Port
+    description: Port, e.g. 389
+    type: integer
+    default: 389
+    required: true
+    example: 389
+  use_ssl:
+    title: Use SSL
+    type: boolean
+    description: Use SSL?
+    required: true
+    example: true
+  username_password:
+    title: Username and Password
+    type: credential_username_password
+    description: Username and password
+    required: true
+    example: '{"username":"user1", "password":"mypassword"}'
+  chase_referrals:
+    title: Chase Referrals
+    type: boolean
+    description: Allows the plugin to follow referrals from the specified Active Directory server to other Active Directory servers
+    required: true
+    default: true
+    example: true
+actions:
+  query:
+    title: Query
+    description: Run an LDAP query
+    input:
+      search_filter:
+        title: Search Filter
+        type: string
+        description: 'The filter of the search request. It must conform to the LDAP
+          filter syntax specified in RFC4515'
+        required: true
+        example: "(sAMAccountName=joesmith)"
+      search_base:
+        title: Search Base
+        type: string
+        description: The base of the search request
+        required: true
+        example: "DC=example,DC=com"
+      attributes:
+        title: Attributes
+        description: Attributes to search. If empty return all attributes
+        required: false
+        type: '[]string'
+        example: ["createTimestamp", "creatorsName"]
+    output:
+      results:
+        title: Results
+        description: Results returned
+        type: '[]result'
+        required: false
+      count:
+        title: Count
+        description: Number of results
+        type: integer
+        required: false
+  delete:
+    title: Delete
+    description: Deletes the LDAP object specified
+    input:
+      distinguished_name:
+        title: Distinguished Name
+        type: string
+        description: The distinguished name of the object to delete
+        required: true
+        example: CN=user,OU=domain_users,DC=example,DC=com
+    output:
+      success:
+        title: Success
+        description: Operation status
+        type: boolean
+        required: false
+  add_user:
+    title: Add User
+    description: Adds the specified Active Directory user
+    input:
+      domain_name:
+        title: Domain Name
+        type: string
+        description: The domain name this user will belong to
+        required: true
+        example: example.com
+      logon_name:
+        title: Logon Name
+        type: string
+        description: The logon name for the account
+        required: true
+        example: jdoe
+      first_name:
+        title: First Name
+        type: string
+        description: User's first name
+        required: true
+        example: John
+      last_name:
+        title: Last Name
+        type: string
+        description: User's last name
+        required: true
+        example: Doe
+      user_ou:
+        title: User OU
+        type: string
+        description: The OU that the user account will be created in
+        required: true
+        default: Users
+        example: Users
+      password:
+        title: Password
+        type: password
+        description: The account's starting password
+        required: true
+        example: mypassword
+      account_disabled:
+        title: Account Disabled
+        type: boolean
+        description: Set this to true to disable the user account at creation
+        required: true
+        default: true
+        example: true
+      user_principal_name:
+        title: User Principal Name
+        description: The users principal name
+        type: string
+        required: true
+        example: user@example.com
+      additional_parameters:
+        title: Additional Parameters
+        description: 'Add additional user parameters in JSON format'
+        type: object
+        required: false
+        example: '{"telephoneNumber":"(617)555-1234"}'
+    output:
+      success:
+        title: Success
+        description: Operation status
+        type: boolean
+        required: false
+  enable_user:
+    title: Enable
+    description: Enable an account
+    input:
+      distinguished_name:
+        title: Distinguished Name
+        type: string
+        description: The distinguished name of the user to enable
+        required: true
+        example: CN=user,OU=domain_users,DC=example,DC=com
+    output:
+      success:
+        title: Success
+        description: Operation status
+        type: boolean
+        required: false
+  disable_user:
+    title: Disable
+    description: Disable an account
+    input:
+      distinguished_name:
+        title: Distinguished Name
+        type: string
+        description: The distinguished name of the user to disable
+        required: true
+        example: CN=user,OU=domain_users,DC=example,DC=com
+    output:
+      success:
+        title: Success
+        description: Operation status
+        type: boolean
+        required: false
+  modify_groups:
+    title: Add or Remove an Object from Group
+    description: Add or remove an object from an Active Directory group
+    input:
+      distinguished_name:
+        title: Distinguished Name
+        type: string
+        description: The distinguished name of the object whose membership will be modified
+        required: true
+        example: CN=user,OU=domain_users,DC=mydomain,DC=com
+      group_dn:
+        title: Group DN
+        type: string
+        description: The Distinguished Name of the group to add or remove
+        required: true
+        example: CN=group_name,OU=domain_groups,DC=example,DC=com
+      add_remove:
+        title: Add or Remove
+        description: Add or remove the group
+        type: string
+        enum:
+        - add
+        - remove
+        required: true
+        example: add
+    output:
+      success:
+        title: Success
+        description: Operation status
+        type: boolean
+        required: false
+  move_object:
+    title: Move Object
+    description: Move an Active Directory object from one organizational unit to another
+    input:
+      distinguished_name:
+        title: Distinguished Name
+        type: string
+        description: The distinguished name of the user whose membership will be modified
+        required: true
+        example: CN=user,OU=domain_users,DC=example,DC=com
+      new_ou:
+        title: New OU
+        type: string
+        description: The distinguished name of the OU to move the object to
+        required: true
+        example: OU=disabled_users,DC=example,DC=com
+    output:
+      success:
+        title: Success
+        description: Operation status
+        type: boolean
+        required: false
+  reset_password:
+    title: Reset Password
+    description: Reset a users password
+    input:
+      distinguished_name:
+        title: Distinguished Name
+        type: string
+        description: The distinguished name of the user whose membership will be modified
+        required: true
+        example: CN=user,OU=domain_users,DC=example,DC=com
+      new_password:
+        title: New Password
+        description: The new password
+        type: password
+        required: true
+        example: mypassword
+    output:
+      success:
+        title: Success
+        description: Operation status
+        type: boolean
+        required: false
+  modify_object:
+    title: Modify Object
+    description: Modify the attributes for an Active Directory object
+    input:
+      distinguished_name:
+        title: Distinguished Name
+        type: string
+        description: The distinguished name of the object to modify
+        required: true
+        example: CN=user,OU=domain_users,DC=example,DC=com
+      attribute_to_modify:
+        title: Attribute to Modify
+        description: The name of the attribute to modify
+        type: string
+        required: true
+        example: postalCode
+      attribute_value:
+        title: Attribute Value
+        description: The value of the attribute
+        type: string
+        required: true
+        example: "02114"
+    output:
+      success:
+        title: Success
+        description: Operation status
+        type: boolean
+        required: false
+  force_password_reset:
+    title: Force Password Reset
+    description: Force a user to reset their password on next login
+    input:
+      distinguished_name:
+        title: Distinguished Name
+        type: string
+        description: The distinguished name of the user who will be forced to reset
+        required: true
+        example: CN=user,OU=domain_users,DC=example,DC=com
+    output:
+      success:
+        title: Success
+        description: Operation status
+        type: boolean
+        required: false
+  query_group_membership:
+    title: Query Group Membership
+    description: Return users and groups that belonging to the specific group
+    input:
+      group_name:
+        title: Group Name
+        description: Name of the group for which membership will be checked
+        required: true
+        type: string
+        example: Domain Users
+      search_base:
+        title: Search Base
+        description: The base of the search request
+        type: string
+        required: true
+        example: "DC=example,DC=com"
+      include_groups:
+        title: Include Groups
+        description: Include groups in results
+        type: boolean
+        required: false
+        example: true
+      expand_nested_groups:
+        title: Expand Nested Groups
+        description: Expand nested groups in results
+        type: boolean
+        required: false
+        example: true
+    output:
+      results:
+        title: Results
+        description: Results returned
+        type: '[]results'
+        required: false
+      count:
+        title: Count
+        description: Number of results
+        type: integer
+        required: false
