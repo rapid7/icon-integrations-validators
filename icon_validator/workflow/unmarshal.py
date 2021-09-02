@@ -19,7 +19,7 @@ def read_workflow(spec: KomandPluginSpec, file_name: str = None) -> Workflow:
             if f.endswith(".icon"):
                 file_name = f
         if not file_name:
-            print("Not found")
+            return
 
     with open(os.path.join(spec.directory, file_name)) as workflow_file:
         try:
