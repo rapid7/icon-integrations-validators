@@ -8,7 +8,8 @@ class TemplateIDValidator(KomandPluginValidator):
 
     @staticmethod
     def id_exists(workflow: Workflow):
-        if workflow.kom.workflowVersions[0].id:
+        if len(workflow.kom.workflowVersions) > 0 and workflow.kom.workflowVersions[0].id:
+        
             return True
         return False
 
