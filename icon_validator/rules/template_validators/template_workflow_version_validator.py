@@ -7,7 +7,7 @@ from icon_validator.workflow.unmarshal import read_workflow
 class TemplateWorkflowVersionValidator(KomandPluginValidator):
 
     def version_exists(self, wf: Workflow) -> bool:
-        if wf.kom.workflowVersions[0].version:
+        if len(wf.kom.workflowVersions) > 0 and wf.kom.workflowVersions[0].version:
             return True
         return False
 
