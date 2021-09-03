@@ -11,6 +11,11 @@
 
 _This plugin does not contain any requirements._
 
+# Supported Product Versions
+
+* 1.0.0
+* 1.0.1
+
 # Documentation
 
 ## Setup
