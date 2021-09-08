@@ -199,6 +199,12 @@ types:
       required: false
 
 connection:
+  example_in:
+    title: Example Input
+    type: string
+    description: An example
+    example: Example
+    required: true
   tenant_id:
     title: Tenant ID
     description: The ID of the directory that identifies the tenant
@@ -311,6 +317,47 @@ triggers:
         required: false
         description: Email
 actions:
+  get_email_from_user:
+    title: Get Email from User
+    description: Get a list of emails from a user's mailbox matching search terms
+    input:
+      mailbox_id:
+        title: Mailbox ID
+        type: string
+        description: Target user to retrieve email from
+        example: user@example.com
+        required: true
+      max_number_to_return:
+        title: Max Number to Return
+        type: integer
+        default: 250
+        description: Maximum number of emails to return. Max limit is 250 (default)
+        example: 250
+        required: false
+      from_contains:
+        title: From
+        type: string
+        description: From address contains this (can be full e-mail address or just a domain) e.g. user@example.com or example.com
+        example: example.com
+        required: false
+      subject_contains:
+        title: Subject
+        type: string
+        description: Subject contains this word or phrase
+        example: Free
+        required: false
+      body_contains:
+        title: Body
+        type: string
+        description: Body contains this word or phrase
+        example: Click here
+        required: false
+    output:
+      email_list:
+        title: Email List
+        type: '[]icon_email'
+        description: List of emails
+        required: false
   delete_email:
     title: Delete Email
     description: Delete an email by ID

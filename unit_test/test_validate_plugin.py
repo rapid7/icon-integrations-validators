@@ -19,7 +19,7 @@ from icon_validator.rules.plugin_validators.cloud_ready_validator import CloudRe
 from icon_validator.rules.plugin_validators.acronym_validator import AcronymValidator
 from icon_validator.rules.plugin_validators.unapproved_keywords_validator import UnapprovedKeywordsValidator
 from icon_validator.rules.plugin_validators.help_example_validator import HelpExampleValidator
-from icon_validator.rules.plugin_validators.major_version_bump_validator import MajorVersionBumpValidator
+from icon_validator.rules.plugin_validators.version_bump_validator import VersionBumpValidator
 
 import requests
 from unittest.mock import MagicMock
@@ -477,17 +477,17 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/plugin_major_version_bump_all"
         file_to_test = "plugin.spec.bad.action.removed.yaml"
         remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
-        MajorVersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
-        result = validate(directory_to_test, file_to_test, False, True, [MajorVersionBumpValidator()])
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
         self.assertEqual(result, 1)
 
-    def test_major_version_action_input_removed_should_fail(self):
+    def test_major_version_action_title_changed_should_fail(self):
         # example spec in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/plugin_major_version_bump_all"
-        file_to_test = "plugin.spec.bad.action.input.removed.yaml"
+        file_to_test = "plugin.spec.bad.action.title.changed.yaml"
         remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
-        MajorVersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
-        result = validate(directory_to_test, file_to_test, False, True, [MajorVersionBumpValidator()])
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
         self.assertEqual(result, 1)
 
     def test_major_version_connection_input_removed_should_fail(self):
@@ -495,8 +495,8 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/plugin_major_version_bump_all"
         file_to_test = "plugin.spec.bad.connection.input.removed.yaml"
         remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
-        MajorVersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
-        result = validate(directory_to_test, file_to_test, False, True, [MajorVersionBumpValidator()])
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
         self.assertEqual(result, 1)
 
     def test_major_version_input_now_required_should_fail(self):
@@ -504,8 +504,53 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/plugin_major_version_bump_all"
         file_to_test = "plugin.spec.bad.input.now.required.yaml"
         remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
-        MajorVersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
-        result = validate(directory_to_test, file_to_test, False, True, [MajorVersionBumpValidator()])
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
+        self.assertEqual(result, 1)
+
+    def test_major_version_input_removed_should_fail(self):
+        # example spec in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/plugin_major_version_bump_all"
+        file_to_test = "plugin.spec.bad.input.removed.yaml"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
+        self.assertEqual(result, 1)
+
+    def test_major_version_title_changes_should_fail(self):
+        # example spec in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/plugin_major_version_bump_all"
+        file_to_test = "plugin.spec.bad.input.title.changes.yaml"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
+        self.assertEqual(result, 1)
+
+    def test_major_version_type_change_should_fail(self):
+        # example spec in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/plugin_major_version_bump_all"
+        file_to_test = "plugin.spec.bad.input.type.change.yaml"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
+        self.assertEqual(result, 1)
+
+    def test_major_version_new_required_connection_input_should_fail(self):
+        # example spec in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/plugin_major_version_bump_all"
+        file_to_test = "plugin.spec.bad.new.input.required.connection.yaml"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
+        self.assertEqual(result, 1)
+
+    def test_major_version_new_required_input_should_fail(self):
+        # example spec in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/plugin_major_version_bump_all"
+        file_to_test = "plugin.spec.bad.new.required.input.yaml"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
         self.assertEqual(result, 1)
 
     def test_major_version_output_nolonger_required_should_fail(self):
@@ -513,26 +558,53 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/plugin_major_version_bump_all"
         file_to_test = "plugin.spec.bad.output.nolonger.required.yaml"
         remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
-        MajorVersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
-        result = validate(directory_to_test, file_to_test, False, True, [MajorVersionBumpValidator()])
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
         self.assertEqual(result, 1)
 
-    def test_major_version_title_changes_should_fail(self):
+    def test_major_version_trigger_removed_should_fail(self):
         # example spec in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/plugin_major_version_bump_all"
-        file_to_test = "plugin.spec.bad.title.changes.yaml"
+        file_to_test = "plugin.spec.bad.trigger.removed.yaml"
         remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
-        MajorVersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
-        result = validate(directory_to_test, file_to_test, False, True, [MajorVersionBumpValidator()])
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
         self.assertEqual(result, 1)
 
-    def test_major_version_type_change_should_fail(self):
+    def test_major_version_trigger_renamed_should_fail(self):
         # example spec in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/plugin_major_version_bump_all"
-        file_to_test = "plugin.spec.bad.type.change.yaml"
+        file_to_test = "plugin.spec.bad.trigger.renamed.yaml"
         remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
-        MajorVersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
-        result = validate(directory_to_test, file_to_test, False, True, [MajorVersionBumpValidator()])
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
+        self.assertEqual(result, 1)
+
+    def test_major_version_type_changed_connection_should_fail(self):
+        # example spec in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/plugin_major_version_bump_all"
+        file_to_test = "plugin.spec.bad.type.changed.connection.yaml"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
+        self.assertEqual(result, 1)
+
+    def test_major_version_type_removed_should_fail(self):
+        # example spec in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/plugin_major_version_bump_all"
+        file_to_test = "plugin.spec.bad.type.removed.yaml"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
+        self.assertEqual(result, 1)
+
+    def test_major_version_type_subtype_removed_should_fail(self):
+        # example spec in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/plugin_major_version_bump_all"
+        file_to_test = "plugin.spec.bad.type.subtype.removed.yaml"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
         self.assertEqual(result, 1)
 
     def test_major_version_action_removed_bump_applied_succeed(self):
@@ -540,8 +612,26 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/plugin_major_version_bump_all"
         file_to_test = "plugin.spec.good.action.removedandbumped.yaml"
         remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
-        MajorVersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
-        result = validate(directory_to_test, file_to_test, False, True, [MajorVersionBumpValidator()])
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
+        self.assertEqual(result, 0)
+
+    def test_major_version_new_optional_connection_input_succeed(self):
+        # example spec in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/plugin_major_version_bump_all"
+        file_to_test = "plugin.spec.good.new.connection.input.optional.yaml"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
+        self.assertEqual(result, 0)
+
+    def test_major_version_new_optional_action_input_succeed(self):
+        # example spec in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/plugin_major_version_bump_all"
+        file_to_test = "plugin.spec.good.new.nonrequired.input.yaml"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
         self.assertEqual(result, 0)
 
     @staticmethod

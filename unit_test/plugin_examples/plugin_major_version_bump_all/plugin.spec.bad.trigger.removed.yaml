@@ -219,51 +219,6 @@ connection:
     example: '{"secretKey": "9de5069c5afe602b2ea0a04b66beb2c0" }'
 
 triggers:
-  email_received:
-    title: Email Received
-    description: Poll mailbox for new email
-    input:
-      mailbox_id:
-        title: Mailbox ID
-        type: string
-        description: The mailbox to monitor for incoming email
-        example: user@example.com
-        required: true
-      folder_name:
-        title: Folder Name
-        type: string
-        description: Common values are Calendar, Trash, Drafts, Inbox, Outbox, Sent,
-          Junk, Tasks, Contacts. You can also use a completely custom value, for example
-          python_mailing_list. Mailbox names are case-sensitive. Folder GUID may be specified as well
-        example: Inbox
-        required: false
-      interval:
-        title: Interval
-        type: integer
-        description: "How often to poll for new email in seconds"
-        default: 15
-        example: 15
-        required: false
-      subject_query:
-        title: Subject Query
-        type: string
-        description: Query to search for in subject (regex capable). Only these email will activate this trigger
-        default: ''
-        example: You have a new message
-        required: false
-      flatten_attachments:
-        title: Flatten Attachments
-        type: boolean
-        description: Will return all attachments as flat lists instead of nested emails
-        required: true
-        example: false
-        default: false
-    output:
-      icon_email:
-        title: Email
-        type: icon_email
-        required: false
-        description: Email
   folder_modified:
     title: Email Added to Folder
     description: Monitor folder for added emails
@@ -311,6 +266,47 @@ triggers:
         required: false
         description: Email
 actions:
+  get_email_from_user:
+    title: Get Email from User
+    description: Get a list of emails from a user's mailbox matching search terms
+    input:
+      mailbox_id:
+        title: Mailbox ID
+        type: string
+        description: Target user to retrieve email from
+        example: user@example.com
+        required: true
+      max_number_to_return:
+        title: Max Number to Return
+        type: integer
+        default: 250
+        description: Maximum number of emails to return. Max limit is 250 (default)
+        example: 250
+        required: false
+      from_contains:
+        title: From
+        type: string
+        description: From address contains this (can be full e-mail address or just a domain) e.g. user@example.com or example.com
+        example: example.com
+        required: false
+      subject_contains:
+        title: Subject
+        type: string
+        description: Subject contains this word or phrase
+        example: Free
+        required: false
+      body_contains:
+        title: Body
+        type: string
+        description: Body contains this word or phrase
+        example: Click here
+        required: false
+    output:
+      email_list:
+        title: Email List
+        type: '[]icon_email'
+        description: List of emails
+        required: false
   delete_email:
     title: Delete Email
     description: Delete an email by ID
