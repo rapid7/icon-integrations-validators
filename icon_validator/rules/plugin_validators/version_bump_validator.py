@@ -304,7 +304,7 @@ class VersionBumpValidator(KomandPluginValidator):
         # ARE required. We also know that there is no removed input or output fields between the two specs
         # Here, we check for new output or new non-required input
         if spec_type in local and spec_type in remote:
-            for key, value in local[spec_type]:
+            for key, value in local[spec_type].items():
                 remote_val = remote[spec_type][key]
                 VersionBumpValidator.check_new_inputs_outputs(remote_val, value, SpecConstants.INPUT)
                 VersionBumpValidator.check_new_inputs_outputs(remote_val, value, SpecConstants.OUTPUT)
@@ -312,8 +312,8 @@ class VersionBumpValidator(KomandPluginValidator):
     @staticmethod
     def check_new_inputs_outputs(remote, local, input_output):
         if input_output in local:
-            for inner_key, inner_val in local[SpecConstants.INPUT]:
-                if inner_key not in remote[SpecConstants.INPUT]:
+            for inner_key in local[input_output]:
+                if inner_key not in remote[input_output]:
                     raise ValidationException(f"New {input_output} added without bumping minor version."
                                               f" Please bump minor version, X.Y.0")
 
