@@ -33,6 +33,8 @@ class TestPluginValidate(unittest.TestCase):
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/good_plugin"
         file_to_test = "plugin.spec.yaml"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
         result = validate(directory_to_test, file_to_test, False, False)
         self.assertEqual(result, 0)
 
@@ -40,6 +42,8 @@ class TestPluginValidate(unittest.TestCase):
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/good_plugin_with_task"
         file_to_test = "plugin.spec.yaml"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version()
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
         result = validate(directory_to_test, file_to_test, False, False)
         self.assertEqual(result, 0)
 
