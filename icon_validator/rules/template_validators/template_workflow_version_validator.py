@@ -11,7 +11,7 @@ class TemplateWorkflowVersionValidator(KomandPluginValidator):
             return True
         return False
 
-    def validate(self, spec):
+    def validate(self, spec, templates=None):
         """
         Validates template ensuring version
         """

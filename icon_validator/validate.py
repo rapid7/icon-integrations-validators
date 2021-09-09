@@ -36,7 +36,10 @@ def validate(
     for v in validators:
         print(f"{BULLET_OK} Executing validator {v.name}")
         try:
-            v.validate(spec)
+            if v.name == "RegionWorkflowIDValidator":
+                v.validate(spec, templates)
+            else:
+                v.validate(spec)
             success = True
 
         except ValidationException as e:

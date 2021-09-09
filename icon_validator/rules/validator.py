@@ -9,5 +9,5 @@ class KomandPluginValidator:
         else:
             self.name = self.__class__.__name__
 
-    def validate(self, plugin_spec):
+    def validate(self, plugin_spec, templates=None):
         pass
