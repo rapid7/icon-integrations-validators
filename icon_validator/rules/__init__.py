@@ -77,6 +77,7 @@ from icon_validator.rules.template_validators.template_workflow_version_validato
 TEMPLATE_VALIDATORS = [
     TemplateIDValidator(),
     TemplateWorkflowVersionValidator(),
+    RegionWorkflowIDValidator()
 ]
 
 
