@@ -117,12 +117,13 @@ class VersionBumpValidator(KomandPluginValidator):
         # meant to validate type/title inside of individual inputs/outputs
         if input_or_output in remote:
             for key, value in remote[input_or_output].items():
-                old_value = value[field]
-                new_value = local[input_or_output][key][field]
-                if old_value != new_value:
-                    raise ValidationException(f"{field} has changed in {input_or_output} {key} without a major version"
-                                              f" bump. You may change it back to {old_value} or bump it to the next"
-                                              f" major version.")
+                if field in value and key in local[input_or_output] and field in local[input_or_output][key]:
+                    old_value = value[field]
+                    new_value = local[input_or_output][key][field]
+                    if old_value != new_value:
+                        raise ValidationException(f"{field} has changed in {input_or_output} {key} without a major"
+                                                  f" version bump. You may change it back to {old_value} or"
+                                                  f" bump it to the next major version.")
 
     @staticmethod
     def validate_no_input_new_or_required(remote, local):
@@ -140,13 +141,15 @@ class VersionBumpValidator(KomandPluginValidator):
         # verifies that outputs have not been changed from required to optional
         if SpecConstants.OUTPUT in remote and SpecConstants.OUTPUT in local:
             for output_key, output_vals in remote[SpecConstants.OUTPUT].items():
-                if output_vals[SpecConstants.REQUIRED]:
-                    # We know this output exists because this validator is called after verifying all outputs exist
-                    local_spec_req = local[SpecConstants.OUTPUT][output_key][SpecConstants.REQUIRED]
-                    if not local_spec_req:
-                        raise ValidationException(f"Output {output_key} has been changed to not required in "
-                                                  "without a major version bump You may change"
-                                                  " the output back or bump to the next major version")
+                if SpecConstants.REQUIRED in output_vals and \
+                        SpecConstants.REQUIRED in local[SpecConstants.OUTPUT][output_key]:
+                    if output_vals[SpecConstants.REQUIRED]:
+                        # We know this output exists because this validator is called after verifying all outputs exist
+                        local_spec_req = local[SpecConstants.OUTPUT][output_key][SpecConstants.REQUIRED]
+                        if not local_spec_req:
+                            raise ValidationException(f"Output {output_key} has been changed to not required in "
+                                                      "without a major version bump You may change"
+                                                      " the output back or bump to the next major version")
 
     @staticmethod
     def validate_no_output_removed(remote, local):
@@ -189,15 +192,15 @@ class VersionBumpValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_triggers(remote, local):
-        # Could be convinced to make function for this...left separate in case there are diffs in future actions/trig
-        VersionBumpValidator.validate_no_trigger_removed(remote, local)
-        for trigger_key, remote_trigger_dict in remote[SpecConstants.TRIGGERS].items():
-            local_dict = local[SpecConstants.TRIGGERS][trigger_key]
-            if local_dict[SpecConstants.TITLE] != remote_trigger_dict[SpecConstants.TITLE]:
-                raise ValidationException("Trigger title has changed without a major version bump. You may change"
-                                          " the title back or bump to the next major version, X.0.0")
+        if SpecConstants.TRIGGERS in remote and SpecConstants.TRIGGERS in local:
+            VersionBumpValidator.validate_no_trigger_removed(remote, local)
+            for trigger_key, remote_trigger_dict in remote[SpecConstants.TRIGGERS].items():
+                local_dict = local[SpecConstants.TRIGGERS][trigger_key]
+                if local_dict[SpecConstants.TITLE] != remote_trigger_dict[SpecConstants.TITLE]:
+                    raise ValidationException("Trigger title has changed without a major version bump. You may change"
+                                              " the title back or bump to the next major version, X.0.0")
 
-            VersionBumpValidator.validate_inner_fields(remote_trigger_dict, local_dict)
+                VersionBumpValidator.validate_inner_fields(remote_trigger_dict, local_dict)
 
     @staticmethod
     def validate_connections(remote, local):
