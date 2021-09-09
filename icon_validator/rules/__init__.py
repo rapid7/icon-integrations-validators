@@ -72,7 +72,7 @@ from icon_validator.rules.workflow_validators.workflow_parameters_keyword_valida
 # template imports
 from icon_validator.rules.template_validators.template_id_validator import *
 from icon_validator.rules.template_validators.template_workflow_version_validator import *
-from icon_validator.rules.template_validators.template_workflowid_and_region_validator import *
+from icon_validator.rules.template_validators.template_workflowid_and_region import *
 
 # The order of this list is the execution order of the validators.
 TEMPLATE_VALIDATORS = [
