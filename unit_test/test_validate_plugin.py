@@ -18,6 +18,7 @@ from icon_validator.rules.plugin_validators.cloud_ready_validator import CloudRe
 from icon_validator.rules.plugin_validators.acronym_validator import AcronymValidator
 from icon_validator.rules.plugin_validators.unapproved_keywords_validator import UnapprovedKeywordsValidator
 from icon_validator.rules.plugin_validators.help_example_validator import HelpExampleValidator
+from icon_validator.rules.plugin_validators.supported_version_validator import SupportedVersionValidator
 
 import requests
 
@@ -466,6 +467,31 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/bad_plugin_help_example_wrong_json"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [HelpExampleValidator()])
+        self.assertEqual(result, 1)
+
+    def test_supported_version_validator(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/supported_version_validator"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [SupportedVersionValidator()])
+        self.assertEqual(result, 0)
+
+    def test_supported_version_validator_sup_vers_null(self):
+        directory_to_test = "plugin_examples/supported_version_validator"
+        file_to_test = "plugin.spec_bad.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [SupportedVersionValidator()])
+        self.assertEqual(result, 1)
+
+    def test_supported_version_validator_spec_empty(self):
+        directory_to_test = "plugin_examples/supported_version_validator"
+        file_to_test = "plugin.spec_bad_empty.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [SupportedVersionValidator()])
+        self.assertEqual(result, 1)
+
+    def test_supported_version_validator_sup_vers_empty(self):
+        directory_to_test = "plugin_examples/supported_version_validator"
+        file_to_test = "plugin.spec_bad_missing_value.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [SupportedVersionValidator()])
         self.assertEqual(result, 1)
 
     @staticmethod

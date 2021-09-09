@@ -62,7 +62,9 @@ be on your way to contributing!
 
 ## Changelog
 
-* 2.41.0 - Convert dataclass to pydantic for Workflow to use pydantic | Update icon-validate to validate with template validators only | Move validate_id and validate_workflow_version to icon validators
+* 2.42.0 - Convert dataclass to pydantic for Workflow to use pydantic | Update icon-validate to add template validation capabilities
+* 2.41.1 - Exit with proper return codes when ran independently via CLI 
+* 2.41.0 - Add SupportedVersionValidator
 * 2.40.0 - Add PythonScriptUseValidator for workflows
 * 2.39.0 - Add HelpExampleValidator | Improve EncodingValidator by printing all forbidden characters at one time
 * 2.38.0 - Remove LoggingValidator | Update dependency versions
