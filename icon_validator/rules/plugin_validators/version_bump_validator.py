@@ -34,7 +34,7 @@ class VersionBumpValidator(KomandPluginValidator):
 
     @staticmethod
     def get_remote_spec(spec):
-        directory = spec.directory.split("/" + RepoConstants.PLUGIN_DIRNAME + "/")[0]
+        directory = spec.directory.split(f"/{RepoConstants.PLUGIN_DIRNAME}/")[0]
         try:
             repo = Repo(directory)
         except InvalidGitRepositoryError:
@@ -63,9 +63,7 @@ class VersionBumpValidator(KomandPluginValidator):
         # using a temp file because stream_data requires a data object
         with tempfile.TemporaryFile() as fp:
             blob.stream_data(fp)
-            fp.seek(0)
-            plugin_spec_string = fp.read().decode("utf-8")
-            return yaml.safe_load(spec.spec_dictionary(plugin_spec_string))
+            return yaml.safe_load(fp)
 
     @staticmethod
     def validate_no_sections_removed(remote, local):
