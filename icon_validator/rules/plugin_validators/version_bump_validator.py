@@ -32,6 +32,9 @@ class SpecConstants:
 
 class VersionBumpValidator(KomandPluginValidator):
 
+    MAJOR_INSTRUCTIONS_STRING = ""
+    MINOR_INSTRUCTIONS_STRING = ""
+
     @staticmethod
     def get_remote_spec(spec):
         directory = spec.directory.split(f"/{RepoConstants.PLUGIN_DIRNAME}/")[0]
@@ -53,7 +56,7 @@ class VersionBumpValidator(KomandPluginValidator):
                         break
                 if blob is None:
                     # throw error: no plugin spec found in remote
-                    raise ValidationException("No plugin spec found in remote repo")
+                    raise ValidationException(f"{RepoConstants.PLUGIN_SPEC} found in remote repo")
                 break
         if remote is None:
             # throw exception : origin/master not found
@@ -68,19 +71,20 @@ class VersionBumpValidator(KomandPluginValidator):
     @staticmethod
     def validate_no_sections_removed(remote, local):
         # checks if either "input" or "output" was removed or added to a trigger or action
-        if (SpecConstants.INPUT in remote)!= (SpecConstants.INPUT in local):
-            raise ValidationException(f"Input section was added or removed without a major version bump."
-                                      f" {remote[SpecConstants.INPUT]} and {local[SpecConstants.INPUT]}")
+        if (SpecConstants.INPUT in remote) != (SpecConstants.INPUT in local):
+            raise ValidationException(f"Input section was added or removed without a major version increment."
+                                      f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
         if (SpecConstants.OUTPUT in remote) != (SpecConstants.OUTPUT in local):
-            raise ValidationException("Output section was added or removed without a major version bump.")
+            raise ValidationException(f"Output section was added or removed without a major version increment."
+                                      f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
 
     @staticmethod
     def validate_all_types_exist(remote, local):
         # checks if an entire type has been removed from spec
         for type_key in remote[SpecConstants.TYPES]:
             if type_key not in local[SpecConstants.TYPES]:
-                raise ValidationException(f"Type {type_key} has been removed without a major version bump. You may add"
-                                          f" it back or bump the major version")
+                raise ValidationException(f"Type {type_key} has been removed without a major version increment."
+                                          f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
 
     @staticmethod
     def validate_no_types_changed(remote, local):
@@ -92,13 +96,16 @@ class VersionBumpValidator(KomandPluginValidator):
                     local_type_in = local[SpecConstants.TYPES][type_key]
                     if type_inner_key not in local_type_in:
                         raise ValidationException(f"Type {type_inner_key} removed from {type_key} without a major"
-                                                  f" version bump. You may add it back or bump the major version")
+                                                  f" version increment."
+                                                  f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
                     if type_inner_val[SpecConstants.TYPE] != local_type_in[type_inner_key][SpecConstants.TYPE]:
                         raise ValidationException(f"Type {type_inner_key} changed in type {type_key} without a major"
-                                                  f"version bump. You may add it back or bump the major version")
+                                                  f"version increment."
+                                                  f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
                     if type_inner_val[SpecConstants.REQUIRED] != local_type_in[type_inner_key][SpecConstants.REQUIRED]:
                         raise ValidationException(f"Type {type_inner_key} changed in type {type_key} without a major"
-                                                  f"version bump. You may add it back or bump the major version")
+                                                  f"version increment."
+                                                  f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
 
     @staticmethod
     def validate_no_inner_type_changes(remote, local):
@@ -120,8 +127,8 @@ class VersionBumpValidator(KomandPluginValidator):
                     new_value = local[input_or_output][key][field]
                     if old_value != new_value:
                         raise ValidationException(f"{field} has changed in {input_or_output} {key} without a major"
-                                                  f" version bump. You may change it back to {old_value} or"
-                                                  f" bump it to the next major version.")
+                                                  f"version increment."
+                                                  f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
 
     @staticmethod
     def validate_no_input_new_or_required(remote, local):
@@ -131,8 +138,8 @@ class VersionBumpValidator(KomandPluginValidator):
                 if input_key not in remote[SpecConstants.INPUT] or \
                   not remote[SpecConstants.INPUT][input_key][SpecConstants.REQUIRED]:
                     raise ValidationException(f"Input has been added or changed to required in {input_key} without"
-                                              " a major version bump. You may change the input back or bump "
-                                              "to the next major version")
+                                              f" a major version increment."
+                                              f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
 
     @staticmethod
     def validate_no_output_no_longer_required(remote, local):
@@ -146,36 +153,36 @@ class VersionBumpValidator(KomandPluginValidator):
                         local_spec_req = local[SpecConstants.OUTPUT][output_key][SpecConstants.REQUIRED]
                         if not local_spec_req:
                             raise ValidationException(f"Output {output_key} has been changed to not required in "
-                                                      "without a major version bump You may change"
-                                                      " the output back or bump to the next major version")
+                                                      "without a major version increment."
+                                                      f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
 
     @staticmethod
     def validate_no_output_removed(remote, local):
         for item in remote[SpecConstants.OUTPUT]:
             if item not in local[SpecConstants.OUTPUT]:
                 raise ValidationException("Output has been removed from an action or trigger. This requires "
-                                          "a major version bump, X.0.0")
+                                          f"a major version increment.{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
 
     @staticmethod
     def validate_no_input_removed(remote, local):
         for item in remote[SpecConstants.INPUT]:
             if item not in local[SpecConstants.INPUT]:
                 raise ValidationException("Input has been removed from an action or trigger. This requires "
-                                          "a major version bump, X.0.0")
+                                          f"a major version increment.{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
 
     @staticmethod
     def validate_no_action_removed(remote, local):
         for action in remote[SpecConstants.ACTIONS]:
             if action not in local[SpecConstants.ACTIONS]:
-                raise ValidationException("Action has been removed from spec without a major version bump"
-                                          " You may add the action back or bump to the next major version, X.0.0")
+                raise ValidationException("Action has been removed from spec without a major version increment."
+                                          f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
 
     @staticmethod
     def validate_no_trigger_removed(remote, local):
         for action in remote[SpecConstants.TRIGGERS]:
             if action not in local[SpecConstants.TRIGGERS]:
-                raise ValidationException("Trigger has been removed from spec without a major version bump"
-                                          " You may add the trigger back or bump to the next major version, X.0.0")
+                raise ValidationException(f"Trigger has been removed from {RepoConstants.PLUGIN_SPEC} without a major"
+                                          f" version increment.{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
 
     @staticmethod
     def validate_actions(remote, local):
@@ -183,8 +190,8 @@ class VersionBumpValidator(KomandPluginValidator):
         for action_key, remote_action_dict in remote[SpecConstants.ACTIONS].items():
             local_dict = local[SpecConstants.ACTIONS][action_key]
             if local_dict[SpecConstants.TITLE] != remote_action_dict[SpecConstants.TITLE]:
-                raise ValidationException("Action title has changed without a major version bump. You may change"
-                                          " the title back or bump to the next major version, X.0.0")
+                raise ValidationException("Action title has changed without a major version increment."
+                                          f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
 
             VersionBumpValidator.validate_inner_fields(remote_action_dict, local_dict)
 
@@ -195,8 +202,8 @@ class VersionBumpValidator(KomandPluginValidator):
             for trigger_key, remote_trigger_dict in remote[SpecConstants.TRIGGERS].items():
                 local_dict = local[SpecConstants.TRIGGERS][trigger_key]
                 if local_dict[SpecConstants.TITLE] != remote_trigger_dict[SpecConstants.TITLE]:
-                    raise ValidationException("Trigger title has changed without a major version bump. You may change"
-                                              " the title back or bump to the next major version, X.0.0")
+                    raise ValidationException("Trigger title has changed without a major version increment."
+                                              f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
 
                 VersionBumpValidator.validate_inner_fields(remote_trigger_dict, local_dict)
 
@@ -205,31 +212,30 @@ class VersionBumpValidator(KomandPluginValidator):
         # This may well be deprecated almost immediately when versioned connections is released
         if SpecConstants.CONNECTIONS in remote:
             if SpecConstants.CONNECTIONS not in local:
-                raise ValidationException("Connection removed without a major version bump. Add the connection back"
-                                          " or bump to the next major version")
+                raise ValidationException("Connection removed without a major version increment."
+                                          f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
             for key, value in remote[SpecConstants.CONNECTIONS].items():
                 if key not in local[SpecConstants.CONNECTIONS]:
-                    raise ValidationException(f"{key} removed from connection without a major version bump. Add the"
-                                              f" item back or bump to the next major version")
+                    raise ValidationException(f"{key} removed from connection without a major version increment."
+                                              f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
             for key, value in local[SpecConstants.CONNECTIONS].items():
                 if key not in remote[SpecConstants.CONNECTIONS] and value[SpecConstants.REQUIRED]:
-                    raise ValidationException(f"{key} added to connection as required input "
-                                              f"without major version bump. Remove {key} or bump to next major version")
+                    raise ValidationException(f"{key} added to connection as required input without major version"
+                                              f"increment.{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
             # established the same keys/vals at this point. Check titles / types next
             for key, value in local[SpecConstants.CONNECTIONS].items():
                 if key in remote[SpecConstants.CONNECTIONS]:
                     curr_compare = remote[SpecConstants.CONNECTIONS][key]
                     if value[SpecConstants.TITLE] != curr_compare[SpecConstants.TITLE]:
-                        raise ValidationException(f"Title changed in connection field {key}"
-                                                  f". Change it back to {curr_compare[SpecConstants.TITLE]}"
-                                                  f" or bump to the next major version")
+                        raise ValidationException(f"Title changed in connection field {key}, requiring a major version"
+                                                  f" increment.{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
                     if value[SpecConstants.TYPE] != curr_compare[SpecConstants.TYPE]:
-                        raise ValidationException(f"Type changed in connection field {key}"
-                                                  f". Change it back to {curr_compare[SpecConstants.TYPE]}"
-                                                  f" or bump to the next major version")
+                        raise ValidationException(f"Type changed in connection field {key}, requiring a major version"
+                                                  f" increment.{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
         else:
             if SpecConstants.CONNECTIONS in local:
-                raise ValidationException("Connection newly added to spec. This requires a major version bump")
+                raise ValidationException(f"Connection newly added to {RepoConstants.PLUGIN_SPEC}. This requires a"
+                                          f" major version increment.{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
 
     @staticmethod
     def validate_inner_fields(remote, local):
@@ -245,16 +251,17 @@ class VersionBumpValidator(KomandPluginValidator):
         VersionBumpValidator.validate_no_inner_type_changes(remote, local)
 
     @staticmethod
-    def check_major_version_bump_needed(remote, local):
+    def check_major_version_increment_needed(remote, local):
         local_version = local["version"].split('.')
         remote_version = remote["version"].split('.')
         if len(local_version) == 3 and len(remote_version) == 3:
             if int(local_version[0]) > int(remote_version[0]):
                 if int(local_version[1]) > 0 or int(local_version[2]) > 0:
-                    raise ValidationException("Major version bump should set minor and patch versions to 0 "
-                                              "The resulting format should be X.0.0")
+                    raise ValidationException("Major version increment should set minor and patch versions to 0.")
                 return False
             else:
+                VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING = f" Please change the plugin version to " \
+                                                                 f"{int(remote_version[0])+1}.0.0"
                 return True
         else:
             raise ValidationException("Version does not match required semver format. "
@@ -263,16 +270,19 @@ class VersionBumpValidator(KomandPluginValidator):
                                       "Versions start at 1.0.0, see https://semver.org/ for more information.")
 
     @staticmethod
-    def check_minor_version_bump_needed(remote, local):
+    def check_minor_version_increment_needed(remote, local):
         local_version = local["version"].split('.')
         remote_version = remote["version"].split('.')
         if len(local_version) == 3 and len(remote_version) == 3:
             if int(local_version[1]) > int(remote_version[1]):
                 if int(local_version[2]) > 0:
-                    raise ValidationException("Minor version bump should set patch version to 0 "
+                    raise ValidationException("Minor version increment should set patch version to 0 "
                                               "The resulting format should be X.Y.0")
                 return False
             else:
+                VersionBumpValidator.MINOR_INSTRUCTIONS_STRING = f" Please change the plugin version to " \
+                                                                 f"{int(remote_version[0])}." \
+                                                                 f"{int(remote_version[1]) + 1}.0"
                 return True
         else:
             raise ValidationException("Version does not match required semver format. "
@@ -294,10 +304,12 @@ class VersionBumpValidator(KomandPluginValidator):
     def check_for_new(remote, local, spec_type):
         if spec_type in local:
             if spec_type not in remote:
-                raise ValidationException(f"Spec section {spec_type} added. Bump the minor version, X.Y.0")
+                raise ValidationException(f"Plugin spec section {spec_type} added to {RepoConstants.PLUGIN_SPEC}."
+                                          f"{VersionBumpValidator.MINOR_INSTRUCTIONS_STRING}")
             for key in local[spec_type]:
                 if key not in remote[spec_type]:
-                    raise ValidationException(f"Added {spec_type} {key}. This requires a minor version bump, X.Y.0")
+                    raise ValidationException(f"Added {spec_type}: {key}."
+                                              f"{VersionBumpValidator.MINOR_INSTRUCTIONS_STRING}")
 
     @staticmethod
     def validate_minor_inputs_outputs(remote, local, spec_type):
@@ -315,33 +327,27 @@ class VersionBumpValidator(KomandPluginValidator):
         if input_output in local:
             for inner_key in local[input_output]:
                 if inner_key not in remote[input_output]:
-                    raise ValidationException(f"New {input_output} added without bumping minor version."
-                                              f" Please bump minor version, X.Y.0")
+                    raise ValidationException(f"New {input_output} added without incrementing minor version."
+                                              f"{VersionBumpValidator.MINOR_INSTRUCTIONS_STRING}")
 
     def validate(self, spec):
         remote_spec = VersionBumpValidator.get_remote_spec(spec)
         local_spec = spec.spec_dictionary()
         # perform the different sections of validation
         # Check if we already did a major version bump- if so, no need to do all this checking
-        if not VersionBumpValidator.check_major_version_bump_needed(remote_spec, local_spec):
+        if not VersionBumpValidator.check_major_version_increment_needed(remote_spec, local_spec):
             # We already bumped the major version- skip the rest of the validation
             return
         else:
-            try:
-                VersionBumpValidator.validate_actions(remote_spec, local_spec)
-                VersionBumpValidator.validate_triggers(remote_spec, local_spec)
-                VersionBumpValidator.validate_connections(remote_spec, local_spec)
-                VersionBumpValidator.validate_no_types_changed(remote_spec, local_spec)
-            except ValidationException as e:
-                raise e
-            # ... minor bump code here. Need to figure out ways to param the other functions above
-            # ... to accept checking functions for minor/major bump
-        if not VersionBumpValidator.check_minor_version_bump_needed(remote_spec, local_spec):
+            VersionBumpValidator.validate_actions(remote_spec, local_spec)
+            VersionBumpValidator.validate_triggers(remote_spec, local_spec)
+            VersionBumpValidator.validate_connections(remote_spec, local_spec)
+            VersionBumpValidator.validate_no_types_changed(remote_spec, local_spec)
+
+        # minor version validation (NOTE: It is important that minor comes AFTER major version due to assumptions made)
+        if not VersionBumpValidator.check_minor_version_increment_needed(remote_spec, local_spec):
             # already validated that no major bump was needed and we bumped minor version- skip further validation
             return
         else:
-            try:
-                VersionBumpValidator.validate_minor_triggers(remote_spec, local_spec)
-                VersionBumpValidator.validate_minor_actions(remote_spec, local_spec)
-            except ValidationException as e:
-                raise e
+            VersionBumpValidator.validate_minor_triggers(remote_spec, local_spec)
+            VersionBumpValidator.validate_minor_actions(remote_spec, local_spec)
