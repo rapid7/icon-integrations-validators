@@ -55,6 +55,7 @@ class WorkflowScreenshotValidator(KomandPluginValidator):
                     )
                 elif (
                     not word[0].isupper()
+                    and not word[0] == "("
                     and not word[0].isnumeric()
                     and not word.capitalize() in title_validation_list
                 ):
