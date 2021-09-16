@@ -37,6 +37,9 @@ class VersionBumpValidator(KomandPluginValidator):
 
     @staticmethod
     def get_remote_spec(spec):
+        """
+        Get the existing remote spec for this plugin from the repo
+        """
         directory = spec.directory.split(f"/{RepoConstants.PLUGIN_DIRNAME}/")[0]
         try:
             repo = Repo(directory)
@@ -44,13 +47,26 @@ class VersionBumpValidator(KomandPluginValidator):
             raise ValidationException("Incorrect directory passed- must be an individual plugin directory")
 
         remote_list = repo.remote().refs
+        blob = VersionBumpValidator.get_plugin_spec_blob(remote_list, spec.spec_dictionary()["name"])
+
+        # if all went well and no exceptions, we now have the blob of plugin spec
+        # using a temp file because stream_data requires a data object
+        with tempfile.TemporaryFile() as fp:
+            blob.stream_data(fp)
+            return yaml.safe_load(fp)
+
+    @staticmethod
+    def get_plugin_spec_blob(remote_list, plugin_name):
+        """
+        Get the plugin spec blob from the remote repo
+        """
         blob = None
         remote = None
         for _remote in remote_list:
             if _remote.name == "origin/master":
                 remote = _remote
                 # now get the blob representing the plugin folder and loop over until we find plugin spec
-                for _blob in _remote.object.tree[RepoConstants.PLUGIN_DIRNAME][spec.spec_dictionary()["name"]]:
+                for _blob in _remote.object.tree[RepoConstants.PLUGIN_DIRNAME][plugin_name]:
                     if _blob.name == RepoConstants.PLUGIN_SPEC:
                         blob = _blob
                         break
@@ -61,12 +77,7 @@ class VersionBumpValidator(KomandPluginValidator):
         if remote is None:
             # throw exception : origin/master not found
             raise ValidationException("Remote origin/master not found.'master' branch name changed, update validator")
-
-        # if all went well and no exceptions, we now have the blob of plugin spec
-        # using a temp file because stream_data requires a data object
-        with tempfile.TemporaryFile() as fp:
-            blob.stream_data(fp)
-            return yaml.safe_load(fp)
+        return blob
 
     @staticmethod
     def validate_no_sections_removed(remote, local):
