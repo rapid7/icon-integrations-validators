@@ -74,7 +74,7 @@ class VersionBumpValidator(KomandPluginValidator):
                         break
                 if blob is None:
                     # throw error: no plugin spec found in remote
-                    raise ValidationException(f"{RepoConstants.PLUGIN_SPEC} found in remote repo")
+                    raise ValidationException(f"{RepoConstants.PLUGIN_SPEC} not found in remote repo")
                 break
         if remote is None:
             # throw exception : origin/master not found
@@ -110,8 +110,9 @@ class VersionBumpValidator(KomandPluginValidator):
                                                   f"{self.MAJOR_INSTRUCTIONS_STRING}")
                     if type_inner_val[SpecConstants.TYPE] != local_type_in[type_inner_key][SpecConstants.TYPE]:
                         raise ValidationException(f"Type {type_inner_key} changed in type {type_key} without a major"
-                                                  f"version increment."
-                                                  f"{self.MAJOR_INSTRUCTIONS_STRING}")
+                                                  f" version increment."
+                                                  f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
+
                     if type_inner_val[SpecConstants.REQUIRED] != local_type_in[type_inner_key][SpecConstants.REQUIRED]:
                         raise ValidationException(f"Type {type_inner_key} changed in type {type_key} without a major"
                                                   f"version increment."
