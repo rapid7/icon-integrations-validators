@@ -473,3 +473,29 @@ class TestWorkflowValidate(unittest.TestCase):
             [WorkflowPythonScriptUseValidator()],
         )
         self.assertEqual(result, 0)
+
+    def test_screenshots_validator_with_brackets_should_success(self):
+        # Test bad workflows. This will test the workflow_screenshot_validator
+        directory_to_test = "workflow_examples/screenshot_tests"
+        file_to_test = "workflow_brackets_in_title.spec.yaml"
+        result = validate(
+            directory_to_test,
+            file_to_test,
+            False,
+            True,
+            [WorkflowScreenshotValidator()],
+        )
+        self.assertEqual(result, 0)
+
+    def test_screenshots_validator_with_dot_should_fails(self):
+        # Test bad workflows. This will test the workflow_screenshot_validator
+        directory_to_test = "workflow_examples/screenshot_tests"
+        file_to_test = "workflow_bad_title_start_with_dot.spec.yaml"
+        result = validate(
+            directory_to_test,
+            file_to_test,
+            False,
+            True,
+            [WorkflowScreenshotValidator()],
+        )
+        self.assertEqual(result, 1)
