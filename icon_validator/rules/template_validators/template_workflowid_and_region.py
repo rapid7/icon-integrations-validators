@@ -2,12 +2,14 @@
 Validate workflow ID
 """
 
-from icon_template.validation import Validator
+from icon_validator.rules.validator import KomandPluginValidator
 from icon_template.models import Workflow
+from icon_validator.workflow.unmarshal import read_workflow
 from loguru import logger
 
 
-class RegionWorkflowIDValidator(Validator):
+
+class RegionWorkflowIDValidator(KomandPluginValidator):
     def __init__(self):
         super().__init__()
 
