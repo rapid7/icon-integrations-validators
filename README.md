@@ -62,7 +62,9 @@ be on your way to contributing!
 
 ## Changelog
 
-* 2.42.0 - Convert dataclass to pydantic for Workflow to use pydantic | Update icon-validate to add template validation capabilities
+
+* 2.43.0 - Convert dataclass to pydantic for Workflow to use pydantic | Update icon-validate to add template validation capabilities
+* 2.42.0 - Add in WorkflowScreenshotValidator to check parenthesis in screenshot title
 * 2.41.1 - Exit with proper return codes when ran independently via CLI 
 * 2.41.0 - Add SupportedVersionValidator
 * 2.40.0 - Add PythonScriptUseValidator for workflows
