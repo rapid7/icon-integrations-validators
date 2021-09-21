@@ -1,5 +1,5 @@
 from loguru import logger
-from .template_validators import RegionWorkflowIDValidator
+from rules.template_validators import TemplateWorkflowIDAndRegionValidator
 
 
 def validate_region_workflowid(workflow: Workflow, templates: dict, force: bool) -> (bool, [str]):

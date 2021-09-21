@@ -3,13 +3,13 @@ Validate workflow ID
 """
 
 from icon_validator.rules.validator import KomandPluginValidator
-from icon_template.models import Workflow
+from icon_validator.workflow.model import Workflow
 from icon_validator.workflow.unmarshal import read_workflow
 from loguru import logger
 
 
 
-class RegionWorkflowIDValidator(KomandPluginValidator):
+class TemplateWorkflowIDAndRegionValidator(KomandPluginValidator):
     def __init__(self):
         super().__init__()
 
