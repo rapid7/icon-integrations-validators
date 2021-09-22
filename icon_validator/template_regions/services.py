@@ -1,4 +1,5 @@
 from loguru import logger
+from icon_validator.workflow.model import Workflow
 from rules.template_validators import TemplateWorkflowIDAndRegionValidator
 
 
