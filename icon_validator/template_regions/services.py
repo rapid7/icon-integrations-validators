@@ -1,4 +1,4 @@
-from loguru import logger
+import logging
 from icon_validator.workflow.model import Workflow
 from rules.template_validators import TemplateWorkflowIDAndRegionValidator
 from template_regions.validation import *
@@ -13,7 +13,7 @@ def validate_region_workflowid(workflow: Workflow, templates: dict, force: bool)
     :return: bool if its not valid, list of errors
     """
     if force:
-        logger.info("Skipping workflowID validation")
+        logging.info("Skipping workflowID validation")
         return True, []
     workflow_validate = Validate(workflow=workflow, templates=templates)
     return workflow_validate.validate(validators=ValidateRegionWorkflowID)
