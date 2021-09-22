@@ -5,7 +5,7 @@ Validate workflow ID
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.workflow.model import Workflow
 from icon_validator.workflow.unmarshal import read_workflow
-from loguru import logger
+import logging
 
 
 
@@ -37,7 +37,7 @@ class TemplateWorkflowIDAndRegionValidator(KomandPluginValidator):
         if template:
             template_id = get_template_id(template)
             if workflow_id == template_id:
-                logger.info("Workflow ID valid!")
+                logging.info("Workflow ID valid!")
                 return
             raise Exception(
                 f"Workflow {workflow_name} workflowID didnt match the Template available | Workflow ID {workflow_id} != Template {template_id}"
