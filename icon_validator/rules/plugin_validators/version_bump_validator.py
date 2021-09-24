@@ -1,9 +1,7 @@
-import re
+import git
 
 from icon_validator.rules.validator import KomandPluginValidator
-from icon_plugin_spec.plugin_spec import KomandPluginSpec
 from icon_validator.exceptions import ValidationException
-import requests
 from git import Repo
 from git.exc import InvalidGitRepositoryError
 import tempfile
@@ -58,7 +56,7 @@ class VersionBumpValidator(KomandPluginValidator):
             return yaml.safe_load(fp)
 
     @staticmethod
-    def get_plugin_spec_blob(remote_list, plugin_name):
+    def get_plugin_spec_blob(remote_list: [git.RemoteReference], plugin_name: str):
         """
         Get the plugin spec blob from the remote repo
         """
@@ -81,23 +79,24 @@ class VersionBumpValidator(KomandPluginValidator):
             raise ValidationException("Remote origin/master not found.'master' branch name changed, update validator")
         return blob
 
-    def validate_no_sections_removed(self, remote, local):
+    def validate_no_sections_removed(self, remote: dict, local: dict):
         # checks if either "input" or "output" was removed or added to a trigger or action
+        # remote and local are dictionaries of an action or trigger
         if (SpecConstants.INPUT in remote) != (SpecConstants.INPUT in local):
             raise ValidationException(f"Input section was added or removed without a major version increment."
                                       f"{self.MAJOR_INSTRUCTIONS_STRING}")
         if (SpecConstants.OUTPUT in remote) != (SpecConstants.OUTPUT in local):
             raise ValidationException(f"Output section was added or removed without a major version increment."
-                                      f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
+                                      f"{self.MAJOR_INSTRUCTIONS_STRING}")
 
-    def validate_all_types_exist(self, remote, local):
+    def validate_all_types_exist(self, remote: dict, local: dict):
         # checks if an entire type has been removed from spec
         for type_key in remote[SpecConstants.TYPES]:
             if type_key not in local[SpecConstants.TYPES]:
                 raise ValidationException(f"Type {type_key} has been removed without a major version increment."
                                           f"{self.MAJOR_INSTRUCTIONS_STRING}")
 
-    def validate_no_types_changed(self, remote, local):
+    def validate_no_types_changed(self, remote: dict, local: dict):
         # verifies that types have not been changed between spec versions
         if SpecConstants.TYPES in remote and SpecConstants.TYPES in local:
             self.validate_all_types_exist(remote, local)
@@ -111,7 +110,7 @@ class VersionBumpValidator(KomandPluginValidator):
                     if type_inner_val[SpecConstants.TYPE] != local_type_in[type_inner_key][SpecConstants.TYPE]:
                         raise ValidationException(f"Type {type_inner_key} changed in type {type_key} without a major"
                                                   f" version increment."
-                                                  f"{VersionBumpValidator.MAJOR_INSTRUCTIONS_STRING}")
+                                                  f"{self.MAJOR_INSTRUCTIONS_STRING}")
 
                     if type_inner_val[SpecConstants.REQUIRED] != local_type_in[type_inner_key][SpecConstants.REQUIRED]:
                         raise ValidationException(f"Type {type_inner_key} changed in type {type_key} without a major"
@@ -126,8 +125,9 @@ class VersionBumpValidator(KomandPluginValidator):
         self.abstract_validate_no_change(remote, local, SpecConstants.INPUT, SpecConstants.TITLE)
         self.abstract_validate_no_change(remote, local, SpecConstants.OUTPUT, SpecConstants.TITLE)
 
-    def abstract_validate_no_change(self, remote, local, input_or_output, field):
+    def abstract_validate_no_change(self, remote: dict, local: dict, input_or_output: str, field: str):
         # meant to validate type/title inside of individual inputs/outputs
+        # input_or_output is the string spec constant for either "input" or "output"
         if input_or_output in remote:
             for key, value in remote[input_or_output].items():
                 if field in value and key in local[input_or_output] and field in local[input_or_output][key]:
@@ -138,7 +138,7 @@ class VersionBumpValidator(KomandPluginValidator):
                                                   f"version increment."
                                                   f"{self.MAJOR_INSTRUCTIONS_STRING}")
 
-    def validate_no_input_new_or_required(self, remote, local):
+    def validate_no_input_new_or_required(self, remote: dict, local: dict):
         # operates on dictionary of individual action/trigger/task
         for input_key, input_value in local[SpecConstants.INPUT].items():
             if input_value[SpecConstants.REQUIRED]:
@@ -148,8 +148,9 @@ class VersionBumpValidator(KomandPluginValidator):
                                               f" a major version increment."
                                               f"{self.MAJOR_INSTRUCTIONS_STRING}")
 
-    def validate_no_output_no_longer_required(self, remote, local):
+    def validate_no_output_no_longer_required(self, remote: dict, local: dict):
         # verifies that outputs have not been changed from required to optional
+        # input: complete spec dictionary
         if SpecConstants.OUTPUT in remote and SpecConstants.OUTPUT in local:
             for output_key, output_vals in remote[SpecConstants.OUTPUT].items():
                 if SpecConstants.REQUIRED in output_vals and \
@@ -162,53 +163,58 @@ class VersionBumpValidator(KomandPluginValidator):
                                                       "without a major version increment."
                                                       f"{self.MAJOR_INSTRUCTIONS_STRING}")
 
-    def validate_no_output_removed(self, remote, local):
+    def validate_no_output_removed(self, remote: dict, local: dict):
         for item in remote[SpecConstants.OUTPUT]:
             if item not in local[SpecConstants.OUTPUT]:
                 raise ValidationException("Output has been removed from an action or trigger. This requires "
                                           f"a major version increment.{self.MAJOR_INSTRUCTIONS_STRING}")
 
-    def validate_no_input_removed(self, remote, local):
+    def validate_no_input_removed(self, remote: dict, local: dict):
         for item in remote[SpecConstants.INPUT]:
             if item not in local[SpecConstants.INPUT]:
                 raise ValidationException("Input has been removed from an action or trigger. This requires "
                                           f"a major version increment.{self.MAJOR_INSTRUCTIONS_STRING}")
 
-    def validate_no_action_removed(self, remote, local):
+    def validate_no_action_removed(self, remote: dict, local: dict):
+        # input: complete spec dictionary
         for action in remote[SpecConstants.ACTIONS]:
             if action not in local[SpecConstants.ACTIONS]:
-                raise ValidationException("Action has been removed from spec without a major version increment."
+                raise ValidationException(f"Action {action} has been removed from spec without major version increment."
                                           f"{self.MAJOR_INSTRUCTIONS_STRING}")
 
-    def validate_no_trigger_removed(self, remote, local):
-        for action in remote[SpecConstants.TRIGGERS]:
-            if action not in local[SpecConstants.TRIGGERS]:
-                raise ValidationException(f"Trigger has been removed from {RepoConstants.PLUGIN_SPEC} without a major"
-                                          f" version increment.{self.MAJOR_INSTRUCTIONS_STRING}")
+    def validate_no_trigger_removed(self, remote: dict, local: dict):
+        # input: complete spec dictionary
+        for trigger in remote[SpecConstants.TRIGGERS]:
+            if trigger not in local[SpecConstants.TRIGGERS]:
+                raise ValidationException(f"Trigger {trigger} has been removed from {RepoConstants.PLUGIN_SPEC} without"
+                                          f" a major version increment.{self.MAJOR_INSTRUCTIONS_STRING}")
 
-    def validate_actions(self, remote, local):
+    def validate_actions(self, remote: dict, local: dict):
+        # input: complete spec dictionary
         self.validate_no_action_removed(remote, local)
         for action_key, remote_action_dict in remote[SpecConstants.ACTIONS].items():
             local_dict = local[SpecConstants.ACTIONS][action_key]
             if local_dict[SpecConstants.TITLE] != remote_action_dict[SpecConstants.TITLE]:
-                raise ValidationException("Action title has changed without a major version increment."
+                raise ValidationException(f"Action {action_key} title has changed without a major version increment."
                                           f"{self.MAJOR_INSTRUCTIONS_STRING}")
 
             self.validate_inner_fields(remote_action_dict, local_dict)
 
-    def validate_triggers(self, remote, local):
+    def validate_triggers(self, remote: dict, local: dict):
+        # input: complete spec dictionary
         if SpecConstants.TRIGGERS in remote and SpecConstants.TRIGGERS in local:
             self.validate_no_trigger_removed(remote, local)
             for trigger_key, remote_trigger_dict in remote[SpecConstants.TRIGGERS].items():
                 local_dict = local[SpecConstants.TRIGGERS][trigger_key]
                 if local_dict[SpecConstants.TITLE] != remote_trigger_dict[SpecConstants.TITLE]:
-                    raise ValidationException("Trigger title has changed without a major version increment."
-                                              f"{self.MAJOR_INSTRUCTIONS_STRING}")
+                    raise ValidationException(f"Trigger {trigger_key} title has changed without a major version "
+                                              f"increment.{self.MAJOR_INSTRUCTIONS_STRING}")
 
                 self.validate_inner_fields(remote_trigger_dict, local_dict)
 
-    def validate_connections(self, remote, local):
+    def validate_connections(self, remote: dict, local: dict):
         # This may well be deprecated almost immediately when versioned connections is released
+        # input: complete spec dictionary
         if SpecConstants.CONNECTIONS in remote:
             if SpecConstants.CONNECTIONS not in local:
                 raise ValidationException("Connection removed without a major version increment."
@@ -248,10 +254,14 @@ class VersionBumpValidator(KomandPluginValidator):
         self.validate_no_titles_changed(remote, local)
         self.validate_no_inner_type_changes(remote, local)
 
-    def check_major_version_increment_needed(self, remote, local):
+    def check_major_version_increment_needed(self, remote: dict, local: dict):
+        # input: complete spec dictionary
+        # Checks to see if version is valid sem-ver, and if we already bumped major version
         local_version = local["version"].split('.')
         remote_version = remote["version"].split('.')
         if len(local_version) == 3 and len(remote_version) == 3:
+            VersionBumpValidator.modify_version_array(local_version)
+            VersionBumpValidator.modify_version_array(remote_version)
             if int(local_version[0]) > int(remote_version[0]):
                 if int(local_version[1]) > 0 or int(local_version[2]) > 0:
                     raise ValidationException("Major version increment should set minor and patch versions to 0.")
@@ -266,10 +276,14 @@ class VersionBumpValidator(KomandPluginValidator):
                                       "being numbers. No special characters or spaces allowed. "
                                       "Versions start at 1.0.0, see https://semver.org/ for more information.")
 
-    def check_minor_version_increment_needed(self, remote, local):
+    def check_minor_version_increment_needed(self, remote: dict, local: dict):
+        # input: complete spec dictionary
+        # Checks to see if version is valid sem-ver, and if we already bumped minor version
         local_version = local["version"].split('.')
         remote_version = remote["version"].split('.')
         if len(local_version) == 3 and len(remote_version) == 3:
+            VersionBumpValidator.modify_version_array(local_version)
+            VersionBumpValidator.modify_version_array(remote_version)
             if int(local_version[1]) > int(remote_version[1]):
                 if int(local_version[2]) > 0:
                     raise ValidationException("Minor version increment should set patch version to 0 "
@@ -286,6 +300,12 @@ class VersionBumpValidator(KomandPluginValidator):
                                       "being numbers. No special characters or spaces allowed. "
                                       "Versions start at 1.0.0, see https://semver.org/ for more information.")
 
+    @staticmethod
+    def modify_version_array(version_arr: [str]):
+        if version_arr[2].find('-') >= 0:
+            # if there is a '-' such as in 1.0.4-beta we want to only leave the 4 but remove the '-beta'
+            version_arr[2] = version_arr[2].split('-')[0]
+
     def validate_minor_triggers(self, remote, local):
         self.check_for_new(remote, local, SpecConstants.TRIGGERS)
         self.validate_minor_inputs_outputs(remote, local, SpecConstants.TRIGGERS)
@@ -294,7 +314,8 @@ class VersionBumpValidator(KomandPluginValidator):
         self.check_for_new(remote, local, SpecConstants.ACTIONS)
         self.validate_minor_inputs_outputs(remote, local, SpecConstants.ACTIONS)
 
-    def check_for_new(self, remote, local, spec_type):
+    def check_for_new(self, remote: dict, local: dict, spec_type: str):
+        # remote and local are the complete spec
         if spec_type in local:
             if spec_type not in remote:
                 raise ValidationException(f"Plugin spec section {spec_type} added to {RepoConstants.PLUGIN_SPEC}."
@@ -314,8 +335,8 @@ class VersionBumpValidator(KomandPluginValidator):
                 self.check_new_inputs_outputs(remote_val, value, SpecConstants.INPUT)
                 self.check_new_inputs_outputs(remote_val, value, SpecConstants.OUTPUT)
 
-
-    def check_new_inputs_outputs(self, remote, local, input_output):
+    def check_new_inputs_outputs(self, remote: dict, local: dict, input_output: str):
+        # remote, local are dictionaries of action or trigger inputs or outputs
         if input_output in local:
             for inner_key in local[input_output]:
                 if inner_key not in remote[input_output]:
