@@ -45,6 +45,9 @@ from icon_validator.rules.plugin_validators.supported_version_validator import *
 from icon_validator.rules.plugin_validators.unapproved_keywords_validator import *
 from icon_validator.rules.plugin_validators.help_example_validator import *
 
+# Remote Validators (needs working knowledge of git repo)
+from icon_validator.rules.plugin_validators.version_bump_validator import *
+
 # Workflow validators
 from icon_validator.rules.workflow_validators.workflow_directory_name_match_validator import *
 from icon_validator.rules.workflow_validators.workflow_help_validator import *
@@ -101,7 +104,8 @@ VALIDATORS = [
     CloudReadyValidator(),
     SupportedVersionValidator(),
     UnapprovedKeywordsValidator(),
-    HelpExampleValidator()
+    HelpExampleValidator(),
+    VersionBumpValidator()
 ]
 
 JENKINS_VALIDATORS = [
