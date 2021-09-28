@@ -260,8 +260,8 @@ class VersionBumpValidator(KomandPluginValidator):
         local_version = local["version"].split('.')
         remote_version = remote["version"].split('.')
         if len(local_version) == 3 and len(remote_version) == 3:
-            VersionBumpValidator.modify_version_array(local_version)
-            VersionBumpValidator.modify_version_array(remote_version)
+            local_version = VersionBumpValidator.modify_version_array(local_version)
+            remote_version = VersionBumpValidator.modify_version_array(remote_version)
             if int(local_version[0]) > int(remote_version[0]):
                 if int(local_version[1]) > 0 or int(local_version[2]) > 0:
                     raise ValidationException("Major version increment should set minor and patch versions to 0.")
@@ -282,8 +282,8 @@ class VersionBumpValidator(KomandPluginValidator):
         local_version = local["version"].split('.')
         remote_version = remote["version"].split('.')
         if len(local_version) == 3 and len(remote_version) == 3:
-            VersionBumpValidator.modify_version_array(local_version)
-            VersionBumpValidator.modify_version_array(remote_version)
+            local_version = VersionBumpValidator.modify_version_array(local_version)
+            remote_version = VersionBumpValidator.modify_version_array(remote_version)
             if int(local_version[1]) > int(remote_version[1]):
                 if int(local_version[2]) > 0:
                     raise ValidationException("Minor version increment should set patch version to 0 "
@@ -305,6 +305,7 @@ class VersionBumpValidator(KomandPluginValidator):
         if version_arr[2].find('-') >= 0:
             # if there is a '-' such as in 1.0.4-beta we want to only leave the 4 but remove the '-beta'
             version_arr[2] = version_arr[2].split('-')[0]
+        return version_arr
 
     def validate_minor_triggers(self, remote, local):
         self.check_for_new(remote, local, SpecConstants.TRIGGERS)
