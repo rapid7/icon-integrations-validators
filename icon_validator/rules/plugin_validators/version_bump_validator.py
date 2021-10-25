@@ -31,6 +31,7 @@ class SpecConstants:
 class VersionBumpValidator(KomandPluginValidator):
 
     def __init__(self):
+        super().__init__()
         self.MAJOR_INSTRUCTIONS_STRING = ""
         self.MINOR_INSTRUCTIONS_STRING = ""
         self.name = "Version Increment Validator"
