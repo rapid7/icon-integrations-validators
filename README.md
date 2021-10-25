@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.43.1 - Add GitPython dependency for using VersionBumpValidator
 * 2.43.0 - Add VersionBumpValidator to check if a major or minor version increment is needed
 * 2.42.0 - Add in WorkflowScreenshotValidator to check parenthesis in screenshot title
 * 2.41.1 - Exit with proper return codes when ran independently via CLI 
