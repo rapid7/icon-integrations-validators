@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.43.2 - Fixed breaking change that caused VersionBumpValidator to not get remote changes, made code safer
 * 2.43.1 - Add GitPython dependency for using VersionBumpValidator
 * 2.43.0 - Add VersionBumpValidator to check if a major or minor version increment is needed
 * 2.42.0 - Add in WorkflowScreenshotValidator to check parenthesis in screenshot title

@@ -52,9 +52,12 @@ class VersionBumpValidator(KomandPluginValidator):
 
         # if all went well and no exceptions, we now have the blob of plugin spec
         # using a temp file because stream_data requires a data object
-        with tempfile.TemporaryFile() as fp:
-            blob.stream_data(fp)
-            return yaml.safe_load(fp)
+        try:
+            remote_spec = yaml.safe_load(blob.data_stream.read())
+        except yaml.YAMLError:
+            raise ValidationException("Remote plugin.spec.yaml contains incorrect yaml and must be fixed. "
+                                      "If this change fixes remote spec, disregard this error message")
+        return remote_spec
 
     @staticmethod
     def get_plugin_spec_blob(remote_list: [git.RemoteReference], plugin_name: str):
@@ -108,12 +111,12 @@ class VersionBumpValidator(KomandPluginValidator):
                         raise ValidationException(f"Type {type_inner_key} removed from {type_key} without a major"
                                                   f" version increment."
                                                   f"{self.MAJOR_INSTRUCTIONS_STRING}")
-                    if type_inner_val[SpecConstants.TYPE] != local_type_in[type_inner_key][SpecConstants.TYPE]:
+                    if type_inner_val.get(SpecConstants.TYPE) != local_type_in[type_inner_key].get(SpecConstants.TYPE):
                         raise ValidationException(f"Type {type_inner_key} changed in type {type_key} without a major"
                                                   f" version increment."
                                                   f"{self.MAJOR_INSTRUCTIONS_STRING}")
 
-                    if type_inner_val[SpecConstants.REQUIRED] != local_type_in[type_inner_key][SpecConstants.REQUIRED]:
+                    if type_inner_val.get(SpecConstants.REQUIRED) != local_type_in[type_inner_key].get(SpecConstants.REQUIRED):
                         raise ValidationException(f"Type {type_inner_key} changed in type {type_key} without a major"
                                                   f"version increment."
                                                   f"{self.MAJOR_INSTRUCTIONS_STRING}")
@@ -142,9 +145,9 @@ class VersionBumpValidator(KomandPluginValidator):
     def validate_no_input_new_or_required(self, remote: dict, local: dict):
         # operates on dictionary of individual action/trigger/task
         for input_key, input_value in local[SpecConstants.INPUT].items():
-            if input_value[SpecConstants.REQUIRED]:
+            if input_value.get(SpecConstants.REQUIRED):
                 if input_key not in remote[SpecConstants.INPUT] or \
-                  not remote[SpecConstants.INPUT][input_key][SpecConstants.REQUIRED]:
+                  not remote[SpecConstants.INPUT][input_key].get(SpecConstants.REQUIRED, False):
                     raise ValidationException(f"Input has been added or changed to required in {input_key} without"
                                               f" a major version increment."
                                               f"{self.MAJOR_INSTRUCTIONS_STRING}")
@@ -158,7 +161,7 @@ class VersionBumpValidator(KomandPluginValidator):
                         SpecConstants.REQUIRED in local[SpecConstants.OUTPUT][output_key]:
                     if output_vals[SpecConstants.REQUIRED]:
                         # We know this output exists because this validator is called after verifying all outputs exist
-                        local_spec_req = local[SpecConstants.OUTPUT][output_key][SpecConstants.REQUIRED]
+                        local_spec_req = local[SpecConstants.OUTPUT][output_key].get(SpecConstants.REQUIRED)
                         if not local_spec_req:
                             raise ValidationException(f"Output {output_key} has been changed to not required in "
                                                       "without a major version increment."
@@ -195,7 +198,7 @@ class VersionBumpValidator(KomandPluginValidator):
         self.validate_no_action_removed(remote, local)
         for action_key, remote_action_dict in remote[SpecConstants.ACTIONS].items():
             local_dict = local[SpecConstants.ACTIONS][action_key]
-            if local_dict[SpecConstants.TITLE] != remote_action_dict[SpecConstants.TITLE]:
+            if local_dict.get(SpecConstants.TITLE) != remote_action_dict.get(SpecConstants.TITLE):
                 raise ValidationException(f"Action {action_key} title has changed without a major version increment."
                                           f"{self.MAJOR_INSTRUCTIONS_STRING}")
 
@@ -207,7 +210,7 @@ class VersionBumpValidator(KomandPluginValidator):
             self.validate_no_trigger_removed(remote, local)
             for trigger_key, remote_trigger_dict in remote[SpecConstants.TRIGGERS].items():
                 local_dict = local[SpecConstants.TRIGGERS][trigger_key]
-                if local_dict[SpecConstants.TITLE] != remote_trigger_dict[SpecConstants.TITLE]:
+                if local_dict.get(SpecConstants.TITLE) != remote_trigger_dict.get(SpecConstants.TITLE):
                     raise ValidationException(f"Trigger {trigger_key} title has changed without a major version "
                                               f"increment.{self.MAJOR_INSTRUCTIONS_STRING}")
 
@@ -232,10 +235,10 @@ class VersionBumpValidator(KomandPluginValidator):
             for key, value in local[SpecConstants.CONNECTIONS].items():
                 if key in remote[SpecConstants.CONNECTIONS]:
                     curr_compare = remote[SpecConstants.CONNECTIONS][key]
-                    if value[SpecConstants.TITLE] != curr_compare[SpecConstants.TITLE]:
+                    if value.get(SpecConstants.TITLE) != curr_compare.get(SpecConstants.TITLE):
                         raise ValidationException(f"Title changed in connection field {key}, requiring a major version"
                                                   f" increment.{self.MAJOR_INSTRUCTIONS_STRING}")
-                    if value[SpecConstants.TYPE] != curr_compare[SpecConstants.TYPE]:
+                    if value.get(SpecConstants.TYPE) != curr_compare.get(SpecConstants.TYPE):
                         raise ValidationException(f"Type changed in connection field {key}, requiring a major version"
                                                   f" increment.{self.MAJOR_INSTRUCTIONS_STRING}")
         else:
