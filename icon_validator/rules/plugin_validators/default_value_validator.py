@@ -32,6 +32,8 @@ class DefaultValueValidator(KomandPluginValidator):
                 DefaultValueValidator.validate_variables(value["input"])
             if "output" in value:
                 DefaultValueValidator.validate_variables(value["output"])
+            if "state" in value:
+                DefaultValueValidator.validate_variables(value["state"])
 
     def validate(self, spec):
         plugin_spec = spec.spec_dictionary()
@@ -39,6 +41,8 @@ class DefaultValueValidator(KomandPluginValidator):
             DefaultValueValidator.validate_action(plugin_spec["actions"])
         if "triggers" in plugin_spec:
             DefaultValueValidator.validate_action(plugin_spec["triggers"])
+        if "tasks" in plugin_spec:
+            DefaultValueValidator.validate_action(plugin_spec["tasks"])
         if "types" in plugin_spec:
             for k, v in plugin_spec["types"].items():
                 DefaultValueValidator.validate_variables(v)

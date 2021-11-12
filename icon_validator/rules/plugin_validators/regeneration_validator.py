@@ -249,7 +249,7 @@ class ChecksumHandler(object):
 
     def _get_python_main_directory(self) -> str:
         """
-        Parses a Python plugin and returns the main directory holding all the actions/triggers/connection/etc
+        Parses a Python plugin and returns the main directory holding all the actions/triggers/tasks/connection/etc
         ie. 'komand_base64'. Note: This does NOT return the directory path - JUST the directory name!
         :return: Main Python plugin directory, ie. 'komand_base64'
         """

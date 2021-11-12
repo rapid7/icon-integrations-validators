@@ -1,6 +1,11 @@
 
 # InsightConnect Integrations Validators
 
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![Markdown Lint](https://github.com/rapid7/icon-integrations-validators/workflows/Markdown%20Lint/badge.svg)
+![Unit testing](https://github.com/rapid7/icon-integrations-validators/workflows/Unit%20testing/badge.svg)
+
 Tooling with a bundled suite of validator rules for
 ensuring quality across
 [Rapid7 InsightConnect](https://www.rapid7.com/products/insightconnect/) integrations.
@@ -47,8 +52,43 @@ validate("/path/to/plugin/directory", run_all=True)
 
 to simulate the `--all` flag.
 
+## Contributions
+
+Contributions are welcome! This project utilizes [black](https://github.com/psf/black)
+and [pre-commit](https://pre-commit.com/) for handling code
+style. Simply follow the instructions for installing pre-commit and 
+run `pre-commit install` in the repository after cloning and you will
+be on your way to contributing!
+
 ## Changelog
 
+* 2.43.1 - Add GitPython dependency for using VersionBumpValidator 
+* 2.43.0 - Add VersionBumpValidator to check if a major or minor version increment is needed
+* 2.42.0 - Add in WorkflowScreenshotValidator to check parenthesis in screenshot title
+* 2.41.1 - Exit with proper return codes when ran independently via CLI 
+* 2.41.0 - Add SupportedVersionValidator
+* 2.40.0 - Add PythonScriptUseValidator for workflows
+* 2.39.0 - Add HelpExampleValidator | Improve EncodingValidator by printing all forbidden characters at one time
+* 2.38.0 - Remove LoggingValidator | Update dependency versions
+* 2.37.0 - Add UnapprovedKeywordsValidator | Add unit tests for AcronymValidator
+* 2.36.0 - Add CloudReadyValidator
+* 2.35.0 - Update DescriptionValidator to print list of missing description field | Update VersionPinValidator to not fail when `git+` is in requirements.txt
+* 2.34.0 - Fix issue where WorkflowParametersKeywordValidator was not being called
+* 2.33.0 - Update HelpValidator to identify duplicate headings | Update ConfidentialValidator to allow more e-mail examples
+* 2.32.0 - Fix problem when ExampleInputValidator fail if in `example` field are 0, False or None | Update WorkflowHelpPluginUtilizationValidator to not fail when plugin not in `help.md` and in `.icon` file
+* 2.31.0 - Update UseCaseValidator to print valid use cases | Update UseCaseValidator to identify duplicate use cases in keywords
+* 2.30.0 - Add WorkflowParametersKeywordValidator
+* 2.29.0 - Remove Workflow Description Validator to validate that the workflow `description` in workflow .icon file matches the description in workflow.spec.yaml
+* 2.28.0 - Add Encoding Validators to look for problematic characters | Update Workflow Description Validator to validate existence of `description` in workflow .icon file | Update Workflow Description Validator to validate that the workflow `description` in workflow .icon file matches the description in workflow.spec.yaml | Update `title_validation_list` | Change error message in `title_validator` for capitalized word when it should not
+* 2.27.0 - Add CloudReadyConnectionCredentialToken Validator
+* 2.26.0 - Add Example Input Validator to validate if example field exist in plugin.spec | Remove Mitre from AcronymValidator
+* 2.25.0 - Add Version Pin Validator to validate if dependency versions are pinned in requirements.txt
+* 2.24.0 - Update validators to support validation of plugin tasks.
+* 2.23.0 - Add Plugin Validator to identify missing version bump
+* 2.22.2 - Fix incorrect detection of 'array' in help.md
+* 2.22.1 - Revise Workflow Screenshots Validator
+* 2.22.0 - Add workflow directory name and workflow file match validator | Fix incorrect detection of 'lowercase' numbers in filenames | Add additional words to title list
+* 2.21.2 - Fix issue where numeric words in a title would break the title validator
 * 2.21.1 - Update HelpInputOutputValidator to validate on new Example inputs
 * 2.21.0 - Add new runtime validator to align with 4.0.0 release of InsightConnect Python Plugin Runtime 
 * 2.20.0 - Add plugin utilization workflow validator | Fix issue where numbers in screenshot titles would cause validation to fail

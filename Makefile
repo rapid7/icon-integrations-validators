@@ -10,3 +10,6 @@ disttest: package
 
 distprod: package
 	python3 -m twine upload dist/*
+
+clean:
+	rm -rf .pytest_cache *.egg-info

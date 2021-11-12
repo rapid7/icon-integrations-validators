@@ -16,6 +16,9 @@ class HelpInputOutputValidator(KomandPluginValidator):
         regex = r"### " + process_type.capitalize() + ".*?#### " + action_title + "\n.*?#+ Output"
         if process_type == "actions":
             regex = regex + ".*?### Triggers"
+        elif process_type == "triggers":
+            if "### Tasks" in HelpInputOutputValidator.raw_help:
+                regex = regex + ".*?### Tasks"
 
         action_input_section = re.findall(regex, HelpInputOutputValidator.raw_help, re.DOTALL)
 
@@ -38,6 +41,9 @@ class HelpInputOutputValidator(KomandPluginValidator):
         regex = r"### " + process_type.capitalize() + ".*?#### " + action_title + "\n.*?#+ Output\n\n.*?\n\n"
         if process_type == "actions":
             regex = regex + ".*?### Trigger"
+        elif process_type == "triggers":
+            if "### Tasks" in HelpInputOutputValidator.raw_help:
+                regex = regex + ".*?### Tasks"
 
         action_help_section_temp = re.findall(regex, HelpInputOutputValidator.raw_help, re.DOTALL)
         regex = r"#### " + action_title + "\n.*?#+ Output\n\n.*?\n\n"
@@ -48,6 +54,9 @@ class HelpInputOutputValidator(KomandPluginValidator):
                 "|Name|Type|Required|Description|") + ".*?\n\n"
             if process_type == "actions":
                 regex = regex + ".*?### Triggers"
+            elif process_type == "triggers":
+                if "### Tasks" in HelpInputOutputValidator.raw_help:
+                    regex = regex + ".*?### Tasks"
 
             action_help_section_temp = re.findall(regex, HelpInputOutputValidator.raw_help, re.DOTALL)
             regex = r"#### " + action_title + "\n.*?#+ Output\n\n.*?" + re.escape(
@@ -75,6 +84,8 @@ class HelpInputOutputValidator(KomandPluginValidator):
             description = input_content.get(k).get("description")
             enum = input_content.get(k).get("enum", None)
             example = input_content.get(k).get("example", None)
+            if isinstance(example, list):
+                example = f"{example}".replace("'", '"')
             action_input.append(f"|{name_}|{type_}|{default_}|{required}|{description}|{enum}|{example}|")
         return action_input
 
@@ -92,7 +103,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
     def validate(self, spec):
         HelpInputOutputValidator.raw_help = spec.raw_help()
         raw_spec_yaml = spec.spec_dictionary()
-        process_type = ["actions", "triggers"]
+        process_type = ["actions", "triggers", "tasks"]
 
         for p_type in process_type:
             actions = raw_spec_yaml.get(p_type, {})

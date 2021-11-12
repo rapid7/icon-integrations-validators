@@ -13,12 +13,19 @@ class WorkflowPNGHashValidator(KomandPluginValidator):
         """
         d = spec.directory
         hasher = sha256()
-        with open(f"{d}/extension.png", "rb") as file:
-            temp = file.read()
-            hasher.update(temp)
-        hash_ = hasher.hexdigest()
-        if not hash_ == self._GOOD_HASH:
-            raise ValidationException("The extention.png file in the workflow directory is incorrect."
-                                      " The File should have a SHA2 hash of"
-                                      f" {self._GOOD_HASH}."
-                                      f" The files hash was {hash_}")
+        try:
+            with open(f"{d}/extension.png", "rb") as file:
+                temp = file.read()
+                hasher.update(temp)
+            hash_ = hasher.hexdigest()
+            if not hash_ == self._GOOD_HASH:
+                raise ValidationException(
+                    "The extension.png file in the workflow directory is incorrect."
+                    " The file should have a SHA256 hash of"
+                    f" {self._GOOD_HASH}."
+                    f" The hash of the provided file was {hash_}"
+                )
+        except FileNotFoundError:
+            raise ValidationException(
+                "Extension.png is missing from the workflow directory!"
+            )

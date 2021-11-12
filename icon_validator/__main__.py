@@ -4,8 +4,8 @@ import sys
 
 from pkg_resources import get_distribution
 
-from .styling import *
-from .validate import validate
+from icon_validator.styling import *
+from icon_validator.validate import validate
 
 
 def main():
@@ -46,10 +46,13 @@ def main():
 
     if extension == "plugin" and the_arguments.run_all_validators:
         print(f"{BULLET_OK} Validating {extension} with all validators at {path}\n")
-        validate(directory=path, run_all=True)
+        return_code = validate(directory=path, run_all=True)
     else:
         print(f"{BULLET_OK} Validating {extension} at {path}\n")
-        validate(directory=path, spec_file_name=spec_file_name)
+        return_code = validate(directory=path, spec_file_name=spec_file_name)
+
+    sys.exit(return_code)
+
 
 
 if __name__ == "__main__":

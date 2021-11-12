@@ -41,4 +41,5 @@ class RequiredValidator(KomandPluginValidator):
     def validate(self, spec):
         RequiredValidator.validate_actions(spec.spec_dictionary(), "actions")
         RequiredValidator.validate_actions(spec.spec_dictionary(), "triggers")
+        RequiredValidator.validate_actions(spec.spec_dictionary(), "tasks")
         RequiredValidator.validate_connection(spec.spec_dictionary(), "connection")

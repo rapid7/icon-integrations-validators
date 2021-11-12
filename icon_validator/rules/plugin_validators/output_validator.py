@@ -3,7 +3,7 @@ import os
 import re
 import sys
 
-from jsonschema import validate
+from jsonschema import validate, exceptions
 
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
@@ -14,11 +14,11 @@ class OutputValidator(KomandPluginValidator):
         super().__init__()
         self.missing_outputs = []
 
-    def validate_output(self, action_output, spec_schema, action_name):
+    def validate_output(self, process_output, spec_schema, process_name, process_type):
         try:
-            validate(action_output, spec_schema)
-        except ValidationException as e:
-            self.missing_outputs.append((action_name, e))
+            validate(process_output, spec_schema)
+        except(exceptions.ValidationError, exceptions.SchemaError) as e:
+            self.missing_outputs.append((f'{process_type}:{process_name}', e))
 
     @staticmethod
     def get_schemas(spec):
@@ -37,23 +37,35 @@ class OutputValidator(KomandPluginValidator):
             text = schema.read()
         text = text.strip()
         output_pattern = '(?s)"""(.*?)"""'
-        json_ = json.loads(re.findall(output_pattern, text)[1])  # 0 for input, 1 for output
+        results = re.findall(output_pattern, text)
+        if len(results) == 2:
+            json_ = json.loads(results[1])  # Action: 0 for input, 1 for output
+        else:
+            json_ = json.loads(results[2])  # Task: 0 for input, 1 for state, 2 for output
         return json_
 
     def validate(self, spec):
         schemas = OutputValidator.get_schemas(spec)
-
-        # Prevent parsing action-less plugin
+        actions, tasks = {}, {}
+        # Prevent parsing action and task less plugin
         if spec.actions():
             actions = spec.actions()
-        else:
+        if spec.tasks():
+            tasks = spec.tasks()
+        if not actions and not tasks:
             return
 
         for action in actions:
-            path = os.path.join(spec.directory, f".output/{action}.json")
+            path = os.path.join(spec.directory, f".output/action_{action}.json")
             if os.path.exists(path):
                 with open(path, 'r') as output:  # if test output has been generated
-                    self.validate_output(json.load(output), schemas[action], action)
+                    self.validate_output(json.load(output), schemas[action], action, "Action")
+
+        for task in tasks:
+            path = os.path.join(spec.directory, f".output/task_{task}.json")
+            if os.path.exists(path):
+                with open(path, 'r') as output:  # if test output has been generated
+                    self.validate_output(json.load(output), schemas[task], task, "Task")
 
         if len(self.missing_outputs) > 0:
-            raise ValidationException(f"Action output does not match spec. List of (ACTION, ERROR): {self.missing_outputs}")
+            raise ValidationException(f"Action/Task output does not match spec. List of (TYPE:NAME, ERROR): {self.missing_outputs}")

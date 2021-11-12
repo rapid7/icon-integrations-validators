@@ -8,6 +8,7 @@ version: 1.1.2
 vendor: rapid7
 support: community
 status: []
+supported_versions: ['1.0.0', '1.0.1']
 resources:
   source_url: https://github.com/rapid7/insightconnect-plugins/tree/master/base64
   license_url: https://github.com/rapid7/insightconnect-plugins/blob/master/LICENSE
@@ -18,7 +19,7 @@ tags:
 - utilities
 hub_tags:
   use_cases: [data_utility]
-  keywords: [base64, encoder, decoder, utilities]
+  keywords: [base64, encoder, decoder]
   features: []
 actions:
   encode:
@@ -44,6 +45,7 @@ actions:
         type: bytes
         description: Data to decode
         required: true
+        example: base64
       errors:
         type: string
         description: How errors should be handled when decoding Base64
@@ -54,6 +56,21 @@ actions:
         - ignore
         - nothing
         required: false
+    output:
+      data:
+        title: Decoded Data
+        description: Decoded data result
+        type: string
+        required: true
+  decode_with_array:
+    title: Decoder with Array
+    description: Decode Base64 to data
+    input:
+      base64_array:
+        type: "[]string"
+        description: Data to decode
+        required: true
+        example: ['MQ==', "Mg=="]
     output:
       data:
         title: Decoded Data

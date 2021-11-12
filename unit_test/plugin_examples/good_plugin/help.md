@@ -11,6 +11,11 @@
 
 _This plugin does not contain any requirements._
 
+# Supported Product Versions
+
+* 1.0.0
+* 1.0.1
+
 # Documentation
 
 ## Setup
@@ -29,7 +34,7 @@ This action is used to decode Base64 to data.
 
 |Name|Type|Default|Required|Description||Enum|Example|
 |----|----|-------|--------|-----------|-----|-------|
-|base64|bytes|None|True|Data to decode|None|None|
+|base64|bytes|None|True|Data to decode|None|base64|
 |errors|string|nothing|False|How errors should be handled when decoding Base64|['replace', 'ignore', 'nothing']|replace|
 
 Example input:
@@ -46,6 +51,46 @@ Example input:
 Example output:
 
 ```
+```
+
+#### Decoder with Array
+
+Decode Base64 to data
+
+##### Input
+
+|Name|Type|Default|Required|Description||Enum|Example|
+|----|----|-------|--------|-----------|-----|-------|
+|base64_array|[]string|None|True|Data to decode|None|["MQ==", "Mg=="]|
+
+Example input:
+
+```
+{
+  "base64_array": "MQ=="
+}
+```
+
+Example input:
+
+```
+{
+  "base64_array": "MQ=="
+}
+```
+
+##### Output
+
+|Name|Type|Required|Description|
+|----|----|--------|-----------|
+|data|string|True|Decoded data result|
+
+Example output:
+
+```
+{
+  "data": "1"
+}
 ```
 
 #### Encoder

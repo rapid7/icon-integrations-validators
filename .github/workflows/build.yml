@@ -16,4 +16,5 @@ jobs:
     - name: Build and run
       run: |
         pip install .
+        pip install -r requirements.txt
         icon-validate --version
