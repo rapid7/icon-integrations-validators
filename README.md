@@ -63,6 +63,12 @@ be on your way to contributing!
 ## Changelog
 
 * 2.44.0 - Update WorkflowTitleValidator to validate titles in `.icon` file
+* 2.43.2 - Fixed breaking change that caused VersionBumpValidator to not get remote changes, made code safer
+* 2.43.1 - Add GitPython dependency for using VersionBumpValidator
+* 2.43.0 - Add VersionBumpValidator to check if a major or minor version increment is needed
+* 2.42.0 - Add in WorkflowScreenshotValidator to check parenthesis in screenshot title
+* 2.41.1 - Exit with proper return codes when ran independently via CLI 
+* 2.41.0 - Add SupportedVersionValidator
 * 2.40.0 - Add PythonScriptUseValidator for workflows
 * 2.39.0 - Add HelpExampleValidator | Improve EncodingValidator by printing all forbidden characters at one time
 * 2.38.0 - Remove LoggingValidator | Update dependency versions
