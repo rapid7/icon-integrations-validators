@@ -474,6 +474,77 @@ class TestWorkflowValidate(unittest.TestCase):
         )
         self.assertEqual(result, 0)
 
+    def test_title_validator_should_success(self):
+        directory_to_test = (
+            "workflow_examples/title_tests_icon_spec"
+        )
+        file_to_test = "workflow.spec.yaml"
+        result = validate(
+            directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()]
+        )
+        self.assertEqual(result, 0)
+
+    def test_title_validator_for_icon_should_capitalize_should_fail_(self):
+        directory_to_test = (
+            "workflow_examples/title_tests_icon_bad"
+        )
+        file_to_test = "workflow.spec.yaml"
+        result = validate(
+            directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()]
+        )
+        self.assertEqual(result, 1)
+
+    def test_title_validator_for_spec_lowercase_should_fail(self):
+        directory_to_test = (
+            "workflow_examples/title_tests_spec_bad"
+        )
+        file_to_test = "workflow.spec.yaml"
+        result = validate(
+            directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()]
+        )
+        self.assertEqual(result, 1)
+
+    def test_title_validator_for_spec_period_should_fail(self):
+        directory_to_test = (
+            "workflow_examples/title_tests_spec_period_bad"
+        )
+        file_to_test = "workflow.spec.yaml"
+        result = validate(
+            directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()]
+        )
+        self.assertEqual(result, 1)
+
+    def test_title_validator_for_icon_period_should_fail(self):
+        directory_to_test = (
+            "workflow_examples/title_tests_icon_period_bad"
+        )
+        file_to_test = "workflow.spec.yaml"
+        result = validate(
+            directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()]
+        )
+        self.assertEqual(result, 1)
+
+    def test_title_validator_for_spec_missing_title_should_fail(self):
+        directory_to_test = (
+            "workflow_examples/title_tests_no_title_spec_bad"
+        )
+        file_to_test = "workflow.spec.yaml"
+        result = validate(
+            directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()]
+        )
+        self.assertEqual(result, 1)
+
+    def test_title_validator_for_icon_missing_title_should_fail(self):
+        directory_to_test = (
+            "workflow_examples/title_tests_no_title_icon_bad"
+        )
+        file_to_test = "workflow.spec.yaml"
+        result = validate(
+            directory_to_test, file_to_test, False, True, [WorkflowTitleValidator()]
+        )
+        self.assertEqual(result, 1)
+
+
     def test_screenshots_validator_with_brackets_should_success(self):
         # Test bad workflows. This will test the workflow_screenshot_validator
         directory_to_test = "workflow_examples/screenshot_tests"

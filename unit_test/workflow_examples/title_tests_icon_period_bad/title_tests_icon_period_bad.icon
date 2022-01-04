@@ -242,7 +242,7 @@
         "steps": {
           "038ac814-be47-4148-b3a2-5eee6176f2f4": {
             "nodeId": "038ac814-be47-4148-b3a2-5eee6176f2f4",
-            "name": "Malicious",
+            "name": "Malicious IP.",
             "type": "automated_decision",
             "continueOnFailure": false,
             "isDisabled": false,

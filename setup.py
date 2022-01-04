@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="insightconnect_integrations_validators",
-    version="2.43.2",
+    version="2.44.0",
     description="Validator tooling for InsightConnect integrations",
     long_description=long_description,
     long_description_content_type="text/markdown",
