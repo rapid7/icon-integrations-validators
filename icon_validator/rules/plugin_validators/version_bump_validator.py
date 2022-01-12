@@ -70,10 +70,14 @@ class VersionBumpValidator(KomandPluginValidator):
             if _remote.name == "origin/master":
                 remote = _remote
                 # now get the blob representing the plugin folder and loop over until we find plugin spec
-                for _blob in _remote.object.tree[RepoConstants.PLUGIN_DIRNAME][plugin_name]:
-                    if _blob.name == RepoConstants.PLUGIN_SPEC:
-                        blob = _blob
-                        break
+                try:
+                    for _blob in _remote.object.tree[RepoConstants.PLUGIN_DIRNAME][plugin_name]:
+                        if _blob.name == RepoConstants.PLUGIN_SPEC:
+                            blob = _blob
+                            break
+                except KeyError:
+                    # plugin name not found, so version increment is not really relevant
+                    return
                 if blob is None:
                     # throw error: no plugin spec found in remote
                     raise ValidationException(f"{RepoConstants.PLUGIN_SPEC} not found in remote repo")
