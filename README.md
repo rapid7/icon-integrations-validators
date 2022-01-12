@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.44.2 - Fixed (and tested) VersionBumpValidator on new plugin
 * 2.44.1 - Fixed VersionBumpValidator bug on new plugins
 * 2.44.0 - Update WorkflowTitleValidator to validate titles in `.icon` file
 * 2.43.2 - Fixed breaking change that caused VersionBumpValidator to not get remote changes, made code safer
