@@ -49,6 +49,9 @@ class VersionBumpValidator(KomandPluginValidator):
 
         remote_list = repo.remote().refs
         blob = VersionBumpValidator.get_plugin_spec_blob(remote_list, spec.spec_dictionary()["name"])
+        # case: remote spec not found
+        if blob is None:
+            return None
 
         # if all went well and no exceptions, we now have the blob of plugin spec
         # using a temp file because stream_data requires a data object
@@ -77,7 +80,7 @@ class VersionBumpValidator(KomandPluginValidator):
                             break
                 except KeyError:
                     # plugin name not found, so version increment is not really relevant
-                    return
+                    return None
                 if blob is None:
                     # throw error: no plugin spec found in remote
                     raise ValidationException(f"{RepoConstants.PLUGIN_SPEC} not found in remote repo")
@@ -354,6 +357,9 @@ class VersionBumpValidator(KomandPluginValidator):
 
     def validate(self, spec):
         remote_spec = VersionBumpValidator.get_remote_spec(spec)
+        # case: new plugin with no remote spec
+        if remote_spec is None:
+            return
         local_spec = spec.spec_dictionary()
         # perform the different sections of validation
         # Check if we already did a major version bump- if so, no need to do all this checking
