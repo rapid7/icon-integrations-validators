@@ -35,7 +35,9 @@ class UnapprovedKeywordsValidator(KomandPluginValidator):
     @staticmethod
     def validate_keywords_exists(spec: KomandPluginSpec):
         try:
-            keywords = spec.spec_dictionary()["hub_tags"]["keywords"]
+            # Check for hub_tags (old) or extension_library (newer) for backwards-compatibility
+            ext_library_section = spec.spec_dictionary().get("hub_tags") or spec.spec_dictionary()["extension_library"]
+            keywords = ext_library_section["keywords"]
             if not keywords or not len(keywords):
                 raise ValidationException("Empty required field 'keywords' in key 'hub_tags'.")
         except KeyError:
@@ -55,4 +57,5 @@ class UnapprovedKeywordsValidator(KomandPluginValidator):
 
     def validate(self, spec: KomandPluginSpec):
         UnapprovedKeywordsValidator.validate_keywords_exists(spec)
-        UnapprovedKeywordsValidator.validate_keywords(spec.spec_dictionary()["hub_tags"]["keywords"])
+        ext_library_section = spec.spec_dictionary().get("hub_tags") or spec.spec_dictionary().get("extension_library")
+        UnapprovedKeywordsValidator.validate_keywords(ext_library_section["keywords"])

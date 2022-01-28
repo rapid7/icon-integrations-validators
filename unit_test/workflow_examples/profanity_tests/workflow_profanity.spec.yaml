@@ -7,7 +7,7 @@ version: 1.0.0
 vendor: ass
 support: rapid7
 status: []
-hub_tags:
+extension_library:
   use_cases: [alerting_and_notifications, threat_detection_and_response]
   keywords: [enrichment, slack, url, ip]
   features: []

@@ -8,7 +8,7 @@ version: 1.0.1
 vendor: rapid7
 support: rapid7
 status: []
-hub_tags:
+extension_library:
   use_cases:
   - threat_detection_and_response
   keywords:

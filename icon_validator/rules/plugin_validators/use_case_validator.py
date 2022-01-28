@@ -25,7 +25,8 @@ class UseCaseValidator(KomandPluginValidator):
     @staticmethod
     def validate_use_case_exists(spec: KomandPluginSpec):
         try:
-            use_cases = spec.spec_dictionary()["hub_tags"]["use_cases"]
+            ext_library_section = spec.spec_dictionary().get("hub_tags") or spec.spec_dictionary().get("extension_library")
+            use_cases = ext_library_section["use_cases"]
             if not use_cases or not len(use_cases):
                 raise ValidationException("Empty required field 'use_cases' in key 'hub_tags'.")
         except KeyError:
@@ -63,5 +64,8 @@ class UseCaseValidator(KomandPluginValidator):
 
     def validate(self, spec: KomandPluginSpec):
         UseCaseValidator.validate_use_case_exists(spec)
-        UseCaseValidator.validate_use_cases(spec.spec_dictionary()["hub_tags"]["use_cases"])
-        UseCaseValidator.validate_use_case_in_keywords(spec.spec_dictionary()["hub_tags"].get("keywords"))
+
+        ext_library_section = spec.spec_dictionary().get("hub_tags") or spec.spec_dictionary().get("extension_library")
+
+        UseCaseValidator.validate_use_cases(ext_library_section["use_cases"])
+        UseCaseValidator.validate_use_case_in_keywords(ext_library_section.get("keywords"))

@@ -34,7 +34,7 @@ class WorkflowParametersKeywordValidator(KomandPluginValidator):
     def validate(self, spec):
         if self.are_parameters_present_in_icon_file(spec):
             spec_dictionary = spec.spec_dictionary()
-            keywords = spec_dictionary.get("hub_tags", {}).get("keywords", [])
+            keywords = spec_dictionary.get("extension_library", {}).get("keywords", [])
             if not "parameters" in keywords:
                 raise ValidationException("The workflow uses parameters, however the parameters "
                                           "keyword is not present in workflow.spec.yaml keywords")
