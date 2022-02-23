@@ -62,7 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
-* 2.44.3 - Seperated UseCaseValidator for workflows as plugins and workflows now have different usecase tags
+* 2.44.3 - Separated UseCaseValidator for workflows as plugins and workflows now have different usecase tags
 * 2.44.2 - Fixed (and tested) VersionBumpValidator on new plugin
 * 2.44.1 - Fixed VersionBumpValidator bug on new plugins
 * 2.44.0 - Update WorkflowTitleValidator to validate titles in `.icon` file
