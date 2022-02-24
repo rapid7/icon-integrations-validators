@@ -56,6 +56,7 @@ from icon_validator.rules.workflow_validators.workflow_extension_validator impor
 from icon_validator.rules.workflow_validators.workflow_change_log_validator import *
 from icon_validator.rules.workflow_validators.workflow_python_script_use_validator import \
     WorkflowPythonScriptUseValidator
+from icon_validator.rules.workflow_validators.workflow_use_case_validator import *
 from icon_validator.rules.workflow_validators.workflow_vendor_validator import *
 from icon_validator.rules.workflow_validators.workflow_version_validator import *
 from icon_validator.rules.workflow_validators.workflow_support_validator import *
@@ -138,7 +139,7 @@ WORKFLOW_VALIDATORS = [
     WorkflowICONFileValidator(),
     WorkflowEncodingValidator(),
     WorkflowParametersKeywordValidator(),
-    UseCaseValidator(),
+    WorkflowUseCaseValidator(),
     UnapprovedKeywordsValidator(),
     WorkflowPythonScriptUseValidator(),
 ]
