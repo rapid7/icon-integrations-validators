@@ -18,15 +18,19 @@ class WorkflowUseCaseValidator(KomandPluginValidator):
     @staticmethod
     def get_approved_usecase_tags_with_paging() -> [str]:
         approved_usecases = []
-        query = "types=usecase"
-        for i in range(0, 9999):
-            response = requests.get(url=f"https://extensions-api.rapid7.com/v2/public/tags?first=1000&{query}")
+        params = {
+            "first": 1000,
+            "types": "usecase"
+        }
+        has_next = True
+        while has_next:
+            response = requests.get(url=f"https://extensions-api.rapid7.com/v2/public/tags", params=params)
             response_json = response.json()
             approved_usecases.extend(WorkflowUseCaseValidator.get_approved_usecase_tags(response_json))
             if not response_json["pageInfo"]["hasNextPage"]:
-                break
+                has_next = False
 
-            query = f"after={response_json['pageInfo']['endCursor']}"
+            params["after"] = response_json['pageInfo']['endCursor']
 
         return approved_usecases
 
@@ -34,7 +38,7 @@ class WorkflowUseCaseValidator(KomandPluginValidator):
     def validate_use_case_exists(spec: KomandPluginSpec):
         try:
             use_cases = spec.spec_dictionary()["hub_tags"]["use_cases"]
-            if not use_cases or not len(use_cases):
+            if not use_cases:
                 raise ValidationException("Empty required field 'use_cases' in key 'hub_tags'.")
         except KeyError:
             raise ValidationException("Missing required field 'use_cases' in key 'hub_tags'.")
