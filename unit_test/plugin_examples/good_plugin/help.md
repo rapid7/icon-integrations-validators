@@ -149,6 +149,8 @@ characters to `\uffd` or `?`. While ignore will drop the character from the outp
 
 # Links
 
+* [Base64](https://en.wikipedia.org/wiki/Base64)
+
 ## References
 
 * [Base64](https://en.wikipedia.org/wiki/Base64)
