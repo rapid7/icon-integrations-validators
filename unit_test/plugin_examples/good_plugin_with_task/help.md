@@ -47,7 +47,7 @@ Example input:
 
 |Name|Type|Required|Description|
 |----|----|--------|-----------|
-|data|bytes|True|Encoded data result|
+|data|bytes|True|Encoded data result|None|
 
 Example output:
 
@@ -81,7 +81,7 @@ Example input:
 
 |Name|Type|Required|Description|
 |----|----|--------|-----------|
-|data|string|True|Decoded data result|
+|data|string|True|Decoded data result|None|
 
 Example output:
 
@@ -126,7 +126,7 @@ Example input:
 
 |Name|Type|Required|Description|
 |----|----|--------|-----------|
-|data|string|True|Decoded data result|
+|data|string|True|Decoded data result|None|
 
 Example output:
 
