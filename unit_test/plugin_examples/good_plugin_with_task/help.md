@@ -45,8 +45,8 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|
-|----|----|--------|-----------|
+|Name|Type|Required|Description|Example|
+|----|----|--------|-----------|-------|
 |data|bytes|True|Encoded data result|None|
 
 Example output:
@@ -79,8 +79,8 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|
-|----|----|--------|-----------|
+|Name|Type|Required|Description|Example|
+|----|----|--------|-----------|-------|
 |data|string|True|Decoded data result|None|
 
 Example output:
@@ -124,8 +124,8 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|
-|----|----|--------|-----------|
+|Name|Type|Required|Description|Example|
+|----|----|--------|-----------|-------|
 |data|string|True|Decoded data result|None|
 
 Example output:
