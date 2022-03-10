@@ -72,7 +72,7 @@ class HelpValidator(KomandPluginValidator):
         pattern2 = "# Links(.*?)## References"
         key_features = re.search(pattern1, help_content).group(1)
         if "*" not in key_features:
-            raise ValidationException(f"Help section is missing list of Key Features in {key_features}, "
+            raise ValidationException(f"Help section is missing list of Key Features in help.md, "
                                       f"must include at least one feature")
         links = re.search(pattern2, help_content).group(1)
         if "https:" not in links:
