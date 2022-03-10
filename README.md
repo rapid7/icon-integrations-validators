@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.46.0 - Add new help.md validator to ensure there are key features, links, and examples
 * 2.45.0 - Separated UseCaseValidator for workflows as plugins and workflows now have different usecase tags
 * 2.44.2 - Fixed (and tested) VersionBumpValidator on new plugin
 * 2.44.1 - Fixed VersionBumpValidator bug on new plugins
