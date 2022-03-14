@@ -62,6 +62,7 @@ actions:
         description: Decoded data result
         type: string
         required: true
+        example: "==Md"
 tasks:
   test_task:
     title: Test Task

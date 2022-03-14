@@ -85,7 +85,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
             enum = input_content.get(k).get("enum", None)
             example = input_content.get(k).get("example", None)
             if example is None:
-                raise ValidationException(f"Help.md is missing input examples for {k}")
+                raise ValidationException(f"plugin.spec is missing input examples for {v}")
             else:
                 if isinstance(example, list):
                     example = f"{example}".replace("'", '"')
@@ -102,7 +102,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
             description = output_content.get(k).get("description", None)
             example = output_content.get(k).get("example", None)
             if example is None:
-                raise ValidationException(f"Help.md is missing input examples for {k}")
+                raise ValidationException(f"plugin.spec is missing output examples for {v}")
             else:
                 if isinstance(example, list):
                     example = f"{example}".replace("'", '"')
