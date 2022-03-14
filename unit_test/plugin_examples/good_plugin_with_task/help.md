@@ -45,9 +45,9 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|
+|Name|Type|Required|Description|Example|
 |----|----|--------|-----------|
-|data|bytes|True|Encoded data result|
+|data|bytes|True|Encoded data result|This is a string|
 
 Example output:
 
@@ -79,9 +79,9 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|
+|Name|Type|Required|Description|Example|
 |----|----|--------|-----------|
-|data|string|True|Decoded data result|
+|data|string|True|Decoded data result|==Md|
 
 Example output:
 
@@ -125,9 +125,9 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|
+|Name|Type|Required|Description|Example|
 |----|----|--------|-----------|
-|data|string|True|Decoded data result|
+|data|string|True|Decoded data result|12345|
 
 Example output:
 
