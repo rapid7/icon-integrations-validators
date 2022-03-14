@@ -46,7 +46,7 @@ Example input:
 
 |Name|Type|Required|Description|Example|
 |----|----|--------|-----------|-------|
-|data|string|True|Decoded data result|None|
+|data|string|True|Decoded data result|base64|
 
 Example output:
 
@@ -83,7 +83,7 @@ Example input:
 
 |Name|Type|Required|Description|Example|
 |----|----|--------|-----------|-------|
-|data|string|True|Decoded data result|None|
+|data|string|True|Decoded data result|==Md|
 
 Example output:
 
@@ -112,7 +112,7 @@ Example input:
 
 |Name|Type|Required|Description|Example|
 |----|----|--------|-----------|-------|
-|data|bytes|True|Encoded data result|None|
+|data|bytes|True|Encoded data result|This is a string|
 
 Example output:
 
