@@ -90,6 +90,7 @@ tasks:
         description: Decoded data result
         type: string
         required: true
+        example: 1234
     schedule:
       title: Schedule for Retrieving Events
       type: string
