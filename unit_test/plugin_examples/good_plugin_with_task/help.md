@@ -45,9 +45,9 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|Example|
-|----|----|--------|-----------|-------|
-|data|bytes|True|Encoded data result|None|
+|Name|Type|Required|Description|
+|----|----|--------|-----------|
+|data|bytes|True|Encoded data result|
 
 Example output:
 
@@ -79,9 +79,9 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|Example|
-|----|----|--------|-----------|-------|
-|data|string|True|Decoded data result|None|
+|Name|Type|Required|Description|
+|----|----|--------|-----------|
+|data|string|True|Decoded data result|
 
 Example output:
 
@@ -124,9 +124,9 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|Example|
-|----|----|--------|-----------|-------|
-|data|string|True|Decoded data result|None|
+|Name|Type|Required|Description|
+|----|----|--------|-----------|
+|data|string|True|Decoded data result|
 
 Example output:
 

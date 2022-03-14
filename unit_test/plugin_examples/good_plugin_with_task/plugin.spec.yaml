@@ -37,6 +37,7 @@ actions:
         description: Encoded data result
         type: bytes
         required: true
+        example: This is a string
   decode:
     title: Decoder
     description: Decode Base64 to data
