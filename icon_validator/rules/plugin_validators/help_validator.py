@@ -75,7 +75,7 @@ class HelpValidator(KomandPluginValidator):
             raise ValidationException(f"Help section is missing list of Key Features in help.md, "
                                       f"must include at least one feature")
         links = re.search(pattern2, help_content).group(1)
-        if "https:" not in links:
+        if "http" not in links:
             raise ValidationException(f"Help section is missing list of Links, must include at least a link to vendor")
 
     @staticmethod
