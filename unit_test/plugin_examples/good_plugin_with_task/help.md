@@ -118,7 +118,7 @@ Example input:
 
 ```
 {
-  "base64": 1234,
+  "base64": 12345,
   "errors": "replace"
 }
 ```
