@@ -73,6 +73,7 @@ tasks:
         type: bytes
         description: Data to decode
         required: true
+        example: 1234
       errors:
         type: string
         description: How errors should be handled when decoding Base64
