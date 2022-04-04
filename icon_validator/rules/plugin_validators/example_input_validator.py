@@ -40,11 +40,12 @@ class ExampleInputValidator(KomandPluginValidator):
     @staticmethod
     def get_empty_example_message(elements: dict, element_type: str, name: str = None):
         empty_example_messages = []
-        for input_name, input_item in elements.items():
-            if "example" not in input_item:
-                msg = f"In {element_type}"
-                if name:
-                    msg += f" \"{name}\""
-                msg += f": input \"{input_name}\", there is no example field."
-                empty_example_messages.append(msg)
+        if elements:
+            for input_name, input_item in elements.items():
+                if "example" not in input_item:
+                    msg = f"In {element_type}"
+                    if name:
+                        msg += f" \"{name}\""
+                    msg += f": input \"{input_name}\", there is no example field."
+                    empty_example_messages.append(msg)
         return empty_example_messages
