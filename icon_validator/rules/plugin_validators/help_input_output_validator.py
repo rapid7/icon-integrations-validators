@@ -84,9 +84,12 @@ class HelpInputOutputValidator(KomandPluginValidator):
             description = input_content.get(k).get("description")
             enum = input_content.get(k).get("enum", None)
             example = input_content.get(k).get("example", None)
-            if isinstance(example, list):
-                example = f"{example}".replace("'", '"')
-            action_input.append(f"|{name_}|{type_}|{default_}|{required}|{description}|{enum}|{example}|")
+            if example is None:
+                raise ValidationException(f"plugin.spec is missing input example for {v}")
+            else:
+                if isinstance(example, list):
+                    example = f"{example}".replace("'", '"')
+                action_input.append(f"|{name_}|{type_}|{default_}|{required}|{description}|{enum}|{example}|")
         return action_input
 
     @staticmethod
@@ -96,8 +99,14 @@ class HelpInputOutputValidator(KomandPluginValidator):
             name_ = k
             type_ = output_content.get(k).get("type")
             required = output_content.get(k).get("required", False)
-            description = output_content.get(k).get("description")
-            action_output.append(f"|{name_}|{type_}|{required}|{description}|")
+            description = output_content.get(k).get("description", None)
+            example = output_content.get(k).get("example", None)
+            if example is None:
+                raise ValidationException(f"plugin.spec is missing output example for {v}")
+            else:
+                if isinstance(example, list):
+                    example = f"{example}".replace("'", '"')
+                action_output.append(f"|{name_}|{type_}|{required}|{description}|{example}|")
         return action_output
 
     def validate(self, spec):

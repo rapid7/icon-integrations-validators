@@ -44,9 +44,9 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|
-|----|----|--------|-----------|
-|data|string|True|Decoded data result|
+|Name|Type|Required|Description|Example|
+|----|----|--------|-----------|-------|
+|data|string|True|Decoded data result|base64|
 
 Example output:
 
@@ -81,9 +81,9 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|
-|----|----|--------|-----------|
-|data|string|True|Decoded data result|
+|Name|Type|Required|Description|Example|
+|----|----|--------|-----------|-------|
+|data|string|True|Decoded data result|==Md|
 
 Example output:
 
@@ -110,9 +110,9 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|
-|----|----|--------|-----------|
-|data|bytes|True|Encoded data result|
+|Name|Type|Required|Description|Example|
+|----|----|--------|-----------|-------|
+|data|bytes|True|Encoded data result|This is a string|
 
 Example output:
 
@@ -148,6 +148,8 @@ characters to `\uffd` or `?`. While ignore will drop the character from the outp
 * 0.1.0 - Initial plugin
 
 # Links
+
+* [Base64](https://en.wikipedia.org/wiki/Base64)
 
 ## References
 

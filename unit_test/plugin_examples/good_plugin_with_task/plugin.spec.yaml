@@ -37,6 +37,7 @@ actions:
         description: Encoded data result
         type: bytes
         required: true
+        example: This is a string
   decode:
     title: Decoder
     description: Decode Base64 to data
@@ -62,6 +63,7 @@ actions:
         description: Decoded data result
         type: string
         required: true
+        example: "==Md"
 tasks:
   test_task:
     title: Test Task
@@ -71,6 +73,7 @@ tasks:
         type: bytes
         description: Data to decode
         required: true
+        example: 1234
       errors:
         type: string
         description: How errors should be handled when decoding Base64
@@ -87,6 +90,7 @@ tasks:
         description: Decoded data result
         type: string
         required: true
+        example: 12345
     schedule:
       title: Schedule for Retrieving Events
       type: string

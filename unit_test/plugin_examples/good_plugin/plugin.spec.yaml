@@ -37,6 +37,7 @@ actions:
         description: Encoded data result
         type: bytes
         required: true
+        example: This is a string
   decode:
     title: Decoder
     description: Decode Base64 to data
@@ -62,6 +63,7 @@ actions:
         description: Decoded data result
         type: string
         required: true
+        example: base64
   decode_with_array:
     title: Decoder with Array
     description: Decode Base64 to data
@@ -77,3 +79,4 @@ actions:
         description: Decoded data result
         type: string
         required: true
+        example: "==Md"

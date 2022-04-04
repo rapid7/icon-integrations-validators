@@ -66,6 +66,19 @@ class HelpValidator(KomandPluginValidator):
         return help_content
 
     @staticmethod
+    def validate_required_content(help_raw: str):
+        help_content = help_raw.replace("\n", '')
+        pattern1 = "# Key Features(.*?)# Requirements"
+        pattern2 = "# Links(.*?)## References"
+        key_features = re.search(pattern1, help_content).group(1)
+        if "*" not in key_features:
+            raise ValidationException(f"Help section is missing list of Key Features in help.md, "
+                                      f"must include at least one feature")
+        links = re.search(pattern2, help_content).group(1)
+        if "http" not in links:
+            raise ValidationException(f"Help section is missing list of Links, must include at least a link to vendor")
+
+    @staticmethod
     def validate_title_spelling(spec, help_):
         if "title" in spec:
             title = spec["title"]
@@ -121,3 +134,4 @@ class HelpValidator(KomandPluginValidator):
         HelpValidator.validate_same_actions_title(spec.spec_dictionary(), spec.raw_help())
         HelpValidator.validate_title_spelling(spec.spec_dictionary(), spec.raw_help())
         HelpValidator.validate_duplicate_headings(spec.raw_help())
+        HelpValidator.validate_required_content(spec.raw_help())

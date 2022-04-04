@@ -45,9 +45,9 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|
+|Name|Type|Required|Description|Example|
 |----|----|--------|-----------|
-|data|bytes|True|Encoded data result|
+|data|bytes|True|Encoded data result|This is a string|
 
 Example output:
 
@@ -79,9 +79,9 @@ Example input:
 
 ##### Output
 
-|Name|Type|Required|Description|
+|Name|Type|Required|Description|Example|
 |----|----|--------|-----------|
-|data|string|True|Decoded data result|
+|data|string|True|Decoded data result|==Md|
 
 Example output:
 
@@ -111,22 +111,23 @@ Supported schedule types for this task include:
 
 |Name|Type|Default|Required|Description|Enum|Example|
 |----|----|-------|--------|-----------|----|-------|
-|base64|bytes|None|True|Data to decode|None|None|
+|base64|bytes|None|True|Data to decode|None|1234|
 |errors|string|nothing|False|How errors should be handled when decoding Base64|['replace', 'ignore', 'nothing']|replace|
 
 Example input:
 
 ```
 {
+  "base64": 12345,
   "errors": "replace"
 }
 ```
 
 ##### Output
 
-|Name|Type|Required|Description|
+|Name|Type|Required|Description|Example|
 |----|----|--------|-----------|
-|data|string|True|Decoded data result|
+|data|string|True|Decoded data result|12345|
 
 Example output:
 
@@ -161,6 +162,8 @@ characters to `\uffd` or `?`. While ignore will drop the character from the outp
 * 0.1.0 - Initial plugin
 
 # Links
+
+* [Base64](https://en.wikipedia.org/wiki/Base64)
 
 ## References
 
