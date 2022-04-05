@@ -48,13 +48,4 @@ class ExampleInputValidator(KomandPluginValidator):
                         msg += f" \"{name}\""
                     msg += f": input \"{input_name}\", there is no example field."
                     empty_example_messages.append(msg)
-        else:
-            if element_type == "connection":
-                raise ValidationException(
-                    f"Connection field is empty and must not be. Please update plugin.spec."
-                )
-            else:
-                raise ValidationException(
-                    f"Input of {name} {element_type} is empty and must not be. Please update plugin.spec."
-                )
         return empty_example_messages
