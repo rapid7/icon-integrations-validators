@@ -282,6 +282,13 @@ class TestPluginValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [ExampleInputValidator()])
         self.assertEqual(result, 0)
 
+    def test_example_input_validator_pass_with_no_action_input(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin_no_input"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [ExampleInputValidator()])
+        self.assertEqual(result, 0)
+
     def test_cloud_ready_connection_credential_token_validator_should_fail(self):
         directory_to_test = "plugin_examples/cloud_ready_connection_credential_token_validator"
         file_to_test = "plugin.spec.yaml"
