@@ -320,6 +320,18 @@ class TestWorkflowValidate(unittest.TestCase):
             directory_to_test, file_to_test, False, True, [WorkflowICONFileValidator()]
         )
         self.assertTrue(result)
+        directory_to_test = "workflow_examples/icon_file_test_workflowid_missing"
+        file_to_test = "no_workflowID.icon"
+        result = validate(
+            directory_to_test, file_to_test, False, True, [WorkflowICONFileValidator()]
+        )
+        self.assertTrue(result)
+        directory_to_test = "workflow_examples/icon_file_test_workflowid_bad"
+        file_to_test = "bad_workflowID.icon"
+        result = validate(
+            directory_to_test, file_to_test, False, True, [WorkflowICONFileValidator()]
+        )
+        self.assertTrue(result)
 
     def test_workflow_plugin_utilization_validator(self):
         directory_to_test = "workflow_examples/plugin_utilization_tests"

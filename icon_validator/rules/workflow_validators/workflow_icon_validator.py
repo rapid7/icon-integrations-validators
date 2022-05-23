@@ -3,6 +3,7 @@ from icon_validator.exceptions import ValidationException
 
 import os
 import json
+import uuid
 
 
 class WorkflowICONFileValidator(KomandPluginValidator):
@@ -95,6 +96,21 @@ class WorkflowICONFileValidator(KomandPluginValidator):
         except KeyError:
             raise ValidationException(
                 "ICON file is missing the tags key in workflowVersions. Try exporting the .icon file again")
+
+        try:
+            if workflow_versions["workflowId"] is None:
+                raise ValidationException(
+                    "The description key in workflowId is not defined. Try exporting the .icon file again")
+            else:
+                workflowId = workflow_versions["workflowId"]
+                try:
+                    uuid.UUID(workflowId)
+                except ValueError:
+                    raise ValidationException(
+                        f"workflowId key {workflowId} in ICON file is not a valid UUID. Try exporting the .icon file again")
+        except KeyError:
+            raise ValidationException(
+                "ICON file is missing the workflowId key. Try exporting the .icon file again")
 
         for step, value in workflow_versions["steps"].items():
             WorkflowICONFileValidator.validate_workflow_versions_steps(step, value)
