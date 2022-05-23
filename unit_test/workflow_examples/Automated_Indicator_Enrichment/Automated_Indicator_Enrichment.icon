@@ -5,6 +5,7 @@
     "exportedAt": "2019-09-13T20:24:44.73410889Z",
     "workflowVersions": [
       {
+        "workflowId": "5338d5e4-6f3e-45fe-8af5-e2d96213b3f0",
         "name": "Automated Indicator Enrichment",
         "type": "runnable",
         "version": "",
