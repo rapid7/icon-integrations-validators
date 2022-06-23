@@ -122,7 +122,7 @@ class TestPluginValidate(unittest.TestCase):
     def test_version_validator_should_fail_when_version_same_in_api(self):
         # example workflow in plugin_examples directory. Run tests with these files
         version = requests.get(
-            url=f"https://extensions-api.rapid7.com/v1/public/extensions/active_directory_ldap",
+            url=f"https://extensions-api.rapid7.com/v2/public/extensions/active_directory_ldap",
             timeout=3
         ).json()["version"]
 
