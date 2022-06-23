@@ -35,7 +35,7 @@ class VersionValidator(KomandPluginValidator):
     def validate_version_bump_needed(spec):
         plugin_name = spec.spec_dictionary()["name"]
         response = requests.get(
-            url=f"https://extensions-api.rapid7.com/v1/public/extensions/{plugin_name}",
+            url=f"https://extensions-api.rapid7.com/v2/public/extensions/{plugin_name}",
             timeout=3
         )
         if response.status_code == 404:
