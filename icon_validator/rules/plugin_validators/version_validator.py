@@ -9,7 +9,7 @@ class VersionValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_version(version):
-        if re.match("[1-9]+.[0-9]+.[0-9]+$", version) is None:
+        if re.match("^[1-9][0-9]*.[0-9]+.[0-9]+$", version) is None:
             raise ValidationException("Version does not match required semver format. "
                             "Version should be in form X.Y.Z with X, Y, and Z "
                             "being numbers. No special characters or spaces allowed. "
