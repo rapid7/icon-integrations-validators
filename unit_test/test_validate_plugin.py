@@ -112,10 +112,17 @@ class TestPluginValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [VersionValidator()])
         self.assertEqual(result, 0)
 
-    def test_version_validator_should_faile_when_version_same_in_api(self):
+    def test_version_validator_major_version_ten(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/version_validator"
+        file_to_test = "plugin.spec_ten.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [VersionValidator()])
+        self.assertEqual(result, 0)
+
+    def test_version_validator_should_fail_when_version_same_in_api(self):
         # example workflow in plugin_examples directory. Run tests with these files
         version = requests.get(
-            url=f"https://extensions-api.rapid7.com/v1/public/extensions/active_directory_ldap",
+            url=f"https://extensions-api.rapid7.com/v2/public/extensions/active_directory_ldap",
             timeout=3
         ).json()["version"]
 
