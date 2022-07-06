@@ -39,7 +39,12 @@ class VersionValidator(KomandPluginValidator):
             timeout=3
         )
         if response.status_code == 404:
-            return
+            response = requests.get(
+                url=f"https://extensions-api.rapid7.com/v2/public/extensions/{plugin_name}",
+                timeout=3
+            )
+            if response.status_code == 404:
+                return
 
         if response.json()["version"] == spec.spec_dictionary()["version"]:
             raise ValidationException("The plugin has been modified without a version change. Please update the semver in plugin.spec.yaml, regenerate, and create a changelog entry under Version History in help.md")

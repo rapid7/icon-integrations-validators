@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.46.3 - Update version validator to check v2 api call
 * 2.46.2 - Fixed VersionValidator regex failing to validate x0.x.x semantic version strings
 * 2.46.1 - Add null variable check to example input validator
 * 2.46.0 - Add new help.md validator to ensure there are key features, links, and examples
