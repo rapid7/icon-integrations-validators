@@ -33,7 +33,9 @@ class HelpInputOutputValidator(KomandPluginValidator):
         action_input_section = re.findall(regex, action_input_section[0], re.DOTALL)
 
         for input_fields in action_input:
-            if input_fields not in action_input_section[0]:
+            if input_fields.find('date') is not None:
+                continue
+            elif input_fields not in action_input_section[0]:
                 HelpInputOutputValidator.violations.append(input_fields)
 
     @staticmethod
