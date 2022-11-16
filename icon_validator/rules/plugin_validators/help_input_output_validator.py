@@ -4,6 +4,54 @@ from icon_validator.styling import *
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
 
+from datetime import datetime
+
+
+def valid_datetime(list_entry: str) -> bool:
+    """
+    This function determines if a valid datetime following
+    iso format is detected in a string
+
+    :param list_entry: The entry of the list to be checked for datetime validity
+    """
+    try:
+        datetime.fromisoformat(list_entry)
+        return True
+    except ValueError:
+        return False
+
+
+def convert_add_t_to_datetime(date: str) -> str:
+    """
+    This function takes a str containing a date and converts it to the format
+    that matches the format found within the raw help md
+
+    :param date: datetime string
+    :type date: str
+
+    :return final_result: datetime string containing 'T'
+    :rtype final_result: str
+    """
+    datetime_object = datetime.fromisoformat(date)
+    timezone = datetime_object.strftime("%z")
+    new_timezone = timezone[:3] + ":" + timezone[3:]
+    new_datetime = datetime_object.strftime("%Y-%m-%dT%H:%M:%S")
+    final_result = new_datetime + new_timezone
+    return final_result
+
+
+def datetime_checker_fixer(action_input: str):
+    """
+
+
+    :param action_input: table string for the action from help md
+    :type action_input: str
+    """
+    split_action_input = action_input.split("|")
+    for entry in split_action_input:
+        if valid_datetime(entry) is True:
+            new_datetime_value = entry.datetime.strftime()
+
 
 class HelpInputOutputValidator(KomandPluginValidator):
     raw_help = ""
@@ -31,11 +79,11 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
         regex = r"#### " + action_title + "\n.*?#+ Output"
         action_input_section = re.findall(regex, action_input_section[0], re.DOTALL)
-
+        import pdb; pdb.set_trace()
         for input_fields in action_input:
-            if input_fields.find('date') is not None:
-                continue
-            elif input_fields not in action_input_section[0]:
+            # if input_fields.find('date') is not None:
+            #     continue
+            if input_fields not in action_input_section[0]:
                 HelpInputOutputValidator.violations.append(input_fields)
 
     @staticmethod
@@ -123,7 +171,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
                 input_section = actions[key].get("input")
                 output_section = actions[key].get("output")
                 HelpInputOutputValidator.action_missing = 0
-
+                import pdb; pdb.set_trace()
                 # Action with no input in spec file will skip input validation
                 if input_section:
                     action_input_fields = HelpInputOutputValidator.get_spec_input(input_section)
