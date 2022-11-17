@@ -38,17 +38,23 @@ def convert_to_valid_datetime(date: str) -> str:
     # Convert the string to a datetime object so we can work with it
     datetime_object = datetime.fromisoformat(date)
 
-    # Extract the timezone separately
-    timezone = datetime_object.strftime("%z")
-
-    # Add the ':' in manually because strftime does not contain an option to convert it like this
-    new_timezone = timezone[:3] + ":" + timezone[3:]
-
     # Create the datetime containing the T using strftime
     new_datetime = datetime_object.strftime("%Y-%m-%dT%H:%M:%S")
 
-    # Combine the newly created datetime and the timezone
-    final_result = new_datetime + new_timezone
+    # Extract the timezone separately
+    try:
+        timezone = datetime_object.strftime("%z")
+
+        # Add the ':' in manually because strftime does not contain an option to convert it like this
+        new_timezone = timezone[:3] + ":" + timezone[3:]
+
+        # Combine new datetime and append the amended timezone on the end
+        final_result = new_datetime + new_timezone
+
+    except AttributeError:
+
+        # If timezone was not found in the string, then just produce the new amended datetime
+        final_result = new_datetime
 
     # Return the final result
     return final_result
@@ -62,8 +68,6 @@ def datetime_checker_fixer(action_input: str):
     :param action_input: table string for the action from help md
     :type action_input: str
     """
-
-    new_datetime_value = None
 
     # Take the table string, and split it by the '|' character
     split_action_input = action_input.split("|")
