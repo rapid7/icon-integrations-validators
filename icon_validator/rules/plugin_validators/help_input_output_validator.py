@@ -69,10 +69,10 @@ def datetime_checker_fixer(action_input: str):
     split_action_input = action_input.split("|")
 
     # Loop through each entry in the newly created list from split
-    for entry in action_input.split("|"):
-        # print(entry)
+    for entry in split_action_input:
+
         # Use detect function to detect which entry contains the date
-        if detect_valid_datetime(entry) is True:
+        if detect_valid_datetime(entry):
 
             # When found, use convert function to convert the list element to the format we need
             new_datetime_value = convert_to_valid_datetime(entry)
@@ -82,6 +82,8 @@ def datetime_checker_fixer(action_input: str):
 
             # Rejoin the string with '|' character
             return "|".join(split_action_input)
+
+    return action_input
 
 
 class HelpInputOutputValidator(KomandPluginValidator):
@@ -119,7 +121,6 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
         regex = r"#### " + action_title + "\n.*?#+ Output"
         action_input_section = re.findall(regex, action_input_section[0], re.DOTALL)
-        # import pdb; pdb.set_trace()
         for input_fields in action_input:
             input_fields = datetime_checker_fixer(action_input=input_fields)
             if input_fields not in action_input_section[0]:
