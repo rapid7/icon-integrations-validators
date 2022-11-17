@@ -26,8 +26,8 @@ def detect_valid_datetime(list_entry: str) -> bool:
 
 def convert_to_valid_datetime(date: str) -> str:
     """
-    This function takes a str containing a date and converts it to the format
-    that matches the format found within the raw help md
+    This function takes a str containing a date in isoformat and converts
+    it to the format that matches the format found within the raw help md
 
     :param date: datetime string
     :type date: str
