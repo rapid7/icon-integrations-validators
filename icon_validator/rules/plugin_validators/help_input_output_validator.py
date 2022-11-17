@@ -63,27 +63,25 @@ def datetime_checker_fixer(action_input: str):
     :type action_input: str
     """
 
+    new_datetime_value = None
+
     # Take the table string, and split it by the '|' character
     split_action_input = action_input.split("|")
 
     # Loop through each entry in the newly created list from split
-    for entry in split_action_input:
-
+    for entry in action_input.split("|"):
+        # print(entry)
         # Use detect function to detect which entry contains the date
         if detect_valid_datetime(entry) is True:
 
             # When found, use convert function to convert the list element to the format we need
             new_datetime_value = convert_to_valid_datetime(entry)
 
-        # If it is not a valid datetime, return the original inputted value
-        else:
-            return action_input
+            # Replace the old value with the new one
+            split_action_input[-2] = new_datetime_value
 
-    # Replace the old value with the new one
-    split_action_input[-2] = new_datetime_value
-
-    # Rejoin the string with '|' character
-    return "|".join(split_action_input)
+            # Rejoin the string with '|' character
+            return "|".join(split_action_input)
 
 
 class HelpInputOutputValidator(KomandPluginValidator):
@@ -121,7 +119,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
         regex = r"#### " + action_title + "\n.*?#+ Output"
         action_input_section = re.findall(regex, action_input_section[0], re.DOTALL)
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         for input_fields in action_input:
             input_fields = datetime_checker_fixer(action_input=input_fields)
             if input_fields not in action_input_section[0]:
