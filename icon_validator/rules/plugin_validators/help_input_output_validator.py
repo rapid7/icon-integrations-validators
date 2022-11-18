@@ -42,19 +42,19 @@ def convert_to_valid_datetime(date: str) -> str:
     new_datetime = datetime_object.strftime("%Y-%m-%dT%H:%M:%S")
 
     # Extract the timezone separately
-    try:
-        timezone = datetime_object.strftime("%z")
+    timezone = datetime_object.strftime("%z")
 
+    # If timezone was not found in the string, then just produce the new amended datetime
+    if timezone == '':
+
+        final_result = new_datetime
+
+    else:
         # Add the ':' in manually because strftime does not contain an option to convert it like this
         new_timezone = timezone[:3] + ":" + timezone[3:]
 
         # Combine new datetime and append the amended timezone on the end
         final_result = new_datetime + new_timezone
-
-    except AttributeError:
-
-        # If timezone was not found in the string, then just produce the new amended datetime
-        final_result = new_datetime
 
     # Return the final result
     return final_result
