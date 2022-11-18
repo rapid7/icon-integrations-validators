@@ -60,13 +60,16 @@ def convert_to_valid_datetime(date: str) -> str:
     return final_result
 
 
-def datetime_checker_fixer(action_input: str):
+def datetime_formatter(action_input: str) -> str:
     """
     This function uses the other two to perform the actions needed to detect and
     convert the datetime to correct format
 
     :param action_input: table string for the action from help md
     :type action_input: str
+
+    :return: Newly formatted datetime string
+    :rtype: str
     """
 
     # Take the table string, and split it by the '|' character
