@@ -24,19 +24,19 @@ def detect_valid_datetime(list_entry: str) -> bool:
         return False
 
 
-def convert_to_valid_datetime(date: str) -> str:
+def convert_to_valid_datetime(table_string: str) -> str:
     """
     This function takes a str containing a date in isoformat and converts
     it to the format that matches the format found within the raw help md
 
-    :param date: datetime string
-    :type date: str
+    :param table_string: datetime string
+    :type table_string: str
 
     :return final_result: datetime string containing 'T'
     :rtype final_result: str
     """
     # Convert the string to a datetime object so we can work with it
-    datetime_object = datetime.fromisoformat(date)
+    datetime_object = datetime.fromisoformat(table_string)
 
     # Create the datetime containing the T using strftime
     new_datetime = datetime_object.strftime("%Y-%m-%dT%H:%M:%S")
@@ -60,20 +60,20 @@ def convert_to_valid_datetime(date: str) -> str:
     return final_result
 
 
-def datetime_formatter(action_input: str) -> str:
+def datetime_formatter(table_string: str) -> str:
     """
     This function uses the other two to perform the actions needed to detect and
     convert the datetime to correct format
 
-    :param action_input: table string for the action from help md
-    :type action_input: str
+    :param table_string: table string for the action from help md
+    :type table_string: str
 
     :return: Newly formatted datetime string
     :rtype: str
     """
 
     # Take the table string, and split it by the '|' character
-    split_action_input = action_input.split("|")
+    split_action_input = table_string.split("|")
 
     # Loop through each entry in the newly created list from split
     for entry in split_action_input:
@@ -90,7 +90,7 @@ def datetime_formatter(action_input: str) -> str:
             # Rejoin the string with '|' character
             return "|".join(split_action_input)
 
-    return action_input
+    return table_string
 
 
 class HelpInputOutputValidator(KomandPluginValidator):
@@ -129,7 +129,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
         regex = r"#### " + action_title + "\n.*?#+ Output"
         action_input_section = re.findall(regex, action_input_section[0], re.DOTALL)
         for input_fields in action_input:
-            input_fields = datetime_checker_fixer(action_input=input_fields)
+            input_fields = datetime_formatter(table_string=input_fields)
             if input_fields not in action_input_section[0]:
                 HelpInputOutputValidator.violations.append(input_fields)
 
