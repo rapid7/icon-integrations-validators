@@ -46,9 +46,7 @@ def convert_to_valid_datetime(table_string: str) -> str:
 
     # If timezone was not found in the string, then just produce the new amended datetime
     if timezone == '':
-
         final_result = new_datetime
-
     else:
         # Add the ':' in manually because strftime does not contain an option to convert it like this
         new_timezone = timezone[:3] + ":" + timezone[3:]

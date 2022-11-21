@@ -92,6 +92,12 @@ class TestPluginValidate(unittest.TestCase):
         HelpInputOutputValidator.violated = 0
         self.assertEqual(result, 1, "Result should be failed")
 
+    def test_datetime_in_inputOutputValidators(self):
+        directory_to_test = "plugin_examples/good_datetime_example"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [HelpInputOutputValidator()])
+        self.assertEqual(result, 0)
+
     def test_encoding_validator_should_success(self):
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/encoding_tests"
