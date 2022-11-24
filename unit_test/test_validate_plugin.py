@@ -10,7 +10,8 @@ from icon_validator.rules.plugin_validators.version_validator import VersionVali
 from icon_validator.rules.plugin_validators.version_pin_validator import VersionPinValidator
 from icon_validator.rules.plugin_validators.encoding_validator import EncodingValidator
 from icon_validator.rules.plugin_validators.example_input_validator import ExampleInputValidator
-from icon_validator.rules.plugin_validators.cloud_ready_connection_credential_token_validator import CloudReadyConnectionCredentialTokenValidator
+from icon_validator.rules.plugin_validators.cloud_ready_connection_credential_token_validator import \
+    CloudReadyConnectionCredentialTokenValidator
 from icon_validator.rules.plugin_validators.use_case_validator import UseCaseValidator
 from icon_validator.rules.plugin_validators.help_validator import HelpValidator
 from icon_validator.rules.plugin_validators.confidential_validator import ConfidentialValidator
@@ -21,13 +22,23 @@ from icon_validator.rules.plugin_validators.unapproved_keywords_validator import
 from icon_validator.rules.plugin_validators.help_example_validator import HelpExampleValidator
 from icon_validator.rules.plugin_validators.version_bump_validator import VersionBumpValidator
 from icon_validator.rules.plugin_validators.supported_version_validator import SupportedVersionValidator
+from icon_validator.rules.plugin_validators.help_input_output_validator import convert_to_valid_datetime
 
 import requests
 from unittest.mock import MagicMock
 import os
+from parameterized import parameterized
 
 
 class TestPluginValidate(unittest.TestCase):
+
+    @parameterized.expand([
+        ('2023-12-24 12:56:15+05:00', '2023-12-24T12:56:15+05:00'),
+        ('2023-12-24 12:56:15', '2023-12-24T12:56:15')
+    ])
+    def test_convert_valid_datetime(self, table_string: str, expected: str):
+        response = convert_to_valid_datetime(table_string)
+        self.assertEqual(expected, response)
 
     def test_plugin_validate(self):
         # example workflow in plugin_examples directory. Run tests with these files
@@ -172,7 +183,8 @@ class TestPluginValidate(unittest.TestCase):
         self.assertEqual(result, 1)
 
     def test_version_pin_validator_should_fail_when_no_version_pin_in_one_of_multiple_version_first_test(self):
-        self.replace_requirements("plugin_examples/version_pin_validator/requirements.txt", "ldap3===1.2.3,ldap3xxxx1.2.3")
+        self.replace_requirements("plugin_examples/version_pin_validator/requirements.txt",
+                                  "ldap3===1.2.3,ldap3xxxx1.2.3")
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/version_pin_validator"
         file_to_test = "plugin.spec.yaml"
@@ -180,7 +192,8 @@ class TestPluginValidate(unittest.TestCase):
         self.assertEqual(result, 1)
 
     def test_version_pin_validator_should_fail_when_no_version_pin_in_one_of_multiple_version_second_test(self):
-        self.replace_requirements("plugin_examples/version_pin_validator/requirements.txt", "ldap3xxxx1.2.3,ldap3===1.2.3")
+        self.replace_requirements("plugin_examples/version_pin_validator/requirements.txt",
+                                  "ldap3xxxx1.2.3,ldap3===1.2.3")
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/version_pin_validator"
         file_to_test = "plugin.spec.yaml"
@@ -212,7 +225,8 @@ class TestPluginValidate(unittest.TestCase):
         self.assertEqual(result, 0)
 
     def test_version_pin_validator_should_success_when_git(self):
-        self.replace_requirements("plugin_examples/version_pin_validator/requirements.txt", "git+git://github.com/komand/pycrits@1.0.0#egg=pycrits")
+        self.replace_requirements("plugin_examples/version_pin_validator/requirements.txt",
+                                  "git+git://github.com/komand/pycrits@1.0.0#egg=pycrits")
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/version_pin_validator"
         file_to_test = "plugin.spec.yaml"
@@ -305,7 +319,8 @@ class TestPluginValidate(unittest.TestCase):
     def test_cloud_ready_connection_credential_token_validator_should_fail(self):
         directory_to_test = "plugin_examples/cloud_ready_connection_credential_token_validator"
         file_to_test = "plugin.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [CloudReadyConnectionCredentialTokenValidator()])
+        result = validate(directory_to_test, file_to_test, False, True,
+                          [CloudReadyConnectionCredentialTokenValidator()])
         self.assertEqual(result, 1)
 
     def test_use_case_validator_should_success(self):
