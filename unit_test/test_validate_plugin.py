@@ -40,6 +40,7 @@ class TestPluginValidate(unittest.TestCase):
         response = convert_to_valid_datetime(table_string)
         self.assertEqual(expected, response)
 
+    #Test
     def test_plugin_validate(self):
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/good_plugin"
