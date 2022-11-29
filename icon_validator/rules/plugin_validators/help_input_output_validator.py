@@ -45,7 +45,7 @@ def convert_to_valid_datetime(table_string: str) -> str:
     timezone = datetime_object.strftime("%z")
 
     # If timezone was not found in the string, then just produce the new amended datetime
-    if timezone == '':
+    if timezone == "":
         final_result = new_datetime
     else:
         # Add the ':' in manually because strftime does not contain an option to convert it like this
@@ -127,11 +127,11 @@ class HelpInputOutputValidator(KomandPluginValidator):
     @staticmethod
     def validate_input(action_title: str, action_input: list, process_type: str):
         regex = (
-                r"### "
-                + process_type.capitalize()
-                + ".*?#### "
-                + action_title
-                + "\n.*?#+ Output"
+            r"### "
+            + process_type.capitalize()
+            + ".*?#### "
+            + action_title
+            + "\n.*?#+ Output"
         )
         if process_type == "actions":
             regex = regex + ".*?### Triggers"
@@ -154,7 +154,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
         regex = r"#### " + action_title + "\n.*?#+ Output"
         action_input_section = re.findall(regex, action_input_section[0], re.DOTALL)
 
-        # Function to specifically handle converting the datetimes in action_input_section[0]
+        # Function to specifically handle converting the datetimes in action_input_section[0
         converted_ais = convert_ais_to_valid_datetime(action_input_section[0])
 
         for input_fields in action_input:
@@ -165,11 +165,11 @@ class HelpInputOutputValidator(KomandPluginValidator):
     @staticmethod
     def validate_output(action_title: str, action_output: list, process_type: str):
         regex = (
-                r"### "
-                + process_type.capitalize()
-                + ".*?#### "
-                + action_title
-                + "\n.*?#+ Output\n\n.*?\n\n"
+            r"### "
+            + process_type.capitalize()
+            + ".*?#### "
+            + action_title
+            + "\n.*?#+ Output\n\n.*?\n\n"
         )
         if process_type == "actions":
             regex = regex + ".*?### Trigger"
@@ -184,17 +184,17 @@ class HelpInputOutputValidator(KomandPluginValidator):
         action_help_section = re.findall(regex, action_help_section_temp[0], re.DOTALL)
 
         if (
-                "This " + process_type[:-1] + " does not contain any outputs."
-                not in action_help_section[0]
+            "This " + process_type[:-1] + " does not contain any outputs."
+            not in action_help_section[0]
         ):
             regex = (
-                    r"### "
-                    + process_type.capitalize()
-                    + ".*?#### "
-                    + action_title
-                    + "\n.*?#+ Output\n\n.*?"
-                    + re.escape("|Name|Type|Required|Description|")
-                    + ".*?\n\n"
+                r"### "
+                + process_type.capitalize()
+                + ".*?#### "
+                + action_title
+                + "\n.*?#+ Output\n\n.*?"
+                + re.escape("|Name|Type|Required|Description|")
+                + ".*?\n\n"
             )
             if process_type == "actions":
                 regex = regex + ".*?### Triggers"
@@ -206,11 +206,11 @@ class HelpInputOutputValidator(KomandPluginValidator):
                 regex, HelpInputOutputValidator.raw_help, re.DOTALL
             )
             regex = (
-                    r"#### "
-                    + action_title
-                    + "\n.*?#+ Output\n\n.*?"
-                    + re.escape("|Name|Type|Required|Description|")
-                    + ".*?\n\n"
+                r"#### "
+                + action_title
+                + "\n.*?#+ Output\n\n.*?"
+                + re.escape("|Name|Type|Required|Description|")
+                + ".*?\n\n"
             )
             action_output_section_temp = re.findall(
                 regex, action_help_section_temp[0], re.DOTALL
