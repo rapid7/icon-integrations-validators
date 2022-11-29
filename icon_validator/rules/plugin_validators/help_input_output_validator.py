@@ -155,7 +155,6 @@ class HelpInputOutputValidator(KomandPluginValidator):
         action_input_section = re.findall(regex, action_input_section[0], re.DOTALL)
 
         # Function to specifically handle converting the datetimes in action_input_section[0]
-        # to datetime.datetime objects
         converted_ais = convert_ais_to_valid_datetime(action_input_section[0])
 
         for input_fields in action_input:
