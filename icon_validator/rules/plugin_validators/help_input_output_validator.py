@@ -78,7 +78,6 @@ def datetime_formatter(table_string: str) -> str:
 
         # Use detect function to detect which entry contains the date
         if detect_valid_datetime(entry):
-
             # When found, use convert function to convert the list element to the format we need
             new_datetime_value = convert_to_valid_datetime(entry)
 
@@ -91,6 +90,34 @@ def datetime_formatter(table_string: str) -> str:
     return table_string
 
 
+def convert_ais_to_valid_datetime(ais: str) -> list:
+    """
+    Function to take the string, Action Input Section, and convert
+    the datetime contained within that to match the converted datetime
+    in the variable, input_fields
+
+    :param ais: Action Input Section
+    :type ais: str
+
+    :return: List containing all the string data split by line, with newly converted datetime
+    :rtype: list
+    """
+
+    lines = ais.splitlines()
+    new_lines = []
+    lines = [line for line in lines if len(line)]
+    lines = [line for line in lines if line[0] == "|"]
+    for entry in lines:
+        elements = entry.split("|")
+        new_elements = []
+        for element in elements:
+            if detect_valid_datetime(element):
+                element = convert_to_valid_datetime(element)
+            new_elements.append(element)
+        new_lines.append("|".join(new_elements))
+    return new_lines
+
+
 class HelpInputOutputValidator(KomandPluginValidator):
     raw_help = ""
     violations = []
@@ -100,11 +127,11 @@ class HelpInputOutputValidator(KomandPluginValidator):
     @staticmethod
     def validate_input(action_title: str, action_input: list, process_type: str):
         regex = (
-            r"### "
-            + process_type.capitalize()
-            + ".*?#### "
-            + action_title
-            + "\n.*?#+ Output"
+                r"### "
+                + process_type.capitalize()
+                + ".*?#### "
+                + action_title
+                + "\n.*?#+ Output"
         )
         if process_type == "actions":
             regex = regex + ".*?### Triggers"
@@ -126,19 +153,24 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
         regex = r"#### " + action_title + "\n.*?#+ Output"
         action_input_section = re.findall(regex, action_input_section[0], re.DOTALL)
+
+        # Function to specifically handle converting the datetimes in action_input_section[0]
+        # to datetime.datetime objects
+        converted_ais = convert_ais_to_valid_datetime(action_input_section[0])
+
         for input_fields in action_input:
             input_fields = datetime_formatter(table_string=input_fields)
-            if input_fields not in action_input_section[0]:
+            if input_fields not in converted_ais:
                 HelpInputOutputValidator.violations.append(input_fields)
 
     @staticmethod
     def validate_output(action_title: str, action_output: list, process_type: str):
         regex = (
-            r"### "
-            + process_type.capitalize()
-            + ".*?#### "
-            + action_title
-            + "\n.*?#+ Output\n\n.*?\n\n"
+                r"### "
+                + process_type.capitalize()
+                + ".*?#### "
+                + action_title
+                + "\n.*?#+ Output\n\n.*?\n\n"
         )
         if process_type == "actions":
             regex = regex + ".*?### Trigger"
@@ -153,17 +185,17 @@ class HelpInputOutputValidator(KomandPluginValidator):
         action_help_section = re.findall(regex, action_help_section_temp[0], re.DOTALL)
 
         if (
-            "This " + process_type[:-1] + " does not contain any outputs."
-            not in action_help_section[0]
+                "This " + process_type[:-1] + " does not contain any outputs."
+                not in action_help_section[0]
         ):
             regex = (
-                r"### "
-                + process_type.capitalize()
-                + ".*?#### "
-                + action_title
-                + "\n.*?#+ Output\n\n.*?"
-                + re.escape("|Name|Type|Required|Description|")
-                + ".*?\n\n"
+                    r"### "
+                    + process_type.capitalize()
+                    + ".*?#### "
+                    + action_title
+                    + "\n.*?#+ Output\n\n.*?"
+                    + re.escape("|Name|Type|Required|Description|")
+                    + ".*?\n\n"
             )
             if process_type == "actions":
                 regex = regex + ".*?### Triggers"
@@ -175,11 +207,11 @@ class HelpInputOutputValidator(KomandPluginValidator):
                 regex, HelpInputOutputValidator.raw_help, re.DOTALL
             )
             regex = (
-                r"#### "
-                + action_title
-                + "\n.*?#+ Output\n\n.*?"
-                + re.escape("|Name|Type|Required|Description|")
-                + ".*?\n\n"
+                    r"#### "
+                    + action_title
+                    + "\n.*?#+ Output\n\n.*?"
+                    + re.escape("|Name|Type|Required|Description|")
+                    + ".*?\n\n"
             )
             action_output_section_temp = re.findall(
                 regex, action_help_section_temp[0], re.DOTALL
