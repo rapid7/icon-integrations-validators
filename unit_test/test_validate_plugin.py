@@ -33,6 +33,8 @@ from parameterized import parameterized
 
 class TestPluginValidate(unittest.TestCase):
 
+    NAME_TESTS_DIRECTORY = "plugin_examples/name_tests"
+
     @parameterized.expand([
         ('2023-12-24 12:56:15+05:00', '2023-12-24T12:56:15+05:00'),
         ('2023-12-24 12:56:15', '2023-12-24T12:56:15')
@@ -736,53 +738,26 @@ class TestPluginValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [SupportedVersionValidator()])
         self.assertEqual(result, 1)
 
+    @parameterized.expand([
+        ('long_name', 'long_name.spec.yaml'),
+        ('blank_name', 'blank_name.spec.yaml'),
+        ('missing_name', 'missing_name.spec.yaml'),
+        ('non_alphanumeric_name', 'non_alphanumeric_name.spec.yaml'),
+        ('not_string_name', 'not_string_name.spec.yaml'),
+        ('uppercase_name.spec', 'uppercase_name.spec.yaml'),
+        ('whitespace_name', 'whitespace_name.spec.yaml')
+    ])
+    def test_bad_name_validator(self, test_name: str, test_plugin_spec: str):
+        directory_to_test = self.NAME_TESTS_DIRECTORY
+        file_to_test = test_plugin_spec
+        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
+        self.assertEqual(result, 1)
+
     def test_good_name_validator(self):
-        directory_to_test = "plugin_examples/name_tests"
+        directory_to_test = self.NAME_TESTS_DIRECTORY
         file_to_test = "good_name.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
         self.assertEqual(result, 0)
-
-    def test_long_name_validator(self):
-        directory_to_test = "plugin_examples/name_tests"
-        file_to_test = "long_name.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
-        self.assertEqual(result, 1)
-
-    def test_blank_name_validator(self):
-        directory_to_test = "plugin_examples/name_tests"
-        file_to_test = "blank_name.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
-        self.assertEqual(result, 1)
-
-    def test_missing_name_validator(self):
-        directory_to_test = "plugin_examples/name_tests"
-        file_to_test = "missing_name.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
-        self.assertEqual(result, 1)
-
-    def test_non_alphanumeric_name_validator(self):
-        directory_to_test = "plugin_examples/name_tests"
-        file_to_test = "non_alphanumeric_name.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
-        self.assertEqual(result, 1)
-
-    def test_not_string_name_validator(self):
-        directory_to_test = "plugin_examples/name_tests"
-        file_to_test = "not_string_name.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
-        self.assertEqual(result, 1)
-
-    def test_uppercase_name_validator(self):
-        directory_to_test = "plugin_examples/name_tests"
-        file_to_test = "uppercase_name.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
-        self.assertEqual(result, 1)
-
-    def test_whitespace_name_validator(self):
-        directory_to_test = "plugin_examples/name_tests"
-        file_to_test = "whitespace_name.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
-        self.assertEqual(result, 1)
 
     @staticmethod
     def replace_requirements(path, text):
