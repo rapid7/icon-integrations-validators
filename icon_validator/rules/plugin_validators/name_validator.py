@@ -16,7 +16,7 @@ class NameValidator(KomandPluginValidator):
         if not name.replace("_", "").isalnum():
             raise ValidationException("Name should only contain alphanumeric values.")
         if len(name.split("_")) > 7:
-            raise ValidationException(f"Name is too long, 6 words or less: contains {str(len(name.split('_')))}")
+            raise ValidationException(f"Name is too long, 7 words or less: contains {str(len(name.split('_')))}")
 
     @staticmethod
     def validate_plugin_name(spec):

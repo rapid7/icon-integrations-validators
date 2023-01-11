@@ -23,6 +23,7 @@ from icon_validator.rules.plugin_validators.help_example_validator import HelpEx
 from icon_validator.rules.plugin_validators.version_bump_validator import VersionBumpValidator
 from icon_validator.rules.plugin_validators.supported_version_validator import SupportedVersionValidator
 from icon_validator.rules.plugin_validators.help_input_output_validator import convert_to_valid_datetime
+from icon_validator.rules.plugin_validators.name_validator import NameValidator
 
 import requests
 from unittest.mock import MagicMock
@@ -733,6 +734,54 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = "plugin_examples/supported_version_validator"
         file_to_test = "plugin.spec_bad_missing_value.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [SupportedVersionValidator()])
+        self.assertEqual(result, 1)
+
+    def test_good_name_validator(self):
+        directory_to_test = "plugin_examples/name_tests"
+        file_to_test = "good_name.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
+        self.assertEqual(result, 0)
+
+    def test_long_name_validator(self):
+        directory_to_test = "plugin_examples/name_tests"
+        file_to_test = "long_name.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
+        self.assertEqual(result, 1)
+
+    def test_blank_name_validator(self):
+        directory_to_test = "plugin_examples/name_tests"
+        file_to_test = "blank_name.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
+        self.assertEqual(result, 1)
+
+    def test_missing_name_validator(self):
+        directory_to_test = "plugin_examples/name_tests"
+        file_to_test = "missing_name.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
+        self.assertEqual(result, 1)
+
+    def test_non_alphanumeric_name_validator(self):
+        directory_to_test = "plugin_examples/name_tests"
+        file_to_test = "non_alphanumeric_name.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
+        self.assertEqual(result, 1)
+
+    def test_not_string_name_validator(self):
+        directory_to_test = "plugin_examples/name_tests"
+        file_to_test = "not_string_name.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
+        self.assertEqual(result, 1)
+
+    def test_uppercase_name_validator(self):
+        directory_to_test = "plugin_examples/name_tests"
+        file_to_test = "uppercase_name.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
+        self.assertEqual(result, 1)
+
+    def test_whitespace_name_validator(self):
+        directory_to_test = "plugin_examples/name_tests"
+        file_to_test = "whitespace_name.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
         self.assertEqual(result, 1)
 
     @staticmethod
