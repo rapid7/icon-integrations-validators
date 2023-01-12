@@ -23,6 +23,7 @@ from icon_validator.rules.plugin_validators.help_example_validator import HelpEx
 from icon_validator.rules.plugin_validators.version_bump_validator import VersionBumpValidator
 from icon_validator.rules.plugin_validators.supported_version_validator import SupportedVersionValidator
 from icon_validator.rules.plugin_validators.help_input_output_validator import convert_to_valid_datetime
+from icon_validator.rules.plugin_validators.name_validator import NameValidator
 
 import requests
 from unittest.mock import MagicMock
@@ -31,6 +32,8 @@ from parameterized import parameterized
 
 
 class TestPluginValidate(unittest.TestCase):
+
+    NAME_TESTS_DIRECTORY = "plugin_examples/name_tests"
 
     @parameterized.expand([
         ('2023-12-24 12:56:15+05:00', '2023-12-24T12:56:15+05:00'),
@@ -734,6 +737,27 @@ class TestPluginValidate(unittest.TestCase):
         file_to_test = "plugin.spec_bad_missing_value.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [SupportedVersionValidator()])
         self.assertEqual(result, 1)
+
+    @parameterized.expand([
+        ('long_name', 'long_name.spec.yaml'),
+        ('blank_name', 'blank_name.spec.yaml'),
+        ('missing_name', 'missing_name.spec.yaml'),
+        ('non_alphanumeric_name', 'non_alphanumeric_name.spec.yaml'),
+        ('not_string_name', 'not_string_name.spec.yaml'),
+        ('uppercase_name.spec', 'uppercase_name.spec.yaml'),
+        ('whitespace_name', 'whitespace_name.spec.yaml')
+    ])
+    def test_bad_name_validator(self, test_name: str, test_plugin_spec: str):
+        directory_to_test = self.NAME_TESTS_DIRECTORY
+        file_to_test = test_plugin_spec
+        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
+        self.assertEqual(result, 1)
+
+    def test_good_name_validator(self):
+        directory_to_test = self.NAME_TESTS_DIRECTORY
+        file_to_test = "good_name.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
+        self.assertEqual(result, 0)
 
     @staticmethod
     def replace_requirements(path, text):
