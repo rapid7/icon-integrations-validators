@@ -123,21 +123,9 @@ class SpecPropertiesValidator(KomandPluginValidator):
                                                       offenders=diff)
 
         for task in tasks:
-            # check for "state" and "schedule" in task
-            diff: {str} = self._COMPONENT_TASK_WHITELIST.difference(task.raw_parameters)
-            if "state" in diff or "schedule" in diff:
-                self._add_component_task_missing_state_schedule_offense_string(component=task.identifier, offenders=diff)
-
             diff: {str} = task.raw_parameters.difference(self._COMPONENT_TASK_WHITELIST)
             if diff:
                 self._add_component_task_offense_string(component=task.identifier, offenders=diff)
-
-            for input_ in task.inputs:
-                diff: {str} = input_.raw_parameters.difference(self._PROPERTIES_WHITELIST)
-                if diff:
-                    self._add_property_offense_string(component=task.identifier,
-                                                      identifier=input_.identifier,
-                                                      offenders=diff)
             for output in task.outputs:
                 diff: {str} = output.raw_parameters.difference(self._TASK_OUTPUT_PROPERTY_WHITELIST)
                 if diff:
