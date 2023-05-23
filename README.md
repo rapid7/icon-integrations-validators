@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.2 - Allow hyphens in WorkflowTitleValidator
 * 2.47.1 - Fix plugin spec properties validator for tasks
 * 2.47.0 - Add name validator to ensure plugin name conforms to standards
 * 2.46.4 - Fix InputOutputValidator so that it does not break on datetime input examples
