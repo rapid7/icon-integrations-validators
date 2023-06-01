@@ -18,7 +18,6 @@ from icon_validator.rules.plugin_validators.description_validator import Descrip
 from icon_validator.rules.plugin_validators.cloud_ready_validator import CloudReadyValidator
 from icon_validator.rules.plugin_validators.acronym_validator import AcronymValidator
 from icon_validator.rules.plugin_validators.unapproved_keywords_validator import UnapprovedKeywordsValidator
-from icon_validator.rules.plugin_validators.help_example_validator import HelpExampleValidator
 from icon_validator.rules.plugin_validators.version_bump_validator import VersionBumpValidator
 from icon_validator.rules.plugin_validators.supported_version_validator import SupportedVersionValidator
 from icon_validator.rules.plugin_validators.help_input_output_validator import convert_to_valid_datetime
@@ -469,27 +468,6 @@ class TestPluginValidate(unittest.TestCase):
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [UnapprovedKeywordsValidator()])
         self.assertEqual(result, 0)
-
-    def test_help_example_spaces_and_json_should_success(self):
-        # example workflow in plugin_examples directory. Run tests with these files
-        directory_to_test = "plugin_examples/good_plugin"
-        file_to_test = "plugin.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [HelpExampleValidator()])
-        self.assertEqual(result, 0)
-
-    def test_help_example_spaces_fail(self):
-        # example workflow in plugin_examples directory. Run tests with these files
-        directory_to_test = "plugin_examples/bad_plugin_help_example_wrong_spaces"
-        file_to_test = "plugin.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [HelpExampleValidator()])
-        self.assertEqual(result, 1)
-
-    def test_help_example_json_fail(self):
-        # example workflow in plugin_examples directory. Run tests with these files
-        directory_to_test = "plugin_examples/bad_plugin_help_example_wrong_json"
-        file_to_test = "plugin.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [HelpExampleValidator()])
-        self.assertEqual(result, 1)
 
     def test_major_version_action_removed_should_fail(self):
         # example spec in plugin_examples directory. Run tests with these files

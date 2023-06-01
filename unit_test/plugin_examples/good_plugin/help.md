@@ -40,6 +40,10 @@ This action is used to decode Base64 to data.
 Example input:
 
 ```
+{
+  "base64": "MQ==",
+  "errors": "example"
+}
 ```
 
 ##### Output
@@ -51,6 +55,9 @@ Example input:
 Example output:
 
 ```
+{
+  "data": "MQ=="
+}
 ```
 
 #### Decoder with Array
@@ -62,14 +69,6 @@ Decode Base64 to data
 |Name|Type|Default|Required|Description||Enum|Example|
 |----|----|-------|--------|-----------|-----|-------|
 |base64_array|[]string|None|True|Data to decode|None|["MQ==", "Mg=="]|
-
-Example input:
-
-```
-{
-  "base64_array": "MQ=="
-}
-```
 
 Example input:
 
@@ -106,6 +105,9 @@ This action is used to encode data to Base64.
 Example input:
 
 ```
+{
+  "content": "example"
+}
 ```
 
 ##### Output
@@ -117,6 +119,9 @@ Example input:
 Example output:
 
 ```
+{
+  "data": "MQ=="
+}
 ```
 
 ### Triggers
