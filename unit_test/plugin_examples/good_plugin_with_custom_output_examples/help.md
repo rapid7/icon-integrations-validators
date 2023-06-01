@@ -26,73 +26,7 @@ _This plugin does not contain a connection._
 
 ### Actions
 
-#### Decoder
-
-This action is used to decode Base64 to data.
-
-##### Input
-
-|Name|Type|Default|Required|Description||Enum|Example|
-|----|----|-------|--------|-----------|-----|-------|
-|base64|bytes|None|True|Data to decode|None|base64|
-|errors|string|nothing|False|How errors should be handled when decoding Base64|['replace', 'ignore', 'nothing']|replace|
-
-Example input:
-
-```
-{
-  "base64": "MQ==",
-  "errors": "example"
-}
-```
-
-##### Output
-
-|Name|Type|Required|Description|Example|
-|----|----|--------|-----------|-------|
-|data|string|True|Decoded data result|base64|
-
-Example output:
-
-```
-{
-  "data": "MQ=="
-}
-```
-
-#### Decoder with Array
-
-Decode Base64 to data
-
-##### Input
-
-|Name|Type|Default|Required|Description||Enum|Example|
-|----|----|-------|--------|-----------|-----|-------|
-|base64_array|[]string|None|True|Data to decode|None|["MQ==", "Mg=="]|
-
-Example input:
-
-```
-{
-  "base64_array": "MQ=="
-}
-```
-
-##### Output
-
-|Name|Type|Required|Description|Example|
-|----|----|--------|-----------|-------|
-|data|string|True|Decoded data result|==Md|
-
-Example output:
-
-```
-{
-  "data": "1"
-}
-```
-
-#### Encoder
+#### Encoder1
 
 This action is used to encode data to Base64.
 
@@ -105,23 +39,17 @@ This action is used to encode data to Base64.
 Example input:
 
 ```
-{
-  "content": "example"
-}
 ```
 
 ##### Output
 
 |Name|Type|Required|Description|Example|
 |----|----|--------|-----------|-------|
-|data|bytes|True|Encoded data result|This is a string|
+|data|object|True|Encoded data result|None|
 
 Example output:
 
 ```
-{
-  "data": "MQ=="
-}
 ```
 
 ### Triggers

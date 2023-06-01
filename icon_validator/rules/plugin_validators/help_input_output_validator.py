@@ -1,5 +1,6 @@
 import re
 
+from icon_validator.rules.lists.valid_data_types import ExampleOutputDataType
 from icon_validator.styling import *
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
@@ -264,7 +265,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
             required = output_content.get(k).get("required", False)
             description = output_content.get(k).get("description", None)
             example = output_content.get(k).get("example", None)
-            if example is None:
+            if example is None and ExampleOutputDataType.is_valid(type_):
                 raise ValidationException(
                     f"plugin.spec is missing output example for {v}"
                 )
