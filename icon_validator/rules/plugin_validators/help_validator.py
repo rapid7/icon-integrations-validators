@@ -19,7 +19,7 @@ class HelpValidator(KomandPluginValidator):
         "## Troubleshooting",
         "# Version History",
         "# Links",
-        "## References"
+        "## References",
     ]
 
     CUSTOM_TYPES_HEADERS_LIST = [
@@ -127,13 +127,15 @@ class HelpValidator(KomandPluginValidator):
 
         :param help_str: The help.md as a raw string
         """
-        counter = 0
+        missing_header = []
         help_headers_errors = []
         for header in HelpValidator.CUSTOM_TYPES_HEADERS_LIST:
             if header not in help_str:
-                counter = counter + 1
-            if counter == 2:
-                help_headers_errors.append(f"Help section is missing header: {header}")
+                missing_header.append(header)
+            if len(missing_header) == 2:
+                help_headers_errors.append(
+                    f"Help section is missing either header: {[header for header in missing_header]}"
+                )
 
         if help_headers_errors:
             raise ValidationException("\n".join(help_headers_errors))
