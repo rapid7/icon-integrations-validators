@@ -16,11 +16,15 @@ class HelpValidator(KomandPluginValidator):
         "## Technical Details",
         "### Actions",
         "### Triggers",
-        "### Custom Output Types",
         "## Troubleshooting",
         "# Version History",
         "# Links",
         "## References"
+    ]
+
+    CUSTOM_TYPES_HEADERS_LIST = [
+        "### Custom Output Types",
+        "### Custom Types"
     ]
 
     @staticmethod
@@ -52,7 +56,7 @@ class HelpValidator(KomandPluginValidator):
             HelpValidator.validate_same_actions_loop(spec["tasks"], help_)
 
     @staticmethod
-    def validate_same_actions_loop(section, help_str):
+    def validate_same_actions_loop(section, help_str: str):
         for i in section:
             if "title" in section[i]:
                 if f"#### {section[i]['title']}" not in help_str:
@@ -79,7 +83,7 @@ class HelpValidator(KomandPluginValidator):
             raise ValidationException(f"Help section is missing list of Links, must include at least a link to vendor")
 
     @staticmethod
-    def validate_title_spelling(spec, help_):
+    def validate_title_spelling(spec: dict, help_):
         if "title" in spec:
             title = spec["title"]
             lower_title = title.lower()
@@ -98,7 +102,7 @@ class HelpValidator(KomandPluginValidator):
                                     "Help section contains non-matching title in line: {}".format(line))
 
     @staticmethod
-    def validate_help_headers(help_str):
+    def validate_help_headers(help_str: str):
         # if plugin without tasks needs not to be regenerated, help.md won't be having Tasks section
         # Only raise exception if plugin.spec.yaml contains task and help.md does not
         if HelpValidator.taskExist and "### Tasks" not in help_str:
@@ -107,6 +111,28 @@ class HelpValidator(KomandPluginValidator):
         help_headers_errors = []
         for header in HelpValidator.HELP_HEADERS_LIST:
             if header not in help_str:
+                help_headers_errors.append(f"Help section is missing header: {header}")
+
+        if help_headers_errors:
+            raise ValidationException("\n".join(help_headers_errors))
+
+    @staticmethod
+    def validate_custom_types(help_str: str):
+        """
+        Essentially this just checks if either 'Custom Types' or 'Custom Output Types' exists.
+        We handle this separately since `icon-plugin` generates the title as Custom Output Types
+        and `insight-plugin` generates it as `Custom Types`.
+        As we gradually move away from icon-plugin, we can remove this function and add 'Custom Types'
+        into HELP_HEADERS_LIST
+
+        :param help_str: The help.md as a raw string
+        """
+        counter = 0
+        help_headers_errors = []
+        for header in HelpValidator.CUSTOM_TYPES_HEADERS_LIST:
+            if header not in help_str:
+                counter = counter + 1
+            if counter == 2:
                 help_headers_errors.append(f"Help section is missing header: {header}")
 
         if help_headers_errors:
@@ -128,6 +154,7 @@ class HelpValidator(KomandPluginValidator):
     def validate(self, spec):
         HelpValidator.validate_help_exists(spec.spec_dictionary())
         HelpValidator.validate_help_headers(spec.raw_help())
+        HelpValidator.validate_custom_types(spec.raw_help())
         if spec.spec_dictionary().get("tasks"):
             HelpValidator.taskExist = True
         HelpValidator.validate_version_history(spec.raw_help())
