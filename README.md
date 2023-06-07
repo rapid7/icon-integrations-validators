@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.4 - New help validator to handle `Custom Types` title
 * 2.47.3 - Fix HelpInputOutputValidator when output in plugin.spec.yaml not contain an example field | Fix validation when example contains list in object in HelpExampleValidator
 * 2.47.2 - Allow hyphens in WorkflowTitleValidator
 * 2.47.1 - Fix plugin spec properties validator for tasks
