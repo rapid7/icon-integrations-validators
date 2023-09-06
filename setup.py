@@ -25,7 +25,7 @@ setup(
         "typing==3.7.4.1",
         "PyYAML~=5.4.1",
         "dacite==1.6.0",
-        "GitPython==3.1.32",
+        "GitPython==3.1.34",
     ],
     entry_points={"console_scripts": ["icon-validate=icon_validator.__main__:main"]},
     classifiers=[
