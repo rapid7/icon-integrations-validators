@@ -1,0 +1,21 @@
+---
+info:
+  title: Icon Integrations Validators
+  description: Validator tooling for InsightConnection integrations
+  x-cortex-git:
+    github:
+      alias: r7org
+      repository: rapid7/icon-integrations-validators
+  x-cortex-tag: icon-integrations-validators
+  x-cortex-type: service
+  x-cortex-groups:
+  - target:development-tool
+  - strategy:cloud
+  - criticality:critical
+  - exposure:internal-ship
+  - status:deployed
+  x-cortex-domain-parents:
+  - tag: insightconnect
+openapi: 3.0.1
+servers:
+- url: "/"
