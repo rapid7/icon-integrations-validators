@@ -11,6 +11,12 @@ class ConfidentialValidator(KomandPluginValidator):
     # emails allowed
     emails = ["user@example.com"]
 
+    # validator ignore signature
+    IGNORE = "<validator:confidential_validator:ignore>"
+
+    # validator ignore comments for Python and markdown
+    IGNORES = {f"# {IGNORE}", f"[//]: # {IGNORE}"}
+
     # store violations per file
     violations = []
 
@@ -26,7 +32,23 @@ class ConfidentialValidator(KomandPluginValidator):
     @staticmethod
     def validate_emails(content: [str], path_to_file: str):
         email_pattern = re.compile(r"([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+){0,}")
+
+        # Store previous line to check for validator ignore
+        ignore_next_line: bool = False
+
         for i in range(0, len(content)):
+
+            # If this is found, continue looping through lines and ignore validation for the next line
+            checkable = set(content[i].strip().split(" "))
+            if ConfidentialValidator.IGNORES.intersection(checkable):
+                ignore_next_line = True
+                continue
+
+            # If ignore_next_line set to true then this current line was flagged to be ignore by validation
+            if ignore_next_line:
+                ignore_next_line = False
+                continue
+
             matches = email_pattern.findall(content[i])
             while "" in matches:
                 matches.remove("")
