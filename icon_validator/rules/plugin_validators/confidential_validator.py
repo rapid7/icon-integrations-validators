@@ -5,14 +5,12 @@ from icon_plugin_spec.plugin_spec import KomandPluginSpec
 
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException
+from icon_validator.styling import *
 
 
 class ConfidentialValidator(KomandPluginValidator):
     # emails allowed
     emails = ["user@example.com"]
-
-    # store violations per file
-    violations = []
 
     # Search help file
     @staticmethod
@@ -33,8 +31,8 @@ class ConfidentialValidator(KomandPluginValidator):
             for match in matches:
                 user_email_pattern = re.compile(r"user\d*\@example.com")
                 if not user_email_pattern.search(match):
-                    ConfidentialValidator.violations.append(f"{path_to_file}, line: {i + 1}")
-
+                    print(
+                        f"{YELLOW}WARNING: Email does not match recommended example user@example.com\n{path_to_file}, line: {i + 1}")
     # Search code base
     @staticmethod
     def validate_code(plugin_path: str):
@@ -62,8 +60,3 @@ class ConfidentialValidator(KomandPluginValidator):
         ConfidentialValidator.validate_help(spec.directory)
         # ConfidentialValidator.validate_code(spec.directory)
         ConfidentialValidator.validate_tests(spec.directory)
-
-        if ConfidentialValidator.violations:
-            for violation in ConfidentialValidator.violations:
-                print(f"violation: {violation}")
-            raise ValidationException(f"Please use 'user@example.com' when including emails. The above items violated this.")
