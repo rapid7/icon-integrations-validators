@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.7 - `ConfidentialValidator` - Changed email violation to a warning
 * 2.47.6 - Updated `GitPython` to version 3.1.32
 * 2.47.5 - Updated `requests` to version 2.31.0 | Updated `GitPython` to version 3.1.30
 * 2.47.4 - New help validator to handle `Custom Types` title
