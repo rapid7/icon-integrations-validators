@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.8 - `DockerfileParentValidator` | `RuntimeValidator` - update supported SDK images | Updated `GitPython` to version 3.1.37
 * 2.47.7 - `ConfidentialValidator` - Changed email violation to a warning
 * 2.47.6 - Updated `GitPython` to version 3.1.32
 * 2.47.5 - Updated `requests` to version 2.31.0 | Updated `GitPython` to version 3.1.30
