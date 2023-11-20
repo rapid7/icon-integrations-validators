@@ -17,7 +17,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "jsonschema==2.3.0",
-        "validators==0.14.2",
+        "validators==0.22.0",
         "filetype==1.0.5",
         "insightconnect-integrations-plugin-spec-tooling==1.3.1",
         "requests==2.31.0",
@@ -25,7 +25,7 @@ setup(
         "typing==3.7.4.1",
         "PyYAML~=5.4.1",
         "dacite==1.6.0",
-        "GitPython==3.1.32",
+        "GitPython==3.1.37",
     ],
     entry_points={"console_scripts": ["icon-validate=icon_validator.__main__:main"]},
     classifiers=[
