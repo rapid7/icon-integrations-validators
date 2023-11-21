@@ -12,7 +12,8 @@ class DockerfileParentValidator(KomandPluginValidator):
             "komand/python-3-37-slim-plugin",
             "komand/python-3-37-plugin",
             "komand/python-pypy3-full-plugin",
-            "rapid7/insightconnect-python-3-38-plugin", "rapid7/insightconnect-python-3-38-slim-plugin"
+            "rapid7/insightconnect-python-3-38-plugin", "rapid7/insightconnect-python-3-38-slim-plugin",
+            "rapid7/insightconnect-python-3-plugin", "rapid7/insightconnect-python-3-slim-plugin"
         ]
         root_spec_found = False
         for line in spec.raw_dockerfile():

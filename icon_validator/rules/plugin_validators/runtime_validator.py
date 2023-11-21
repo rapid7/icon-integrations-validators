@@ -67,8 +67,8 @@ class RuntimeValidator(KomandPluginValidator):
                                                       "Update Dockerfile accordingly to use latest base image.")
 
     def validate(self, spec):
-        latest_images = ["rapid7/insightconnect-python-3-38-plugin",
-                         "rapid7/insightconnect-python-3-38-slim-plugin"]
+        latest_images = ["rapid7/insightconnect-python-3-plugin",
+                         "rapid7/insightconnect-python-3-slim-plugin"]
         RuntimeValidator.validate_dockerfile(spec, latest_images)
 
         with open(f"{spec.directory}/Dockerfile", "r") as file:
