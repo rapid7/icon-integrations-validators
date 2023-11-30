@@ -18,7 +18,7 @@ class CloudReadyValidator(KomandPluginValidator):
     @staticmethod
     def validate_python_version_in_dockerfile(dockerfile: str):
         docker_str = dockerfile.replace(" --platform=linux/amd64 ", " ")  # if user has specified '--platform' remove
-        if not re.compile(r"FROM rapid7/insightconnect-python-3(-slim)?-plugin:(([0-9][0-9]+)|[4-9])")\
+        if not re.compile(r"FROM rapid7/insightconnect-python-3(-slim)?-plugin:(([0-9][0-9]+)|[4-9]|latest)")\
                 .match(docker_str):
             raise ValidationException(
                 "The python runtime must be in 5+ version to be Cloud Ready."
