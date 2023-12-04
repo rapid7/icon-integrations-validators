@@ -1,5 +1,6 @@
 import unittest
 from icon_validator.validate import validate
+from icon_validator.exceptions import ValidationException
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
 
 # Import plugin validators to pass to tests
@@ -433,6 +434,16 @@ class TestPluginValidate(unittest.TestCase):
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [CloudReadyValidator()])
         self.assertEqual(result, 0)
+
+    def test_cloud_ready_validator_should_success_latest_version_string(self):
+        # Test when a cloud ready plugin specifies ':latest' as SDK image regex still validates
+        docker_file = directory_to_test = "plugin_examples/good_plugin_cloud_ready/Dockerfile"
+        with open(docker_file, "r") as file:
+            docker_str = file.read().replace(":5", ":latest")
+            try:
+                CloudReadyValidator().validate_python_version_in_dockerfile(docker_str)
+            except ValidationException:
+                raise Exception("We do not expect the supplied docker string to fail. We should support ':latest'")
 
     def test_acronym_validator_should_success(self):
         # example workflow in plugin_examples directory. Run tests with these files

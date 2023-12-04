@@ -18,7 +18,7 @@ class DockerfileParentValidator(KomandPluginValidator):
         root_spec_found = False
         for line in spec.raw_dockerfile():
             if line.startswith("FROM"):
-                parent = line.replace("FROM", "").strip()
+                parent = line.replace("FROM", "").replace("--platform=linux/amd64", "").strip()
                 parts = parent.split(":")
                 image = parts[0].strip()
                 if image == "komand/python-plugin":
