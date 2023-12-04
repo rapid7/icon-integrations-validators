@@ -1,10 +1,10 @@
 import git
 
 from icon_validator.rules.validator import KomandPluginValidator
-from icon_validator.exceptions import ValidationException
+from icon_validator.exceptions import ValidationException, NO_LOCAL_CON_VERSION, \
+    NO_CON_VERSION_CHANGE, INVALID_CON_VERSION_CHANGE, INCORRECT_CON_VERSION_CHANGE
 from git import Repo
 from git.exc import InvalidGitRepositoryError
-import tempfile
 import yaml
 
 
@@ -24,8 +24,10 @@ class SpecConstants:
     TYPES = "types"
     REQUIRED = "required"
     CONNECTIONS = "connection"
+    CONNECTION_VERSION = "connection_version"
     TRIGGERS = "triggers"
     TASKS = "tasks"
+    VERSION = "version"
 
 
 class VersionBumpValidator(KomandPluginValidator):
@@ -35,6 +37,8 @@ class VersionBumpValidator(KomandPluginValidator):
         self.MAJOR_INSTRUCTIONS_STRING = ""
         self.MINOR_INSTRUCTIONS_STRING = ""
         self.name = "Version Increment Validator"
+        self.local_version = None
+        self.remote_version = None
 
     @staticmethod
     def get_remote_spec(spec):
@@ -253,6 +257,29 @@ class VersionBumpValidator(KomandPluginValidator):
                 raise ValidationException(f"Connection newly added to {RepoConstants.PLUGIN_SPEC}. This requires a"
                                           f" major version increment.{self.MAJOR_INSTRUCTIONS_STRING}")
 
+    def validate_connection_version(self, local_spec, remote_spec=None):
+        # Check if a connection version needs to be specified
+        if local_spec.get(SpecConstants.CONNECTIONS):
+            err_info = f"Based on plugin version this should be '{self.local_version[0]}'."
+            local_connection_version = local_spec.get(SpecConstants.CONNECTION_VERSION)
+            if not local_connection_version:  # releasing and missing connection version
+                raise ValidationException(f"{NO_LOCAL_CON_VERSION} {err_info}")
+            elif remote_spec:
+                try:
+                    self.validate_connections(local_spec, remote_spec)  # Check if connection details have changed
+                except ValidationException:
+                    # Validation noticed a difference between remote and local; now check we bumped the version
+                    old_connection_version = remote_spec.get(SpecConstants.CONNECTION_VERSION)
+                    if old_connection_version == local_connection_version:
+                        raise ValidationException(f"{NO_CON_VERSION_CHANGE} {err_info}")
+                    elif local_connection_version != (old_connection_version+1):
+                        raise ValidationException(f"{INCORRECT_CON_VERSION_CHANGE} {err_info}")
+                    return  # validation happy that connection schema and version bumped
+
+                # no changes the connection version should not have changed
+                if int(local_connection_version) != int(remote_spec.get(SpecConstants.CONNECTION_VERSION)):
+                    raise ValidationException(f"{INVALID_CON_VERSION_CHANGE}")
+
     def validate_inner_fields(self, remote, local):
         self.validate_no_sections_removed(remote, local)
         if SpecConstants.INPUT in remote and SpecConstants.INPUT in local:
@@ -265,51 +292,29 @@ class VersionBumpValidator(KomandPluginValidator):
         self.validate_no_titles_changed(remote, local)
         self.validate_no_inner_type_changes(remote, local)
 
-    def check_major_version_increment_needed(self, remote: dict, local: dict):
-        # input: complete spec dictionary
+    def check_major_version_increment_needed(self):
         # Checks to see if version is valid sem-ver, and if we already bumped major version
-        local_version = local["version"].split('.')
-        remote_version = remote["version"].split('.')
-        if len(local_version) == 3 and len(remote_version) == 3:
-            local_version = VersionBumpValidator.modify_version_array(local_version)
-            remote_version = VersionBumpValidator.modify_version_array(remote_version)
-            if int(local_version[0]) > int(remote_version[0]):
-                if int(local_version[1]) > 0 or int(local_version[2]) > 0:
-                    raise ValidationException("Major version increment should set minor and patch versions to 0.")
-                return False
-            else:
-                self.MAJOR_INSTRUCTIONS_STRING = f" Please change the plugin version to " \
-                                                                 f"{int(remote_version[0])+1}.0.0"
-                return True
+        if int(self.local_version[0]) > int(self.remote_version[0]):
+            if int(self.local_version[1]) > 0 or int(self.local_version[2]) > 0:
+                raise ValidationException("Major version increment should set minor and patch versions to 0.")
+            return False
         else:
-            raise ValidationException("Version does not match required semver format. "
-                                      "Version should be in form X.Y.Z with X, Y, and Z "
-                                      "being numbers. No special characters or spaces allowed. "
-                                      "Versions start at 1.0.0, see https://semver.org/ for more information.")
+            self.MAJOR_INSTRUCTIONS_STRING = f" Please change the plugin version to " \
+                                             f"{int(self.remote_version[0])+1}.0.0"
+            return True
 
-    def check_minor_version_increment_needed(self, remote: dict, local: dict):
-        # input: complete spec dictionary
+    def check_minor_version_increment_needed(self):
         # Checks to see if version is valid sem-ver, and if we already bumped minor version
-        local_version = local["version"].split('.')
-        remote_version = remote["version"].split('.')
-        if len(local_version) == 3 and len(remote_version) == 3:
-            local_version = VersionBumpValidator.modify_version_array(local_version)
-            remote_version = VersionBumpValidator.modify_version_array(remote_version)
-            if int(local_version[1]) > int(remote_version[1]):
-                if int(local_version[2]) > 0:
-                    raise ValidationException("Minor version increment should set patch version to 0 "
-                                              "The resulting format should be X.Y.0")
-                return False
-            else:
-                self.MINOR_INSTRUCTIONS_STRING = f" Please change the plugin version to " \
-                                                                 f"{int(remote_version[0])}." \
-                                                                 f"{int(remote_version[1]) + 1}.0"
-                return True
+        if int(self.local_version[1]) > int(self.remote_version[1]):
+            if int(self.local_version[2]) > 0:
+                raise ValidationException("Minor version increment should set patch version to 0 "
+                                          "The resulting format should be X.Y.0")
+            return False
         else:
-            raise ValidationException("Version does not match required semver format. "
-                                      "Version should be in form X.Y.Z with X, Y, and Z "
-                                      "being numbers. No special characters or spaces allowed. "
-                                      "Versions start at 1.0.0, see https://semver.org/ for more information.")
+            self.MINOR_INSTRUCTIONS_STRING = f" Please change the plugin version to " \
+                                             f"{int(self.remote_version[0])}." \
+                                             f"{int(self.remote_version[1]) + 1}.0"
+            return True
 
     @staticmethod
     def modify_version_array(version_arr: [str]):
@@ -355,16 +360,37 @@ class VersionBumpValidator(KomandPluginValidator):
                     raise ValidationException(f"New {input_output} added without incrementing minor version."
                                               f"{self.MINOR_INSTRUCTIONS_STRING}")
 
+    @staticmethod
+    def get_versions(local_spec, remote_spec):
+        local_version = local_spec[SpecConstants.VERSION].split('.')
+        remote_version = remote_spec[SpecConstants.VERSION].split('.') if remote_spec else ['0', '0', '0']
+        if len(local_version) == 3 and len(remote_version) == 3:
+            local_version = VersionBumpValidator.modify_version_array(local_version)
+            remote_version = VersionBumpValidator.modify_version_array(remote_version)
+        else:
+            raise ValidationException("Version does not match required semver format. "
+                                      "Version should be in form X.Y.Z with X, Y, and Z "
+                                      "being numbers. No special characters or spaces allowed. "
+                                      "Versions start at 1.0.0, see https://semver.org/ for more information.")
+
+        return local_version, remote_version
+
     def validate(self, spec):
         remote_spec = VersionBumpValidator.get_remote_spec(spec)
+        local_spec = spec.spec_dictionary()
+
+        self.local_version, self.remote_version = self.get_versions(local_spec, remote_spec)
+
         # case: new plugin with no remote spec
         if remote_spec is None:
+            # Check if a connection version should be added
+            self.validate_connection_version(local_spec)
             return
-        local_spec = spec.spec_dictionary()
         # perform the different sections of validation
         # Check if we already did a major version bump- if so, no need to do all this checking
-        if not self.check_major_version_increment_needed(remote_spec, local_spec):
-            # We already bumped the major version- skip the rest of the validation
+        if not self.check_major_version_increment_needed():
+            # We already bumped the major version - check if connection version bump is needed
+            self.validate_connection_version(local_spec, remote_spec)
             return
         else:
             self.validate_actions(remote_spec, local_spec)
@@ -373,7 +399,7 @@ class VersionBumpValidator(KomandPluginValidator):
             self.validate_no_types_changed(remote_spec, local_spec)
 
         # minor version validation (NOTE: It is important that minor comes AFTER major version due to assumptions made)
-        if not self.check_minor_version_increment_needed(remote_spec, local_spec):
+        if not self.check_minor_version_increment_needed():
             # already validated that no major bump was needed and we bumped minor version- skip further validation
             return
         else:

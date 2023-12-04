@@ -1,4 +1,6 @@
 import unittest
+from icon_validator.exceptions import NO_LOCAL_CON_VERSION, NO_CON_VERSION_CHANGE, \
+    INVALID_CON_VERSION_CHANGE, INCORRECT_CON_VERSION_CHANGE
 from icon_validator.validate import validate
 from icon_validator.exceptions import ValidationException
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
@@ -25,7 +27,7 @@ from icon_validator.rules.plugin_validators.help_input_output_validator import c
 from icon_validator.rules.plugin_validators.name_validator import NameValidator
 
 import requests
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 import os
 from parameterized import parameterized
 
@@ -678,6 +680,29 @@ class TestPluginValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
         self.assertEqual(result, 0)
 
+    @parameterized.expand([
+        # ('test_name', new_yaml, exception, mock_local_spec)
+        ('initial_no_connection', "plugin.spec.good.new.connection.input.optional.yaml", NO_LOCAL_CON_VERSION, True),
+        ('changed_con_schema_no_ver_bump', "plugin.spec.bad.new.connection.yaml", NO_CON_VERSION_CHANGE, False),
+        ('changed_con_schema_with_ver_bump', "plugin.spec.good.new.connection.yaml", None, False),
+        ('invalid_con_ver_bump', "plugin.spec.bad.connection.change.yaml", INVALID_CON_VERSION_CHANGE, False),
+        ('incorrect_con_ver_bump', "plugin.spec.bad.new.connection.version.yaml", INCORRECT_CON_VERSION_CHANGE, False)
+    ])
+    @patch('builtins.print')
+    def test_plugin_connection_version(self, _test_name, local_yaml, exp_exception, mock_spec, mock_print):
+        directory_to_test = "plugin_examples/plugin_major_version_bump_all"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version(directory_to_test)
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec if not mock_spec else None)
+
+        result = validate(directory_to_test, local_yaml, False, True, [VersionBumpValidator()])
+        exit_code = 0
+        if exp_exception:
+            exit_code = 1
+            for mocked_print in mock_print.call_args_list:
+                if f'Validator "{VersionBumpValidator().name}" failed!' in mocked_print[0][0]:
+                    self.assertIn(exp_exception, mocked_print[0][0])
+        self.assertEqual(result, exit_code)
+
     def test_supported_version_validator(self):
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/supported_version_validator"
@@ -712,7 +737,7 @@ class TestPluginValidate(unittest.TestCase):
         ('uppercase_name.spec', 'uppercase_name.spec.yaml'),
         ('whitespace_name', 'whitespace_name.spec.yaml')
     ])
-    def test_bad_name_validator(self, test_name: str, test_plugin_spec: str):
+    def test_bad_name_validator(self, _test_name: str, test_plugin_spec: str):
         directory_to_test = self.NAME_TESTS_DIRECTORY
         file_to_test = test_plugin_spec
         result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
