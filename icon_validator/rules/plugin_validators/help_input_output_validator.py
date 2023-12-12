@@ -182,7 +182,12 @@ class HelpInputOutputValidator(KomandPluginValidator):
             regex, HelpInputOutputValidator.raw_help, re.DOTALL
         )
         regex = r"#### " + action_title + "\n.*?#+ Output\n\n.*?\n\n"
-        action_help_section = re.findall(regex, action_help_section_temp[0], re.DOTALL)
+
+        try:
+
+            action_help_section = re.findall(regex, action_help_section_temp[0], re.DOTALL)
+        except IndexError:
+            raise ValidationException("Incorrect formatting in the action/trigger/task headings.")
 
         if (
             "This " + process_type[:-1] + " does not contain any outputs."
