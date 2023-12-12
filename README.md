@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.10 - `HelpInputOutputValidator` - Improved error messaging around invalid action/trigger/task headings
 * 2.47.9 - `DockerfileParentValidator` | `CloudReadyValidator` - update to support cloud plugins and SDK image with specified `--platform` flag | `VersionBumpValidator` - add validation for connection versions.
 * 2.47.8 - `DockerfileParentValidator` | `RuntimeValidator` - update supported SDK images | Updated `GitPython` to version 3.1.37
 * 2.47.7 - `ConfidentialValidator` - Changed email violation to a warning
