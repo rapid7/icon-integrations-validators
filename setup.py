@@ -19,7 +19,7 @@ setup(
         "jsonschema==2.3.0",
         "validators==0.22.0",
         "filetype==1.0.5",
-        "insightconnect-integrations-plugin-spec-tooling==1.3.1",
+        "insightconnect-integrations-plugin-spec-tooling==1.3.2",
         "requests==2.31.0",
         "urlextract==0.14.0",
         "typing==3.7.4.1",
