@@ -2,7 +2,7 @@ import git
 
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException, NO_LOCAL_CON_VERSION, \
-    NO_CON_VERSION_CHANGE, INVALID_CON_VERSION_CHANGE, INCORRECT_CON_VERSION_CHANGE
+    NO_CON_VERSION_CHANGE, INVALID_CON_VERSION_CHANGE, INCORRECT_CON_VERSION_CHANGE, FIRST_TIME_CONNECTION_ISSUE
 from git import Repo
 from git.exc import InvalidGitRepositoryError
 import yaml
@@ -265,20 +265,23 @@ class VersionBumpValidator(KomandPluginValidator):
             if not local_connection_version:  # releasing and missing connection version
                 raise ValidationException(f"{NO_LOCAL_CON_VERSION} {err_info}")
             elif remote_spec:
-                try:
-                    self.validate_connections(local_spec, remote_spec)  # Check if connection details have changed
-                except ValidationException:
-                    # Validation noticed a difference between remote and local; now check we bumped the version
-                    old_connection_version = remote_spec.get(SpecConstants.CONNECTION_VERSION)
-                    if old_connection_version == local_connection_version:
-                        raise ValidationException(f"{NO_CON_VERSION_CHANGE} {err_info}")
-                    elif local_connection_version != (old_connection_version+1):
-                        raise ValidationException(f"{INCORRECT_CON_VERSION_CHANGE} {err_info}")
-                    return  # validation happy that connection schema and version bumped
-
-                # no changes the connection version should not have changed
-                if int(local_connection_version) != int(remote_spec.get(SpecConstants.CONNECTION_VERSION)):
-                    raise ValidationException(f"{INVALID_CON_VERSION_CHANGE}")
+                old_connection_version = remote_spec.get(SpecConstants.CONNECTION_VERSION)
+                if old_connection_version:
+                    try:
+                        self.validate_connections(remote_spec, local_spec)  # Check if connection details have changed
+                    except ValidationException:
+                        # Validation noticed a difference between remote and local; now check we bumped the version
+                        if old_connection_version == local_connection_version:
+                            raise ValidationException(f"{NO_CON_VERSION_CHANGE} {err_info}")
+                        elif local_connection_version != (old_connection_version + 1):
+                            raise ValidationException(f"{INCORRECT_CON_VERSION_CHANGE} {err_info}")
+                        return  # validation happy that connection schema and version bumped
+                    # no changes the connection version should not have changed
+                    if int(local_connection_version) != int(remote_spec.get(SpecConstants.CONNECTION_VERSION)):
+                        raise ValidationException(f"{INVALID_CON_VERSION_CHANGE}")
+                elif int(local_connection_version) != int(self.local_version[0]):
+                    # No version to compare against we should make sure one that is supplied matches our plugin version
+                    raise ValidationException(f"{FIRST_TIME_CONNECTION_ISSUE} {err_info}")
 
     def validate_inner_fields(self, remote, local):
         self.validate_no_sections_removed(remote, local)
@@ -381,16 +384,15 @@ class VersionBumpValidator(KomandPluginValidator):
 
         self.local_version, self.remote_version = self.get_versions(local_spec, remote_spec)
 
+        # we should validate connection versions regardless of the version changes to ensure these remain stable
+        self.validate_connection_version(local_spec, remote_spec)
+
         # case: new plugin with no remote spec
         if remote_spec is None:
-            # Check if a connection version should be added
-            self.validate_connection_version(local_spec)
             return
         # perform the different sections of validation
         # Check if we already did a major version bump- if so, no need to do all this checking
         if not self.check_major_version_increment_needed():
-            # We already bumped the major version - check if connection version bump is needed
-            self.validate_connection_version(local_spec, remote_spec)
             return
         else:
             self.validate_actions(remote_spec, local_spec)

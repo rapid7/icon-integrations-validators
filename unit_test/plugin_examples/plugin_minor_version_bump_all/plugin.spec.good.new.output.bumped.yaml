@@ -5,6 +5,7 @@ name: microsoft_office365_email
 title: Microsoft Office 365 Email
 description: The Microsoft Office 365 email plugin enables phishing analysis and email management. The plugin includes the ability to manage and remediate suspicious email
 version: 5.1.0
+connection_version: 5
 vendor: rapid7
 support: rapid7
 status: []
