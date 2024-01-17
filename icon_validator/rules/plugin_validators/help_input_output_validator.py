@@ -256,6 +256,13 @@ class HelpInputOutputValidator(KomandPluginValidator):
             else:
                 if isinstance(example, list):
                     example = f"{example}".replace("'", '"')
+
+                if isinstance(default_, list):
+                    default_ = f"{default_}".replace("'", '"')
+
+                if isinstance(enum, list):
+                    enum = f"{enum}".replace("'", '"')
+
                 action_input.append(
                     f"|{name_}|{type_}|{default_}|{required}|{description}|{enum}|{example}|"
                 )
