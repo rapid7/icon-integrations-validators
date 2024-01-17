@@ -1,6 +1,6 @@
 import unittest
 from icon_validator.exceptions import NO_LOCAL_CON_VERSION, NO_CON_VERSION_CHANGE, \
-    INVALID_CON_VERSION_CHANGE, INCORRECT_CON_VERSION_CHANGE, FIRST_TIME_CONNECTION_ISSUE
+    INVALID_CON_VERSION_CHANGE, INCORRECT_CON_VERSION_CHANGE, FIRST_TIME_CON_VERSION_ISSUE
 from icon_validator.validate import validate
 from icon_validator.exceptions import ValidationException
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
@@ -688,7 +688,7 @@ class TestPluginValidate(unittest.TestCase):
         ('invalid_con_ver_bump', "plugin.spec.bad.connection.change.yaml", INVALID_CON_VERSION_CHANGE, True),
         ('incorrect_con_ver_bump', "plugin.spec.bad.new.connection.version.yaml", INCORRECT_CON_VERSION_CHANGE, True),
         ('initial_version_connection', "plugin.spec.good.new.connection.yaml", None, True),
-        ('bad_initial_version_con', "plugin.spec.bad.new.connection.version.yaml", FIRST_TIME_CONNECTION_ISSUE, True)
+        ('bad_initial_version_con', "plugin.spec.bad.new.connection.version.yaml", FIRST_TIME_CON_VERSION_ISSUE, True)
     ])
     @patch('builtins.print')
     def test_plugin_connection_version(self, test_name, local_yaml, exp_exception, mock_spec, mock_print):

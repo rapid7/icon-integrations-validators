@@ -2,7 +2,7 @@ import git
 
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException, NO_LOCAL_CON_VERSION, \
-    NO_CON_VERSION_CHANGE, INVALID_CON_VERSION_CHANGE, INCORRECT_CON_VERSION_CHANGE, FIRST_TIME_CONNECTION_ISSUE
+    NO_CON_VERSION_CHANGE, INVALID_CON_VERSION_CHANGE, INCORRECT_CON_VERSION_CHANGE, FIRST_TIME_CON_VERSION_ISSUE
 from git import Repo
 from git.exc import InvalidGitRepositoryError
 import yaml
@@ -281,7 +281,7 @@ class VersionBumpValidator(KomandPluginValidator):
                         raise ValidationException(f"{INVALID_CON_VERSION_CHANGE}")
                 elif int(local_connection_version) != int(self.local_version[0]):
                     # No version to compare against we should make sure one that is supplied matches our plugin version
-                    raise ValidationException(f"{FIRST_TIME_CONNECTION_ISSUE} {err_info}")
+                    raise ValidationException(f"{FIRST_TIME_CON_VERSION_ISSUE} {err_info}")
 
     def validate_inner_fields(self, remote, local):
         self.validate_no_sections_removed(remote, local)
