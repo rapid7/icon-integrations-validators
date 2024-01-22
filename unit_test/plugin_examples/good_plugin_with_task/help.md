@@ -66,7 +66,7 @@ This action is used to decode Base64 to data.
 |Name|Type|Default|Required|Description|Enum|Example|
 |----|----|-------|--------|-----------|----|-------|
 |base64|bytes|None|True|Data to decode|None|==Md|
-|errors|string|nothing|False|How errors should be handled when decoding Base64|['replace', 'ignore', 'nothing']|replace|
+|errors|string|nothing|False|How errors should be handled when decoding Base64|["replace", "ignore", "nothing"]|replace|
 
 Example input:
 
@@ -112,7 +112,7 @@ Supported schedule types for this task include:
 |Name|Type|Default|Required|Description|Enum|Example|
 |----|----|-------|--------|-----------|----|-------|
 |base64|bytes|None|True|Data to decode|None|1234|
-|errors|string|nothing|False|How errors should be handled when decoding Base64|['replace', 'ignore', 'nothing']|replace|
+|errors|string|nothing|False|How errors should be handled when decoding Base64|["replace", "ignore", "nothing"]|replace|
 
 Example input:
 

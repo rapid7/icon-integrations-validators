@@ -44,7 +44,7 @@ Example input:
 
 #### Create Ticket
 
-This action is used to create a FreshDesk ticket. At least one of those parameters must be provided - 'requesterId', 'email', 'phone', 'twitterId', 'uniqueExternalId'.
+This action is used to create a FreshDesk ticket. At least one of those parameters must be provided - "requesterId", "email", "phone", "twitterId", "uniqueExternalId".
 
 ##### Input
 
@@ -197,7 +197,7 @@ This action is used to get ticket details.
 
 |Name|Type|Default|Required|Description|Enum|Example|
 |----|----|-------|--------|-----------|----|-------|
-|include|string|None|False|Include additional ticket informations|['conversations', 'requester', 'company', 'stats', 'None']|company|
+|include|string|None|False|Include additional ticket informations|["conversations", "requester", "company", "stats", "None"]|company|
 |ticketId|integer|None|True|ID of the Ticket|None|178|
 
 Example input:
@@ -287,9 +287,9 @@ This action is used to get tickets list. In `filterBy` input you can use only on
 |Name|Type|Default|Required|Description|Enum|Example|
 |----|----|-------|--------|-----------|----|-------|
 |filterBy|ticketsFilter|None|False|Filter tickets by a specific fields|None|{"requesterId": 54332121123}|
-|include|string|None|False|Include additional ticket informations|['requester', 'company', 'stats', 'None']|company|
-|orderBy|string|None|False|Order tickets by specific field|['created_at', 'due_by', 'updated_at', 'status']|status|
-|orderType|string|None|False|Type of the order|['asc', 'desc']|asc|
+|include|string|None|False|Include additional ticket informations|["requester", "company", "stats", "None"]|company|
+|orderBy|string|None|False|Order tickets by specific field|["created_at", "due_by", "updated_at", "status"]|status|
+|orderType|string|None|False|Type of the order|["asc", "desc"]|asc|
 |page|integer|None|False|Page number|None|3|
 |perPage|integer|None|False|Results per page. Less or equal to 100|None|12|
 |predefinedFilter|string|None|False|The various filters available are new_and_my_open, watching, spam, deleted|None|new_and_my_open|
