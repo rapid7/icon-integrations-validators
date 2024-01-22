@@ -1,6 +1,6 @@
 import unittest
 from icon_validator.exceptions import NO_LOCAL_CON_VERSION, NO_CON_VERSION_CHANGE, \
-    INVALID_CON_VERSION_CHANGE, INCORRECT_CON_VERSION_CHANGE
+    INVALID_CON_VERSION_CHANGE, INCORRECT_CON_VERSION_CHANGE, FIRST_TIME_CON_VERSION_ISSUE
 from icon_validator.validate import validate
 from icon_validator.exceptions import ValidationException
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
@@ -682,17 +682,36 @@ class TestPluginValidate(unittest.TestCase):
 
     @parameterized.expand([
         # ('test_name', new_yaml, exception, mock_local_spec)
-        ('initial_no_connection', "plugin.spec.good.new.connection.input.optional.yaml", NO_LOCAL_CON_VERSION, True),
-        ('changed_con_schema_no_ver_bump', "plugin.spec.bad.new.connection.yaml", NO_CON_VERSION_CHANGE, False),
-        ('changed_con_schema_with_ver_bump', "plugin.spec.good.new.connection.yaml", None, False),
-        ('invalid_con_ver_bump', "plugin.spec.bad.connection.change.yaml", INVALID_CON_VERSION_CHANGE, False),
-        ('incorrect_con_ver_bump', "plugin.spec.bad.new.connection.version.yaml", INCORRECT_CON_VERSION_CHANGE, False)
+        ('initial_no_connection', "plugin.spec.good.new.nonrequired.input.yaml", NO_LOCAL_CON_VERSION, False),
+        ('changed_con_schema_no_ver_bump', "plugin.spec.bad.new.connection.yaml", NO_CON_VERSION_CHANGE, True),
+        ('changed_con_schema_with_ver_bump', "plugin.spec.good.new.connection.yaml", None, True),
+        ('invalid_con_ver_bump', "plugin.spec.bad.connection.change.yaml", INVALID_CON_VERSION_CHANGE, True),
+        ('incorrect_con_ver_bump', "plugin.spec.bad.new.connection.version.yaml", INCORRECT_CON_VERSION_CHANGE, True),
+        ('initial_version_connection', "plugin.spec.good.new.connection.yaml", None, True),
+        ('bad_initial_version_con', "plugin.spec.bad.new.connection.version.yaml", FIRST_TIME_CON_VERSION_ISSUE, True)
     ])
     @patch('builtins.print')
-    def test_plugin_connection_version(self, _test_name, local_yaml, exp_exception, mock_spec, mock_print):
+    def test_plugin_connection_version(self, test_name, local_yaml, exp_exception, mock_spec, mock_print):
+        """
+        Tests and explanation of passing vs error reasoning. If mocking the remote_spec our util file looks in the
+        specified directory for the spec file named: `plugin.spec.remote.yaml`
+        - #1: connection params are present but no version has been specified, we should error.
+        - #2: connection details have changed from previous plugin spec, the version should have been bumped.
+        - #3: happy path that we have updated connection details and bumped the connection version correctly.
+        - #4: connection version has changed when it was not required, we want to error on this.
+        - #5: connection version should match the plugin version major version, error that these do not match.
+        - #6: first time plugin is released with a connection version specified, previously no con version was included.
+        - #7: first time plugin is specifying the connection version and this does not match the plugin major version.
+        """
         directory_to_test = "plugin_examples/plugin_major_version_bump_all"
-        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version(directory_to_test)
-        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec if not mock_spec else None)
+
+        if test_name in ["initial_version_connection", "bad_initial_version_con"]:
+            remote_dir = "plugin_examples/plugin_minor_version_bump_all"  # no remote connection version in this spec
+        else:
+            remote_dir = directory_to_test
+
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version(remote_dir)
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec if mock_spec else None)
 
         result = validate(directory_to_test, local_yaml, False, True, [VersionBumpValidator()])
         exit_code = 0
