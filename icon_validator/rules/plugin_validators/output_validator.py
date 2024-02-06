@@ -26,7 +26,7 @@ class OutputValidator(KomandPluginValidator):
         sys.path.append(spec.directory)
         for path, _, files in os.walk(spec.directory):
             for file in files:
-                if "schema.py" in file and os.path.basename(path) != "connection":
+                if "schema.py" in file and os.path.basename(path) != "connection" and "lib/python" not in path:
                     full_path = os.path.join(path, file)
                     schemas[os.path.basename(path)] = OutputValidator.read_schema(full_path)
         return schemas

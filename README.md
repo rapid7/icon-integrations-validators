@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.14 - `OutputValidator` - Fix issue where `schema.py` files from the venv folder were being validated
 * 2.47.13 - `HelpInputOutputValidator` - Fix validator to change single quotes to double quotes when an input field uses list values so that it does not break
 * 2.47.12 - `VersionBumpValidator` - update validation for connection versions| Updated `GitPython` to version 3.1.41.
 * 2.47.11 - Update PyYaml version to fix unrelated tooling installation bug.
