@@ -25,6 +25,7 @@ from icon_validator.rules.plugin_validators.version_bump_validator import Versio
 from icon_validator.rules.plugin_validators.supported_version_validator import SupportedVersionValidator
 from icon_validator.rules.plugin_validators.help_input_output_validator import convert_to_valid_datetime
 from icon_validator.rules.plugin_validators.name_validator import NameValidator
+from icon_validator.rules.plugin_validators.output_validator import OutputValidator
 
 import requests
 from unittest.mock import MagicMock, patch
@@ -35,6 +36,7 @@ from parameterized import parameterized
 class TestPluginValidate(unittest.TestCase):
 
     NAME_TESTS_DIRECTORY = "plugin_examples/name_tests"
+    GOOD_PLUGIN_DIRECTORY = "plugin_examples/good_plugin"
 
     @parameterized.expand([
         ('2023-12-24 12:56:15+05:00', '2023-12-24T12:56:15+05:00'),
@@ -766,6 +768,12 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = self.NAME_TESTS_DIRECTORY
         file_to_test = "good_name.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [NameValidator()])
+        self.assertEqual(result, 0)
+
+    def test_schema_output_validator(self) -> None:
+        directory_to_test = self.GOOD_PLUGIN_DIRECTORY
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [OutputValidator()])
         self.assertEqual(result, 0)
 
     @staticmethod
