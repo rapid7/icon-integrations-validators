@@ -43,7 +43,8 @@ class SpecPropertiesValidator(KomandPluginValidator):
         "enum",
         "order",
         "example",
-        "persist_state"
+        "persist_state",
+        "excludeProduct"
     }
 
     _PROPERTIES_WHITELIST = {
@@ -55,6 +56,7 @@ class SpecPropertiesValidator(KomandPluginValidator):
         "enum",
         "order",
         "example",
+        "excludeProduct"
     }
 
     def __init__(self):

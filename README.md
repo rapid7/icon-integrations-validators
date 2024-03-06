@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.17 - `SpecPropertiesValidator` - Added new excludeProduct field validator
 * 2.47.16 - `HelpInputOutputValidator` - Update error message from `icon-plugin` to `insight-plugin` | `DockerValidator` - Print full error message and change instances of `icon-plugin` to `insight-plugin`
 * 2.47.15 - `TitleValidator` - Change validator to print all issues rather than break on the first 
 * 2.47.14 - `OutputValidator` - Fix issue where `schema.py` files from the venv folder were being validated
