@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+from icon_validator import VERSION
 from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:
@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="insightconnect_integrations_validators",
-    version="2.47.14",
+    version=VERSION,
     description="Validator tooling for InsightConnect integrations",
     long_description=long_description,
     long_description_content_type="text/markdown",
