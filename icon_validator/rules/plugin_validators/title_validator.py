@@ -7,6 +7,7 @@ class TitleValidator(KomandPluginValidator):
     def __init__(self):
         super().__init__()
 
+        # TODO - Make this a list and append everything then iterate through and print with newline
         self.all_offenses: str = ""
 
     def validate_title(self, title: str, plugin_title: bool = False) -> None:
