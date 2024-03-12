@@ -97,9 +97,7 @@ class TitleValidator(KomandPluginValidator):
                 if "state" in value:
                     self.validate_dictionary(value, "state")
                 if "schedule" in value:
-                    self.validate_dictionary(
-                        {"schedule": value}, "schedule"
-                    )
+                    self.validate_dictionary({"schedule": value}, "schedule")
 
     def validate_dictionary(self, spec: dict, section: str) -> None:
         """
