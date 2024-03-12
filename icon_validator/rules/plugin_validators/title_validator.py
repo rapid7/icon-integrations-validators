@@ -21,6 +21,9 @@ class TitleValidator(KomandPluginValidator):
 
         title_validation_list_lowercase = '", "'.join(title_validation_list).lower()
 
+        if title is None:
+            self.all_offenses.append("Empty title found")
+            return
         if not isinstance(title, str):
             self.all_offenses.append(
                 f"Title must be a string, not a number or other value: {title}"
@@ -35,35 +38,35 @@ class TitleValidator(KomandPluginValidator):
             # This plugin title is OK: minFraud
             # This plugin title is OK: ifconfig.co
             self.all_offenses.append(
-                f"Title should not start with a lower case letter: {title}"
+                f"{title} - Title should not start with a lower case letter"
             )
         if title[0].isspace():
             self.all_offenses.append(
-                f"Title should not start with a whitespace character: {title}"
+                f"{title} - Title should not start with a whitespace character"
             )
         if len(title.split()) > 7:
             self.all_offenses.append(
-                f"Title is too long, 6 words or less: contains {str(len(title.split()))}: {title}"
+                f"{title} - Title is too long, 6 words or less: contains {str(len(title.split()))}"
             )
         for word in title.split():
             if not title.startswith(word):
                 if word in title_validation_list:
                     if not title.endswith(word):
                         self.all_offenses.append(
-                            f"English articles and conjunctions should be lowercase when in the middle of the sentence:'{title_validation_list_lowercase}': {title}"
+                            f"{title} - English articles and conjunctions should be lowercase when in the middle of the sentence:'{title_validation_list_lowercase}'"
                         )
 
                 elif "By" == word and not title.endswith("By"):
                     # This is OK: Order By
                     # This is NOT OK: Search By String
                     self.all_offenses.append(
-                        f"Title contains a capitalized 'By' when it should not: {title}"
+                        f"{title} - Title contains a capitalized 'By' when it should not"
                     )
                 elif "Of" == word and not title.endswith("Of"):
                     # This is OK: Member Of
                     # This is NOT OK: Type Of String
                     self.all_offenses.append(
-                        f"Title contains a capitalized 'Of' when it should not: {title}"
+                        f"{title} - Title contains a capitalized 'Of' when it should not"
                     )
                 elif (
                     not word[0].isupper()
@@ -72,7 +75,7 @@ class TitleValidator(KomandPluginValidator):
                     if not word.lower() == "by" or word.lower() == "of":
                         if word.isalpha():
                             self.all_offenses.append(
-                                f"Title contains a lowercase '{word}' when it should not: {title}"
+                                f"{title} - Title contains a lowercase '{word}' when it should not"
                             )
 
     def validate_actions(self, spec: dict, spec_section: str) -> None:
@@ -150,6 +153,5 @@ class TitleValidator(KomandPluginValidator):
         self.validate_actions(spec.spec_dictionary(), "tasks")
         self.validate_actions(spec.spec_dictionary(), "connection")
         if self.all_offenses:
-            for offence in self.all_offenses:
-                print(f"{offence}\n")
-            raise ValidationException("The following titles have failed validation")
+            joined_errors = "\n".join(self.all_offenses)
+            raise ValidationException(joined_errors)
