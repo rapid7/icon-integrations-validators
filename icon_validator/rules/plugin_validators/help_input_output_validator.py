@@ -76,7 +76,6 @@ def datetime_formatter(table_string: str) -> str:
 
     # Loop through each entry in the newly created list from split
     for entry in split_action_input:
-
         # Use detect function to detect which entry contains the date
         if detect_valid_datetime(entry):
             # When found, use convert function to convert the list element to the format we need
@@ -184,10 +183,13 @@ class HelpInputOutputValidator(KomandPluginValidator):
         regex = r"#### " + action_title + "\n.*?#+ Output\n\n.*?\n\n"
 
         try:
-
-            action_help_section = re.findall(regex, action_help_section_temp[0], re.DOTALL)
+            action_help_section = re.findall(
+                regex, action_help_section_temp[0], re.DOTALL
+            )
         except IndexError:
-            raise ValidationException("Incorrect formatting in the action/trigger/task headings.")
+            raise ValidationException(
+                "Incorrect formatting in the action/trigger/task headings."
+            )
 
         if (
             "This " + process_type[:-1] + " does not contain any outputs."
@@ -318,7 +320,8 @@ class HelpInputOutputValidator(KomandPluginValidator):
                         HelpInputOutputValidator.violations = []
                         HelpInputOutputValidator.violated = 1
 
-                # Actions with no output in spec file will skip output validation. Also, skip output validation for actions not found in help.md
+                # Actions with no output in spec file will skip output validation.
+                # Also, skip output validation for actions not found in help.md
                 if output_section and not HelpInputOutputValidator.action_missing:
                     action_output_fields = HelpInputOutputValidator.get_spec_output(
                         output_section
@@ -336,5 +339,6 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
         if HelpInputOutputValidator.violated:
             raise ValidationException(
-                "Help.md is not in sync with plugin.spec.yaml. Please regenerate help.md by running 'icon-plugin generate python --regenerate' to rectify violations."
+                "Help.md is not in sync with plugin.spec.yaml. Please regenerate help.md by running 'insight-plugin "
+                "refresh' to rectify violations. "
             )
