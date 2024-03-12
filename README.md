@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.16 - `HelpInputOutputValidator` - Update error message from `icon-plugin` to `insight-plugin`
 * 2.47.15 - `TitleValidator` - Change validator to print all issues rather than break on the first
 * 2.47.14 - `OutputValidator` - Fix issue where `schema.py` files from the venv folder were being validated
 * 2.47.13 - `HelpInputOutputValidator` - Fix validator to change single quotes to double quotes when an input field uses list values so that it does not break
