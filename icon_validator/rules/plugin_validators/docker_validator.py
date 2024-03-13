@@ -23,13 +23,14 @@ class DockerValidator(KomandPluginValidator):
             else:
                 try:
                     subprocess.check_call(build_image, stdout=fd, stderr=fd)
-                except subprocess.CalledProcessError as e:
+                except subprocess.CalledProcessError as error:
                     raise ValidationException("The plugin is either broken or the image might not be built."
-                                              "Please try 'icon-plugin build image' to rebuild the image."
-                                              "'icon-plugin run -c bash' will open a bash shell on the build container.") from e
+                                              "Please try 'make image' to rebuild the image."
+                                              "'insight-plugin shell' will open a bash shell on the build container."
+                                              f"Error:\n{error}")
 
                 try:
                     subprocess.check_call(run_image, stdout=fd, stderr=fd)
-                except subprocess.CalledProcessError as e:
+                except subprocess.CalledProcessError as error:
                     raise ValidationException("Docker failed at running info command. "
-                                              "Check your plugin code for run-time errors.") from e
+                                              f"Error:\n{error}")
