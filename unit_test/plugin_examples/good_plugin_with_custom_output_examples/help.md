@@ -1,6 +1,6 @@
 # Description
 
-[Base64](https://en.wikipedia.org/wiki/Base64) is a common binary-to-text encoding scheme used in various protocols and software such as MIME to carry data stored in binary formats across channels that only reliably support text content. This plugin allows data to be Base64-encoded or decoded using the standard Base64 alphabet.
+Encode and decode data using the base64 alphabet
 
 # Key Features
 
@@ -8,8 +8,8 @@
 * Decode Base64 encoded text to reveal the plaintext
 
 # Requirements
-
-_This plugin does not contain any requirements._
+  
+*This plugin does not contain any requirements.*
 
 # Supported Product Versions
 
@@ -19,46 +19,55 @@ _This plugin does not contain any requirements._
 # Documentation
 
 ## Setup
-
-_This plugin does not contain a connection._
+  
+*This plugin does not contain a connection.*
 
 ## Technical Details
 
 ### Actions
 
+
 #### Encoder1
 
-This action is used to encode data to Base64.
+This action is used to encode data to Base64
 
 ##### Input
 
 |Name|Type|Default|Required|Description|Enum|Example|Placeholder|Tooltip|
-|----|----|-------|--------|-----------|----|-------|-----------|-------|
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 |content|string|None|True|Data to encode|None|This is a string|None|None|
-
+  
 Example input:
 
 ```
+{
+  "content": "This is a string"
+}
 ```
 
 ##### Output
 
 |Name|Type|Required|Description|Example|
-|----|----|--------|-----------|-------|
+| :--- | :--- | :--- | :--- | :--- |
 |data|object|True|Encoded data result|None|
-
+  
 Example output:
 
 ```
+{
+  "data": {}
+}
 ```
-
 ### Triggers
+  
+*This plugin does not contain any triggers.*
+### Tasks
+  
+*This plugin does not contain any tasks.*
 
-_This plugin does not contain any triggers._
-
-### Custom Output Types
-
-_This plugin does not contain any custom output types._
+### Custom Types
+  
+*This plugin does not contain any custom output types.*
 
 ## Troubleshooting
 
