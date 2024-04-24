@@ -32,10 +32,10 @@ This action is used to decode Base64 to data.
 
 ##### Input
 
-|Name|Type|Default|Required|Description||Enum|Example|
-|----|----|-------|--------|-----------|-----|-------|
-|base64|bytes|None|True|Data to decode|None|base64|
-|errors|string|nothing|False|How errors should be handled when decoding Base64|["replace", "ignore", "nothing"]|replace|
+|Name|Type|Default|Required|Description||Enum|Example|Placeholder|Tooltip|
+|----|----|-------|--------|-----------|-----|-------|-----------|-------|
+|base64|bytes|None|True|Data to decode|None|base64|None|None|
+|errors|string|nothing|False|How errors should be handled when decoding Base64|["replace", "ignore", "nothing"]|replace|None|None|
 
 Example input:
 
@@ -66,9 +66,9 @@ Decode Base64 to data
 
 ##### Input
 
-|Name|Type|Default|Required|Description||Enum|Example|
-|----|----|-------|--------|-----------|-----|-------|
-|base64_array|[]string|None|True|Data to decode|None|["MQ==", "Mg=="]|
+|Name|Type|Default|Required|Description||Enum|Example|Placeholder|Tooltip|
+|----|----|-------|--------|-----------|-----|-------|-----------|-------|
+|base64_array|[]string|None|True|Data to decode|None|["MQ==", "Mg=="]|None|None|
 
 Example input:
 
@@ -98,9 +98,9 @@ This action is used to encode data to Base64.
 
 ##### Input
 
-|Name|Type|Default|Required|Description|Enum|Example|
-|----|----|-------|--------|-----------|----|-------|
-|content|string|None|True|Data to encode|None|This is a string|
+|Name|Type|Default|Required|Description|Enum|Example|Placeholder|Tooltip|
+|----|----|-------|--------|-----------|----|-------|-----------|-------|
+|content|string|None|True|Data to encode|None|This is a string|None|None|
 
 Example input:
 
