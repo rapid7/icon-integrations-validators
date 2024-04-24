@@ -32,9 +32,9 @@ This action is used to encode data to Base64.
 
 ##### Input
 
-|Name|Type|Default|Required|Description|Enum|Example|
-|----|----|-------|--------|-----------|----|-------|
-|content|string|None|True|Data to encode|None|This is a string|
+|Name|Type|Default|Required|Description|Enum|Example|Placeholder|Tooltip|
+|----|----|-------|--------|-----------|----|-------|-----------|-------|
+|content|string|None|True|Data to encode|None|This is a string|None|None|
 
 Example input:
 
