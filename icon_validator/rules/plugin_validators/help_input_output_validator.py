@@ -244,14 +244,14 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
         for k, v in input_content.items():
             name_ = k
-            type_ = input_content.get(k).get("type")
-            default_ = input_content.get(k).get("default", None)
-            required = input_content.get(k).get("required")
-            description = input_content.get(k).get("description")
-            enum = input_content.get(k).get("enum", None)
-            example = input_content.get(k).get("example", None)
-            placeholder = input_content.get(k).get("placeholder", None)
-            tooltip = input_content.get(k).get("tooltip", None)
+            type_ = input_content.get(k, {}).get("type")
+            default_ = input_content.get(k, {}).get("default", None)
+            required = input_content.get(k, {}).get("required")
+            description = input_content.get(k, {}).get("description")
+            enum = input_content.get(k, {}).get("enum", None)
+            example = input_content.get(k, {}).get("example", None)
+            placeholder = input_content.get(k, {}).get("placeholder", None)
+            tooltip = input_content.get(k, {}).get("tooltip", None)
             if example is None:
                 raise ValidationException(
                     f"plugin.spec is missing input example for {v}"
