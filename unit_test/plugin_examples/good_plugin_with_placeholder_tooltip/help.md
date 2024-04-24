@@ -27,7 +27,7 @@ The connection configuration accepts the following parameters:
 |Name|Type|Default|Required|Description|Enum|Example|Placeholder|Tooltip|
 |----|----|-------|--------|-----------|----|-------|-----------|-------|
 |apiKey|credential_secret_key|None|True|API key|None|eXaMpl3APIK3Y|None|None|
-|domainName|string|None|True|Name of your FreshDesk domain|None|rapid7|None|None|
+|domainName|string|None|True|Name of your FreshDesk domain|None|rapid7|placeholder|tooltip|
 
 Example input:
 
@@ -44,7 +44,7 @@ Example input:
 
 #### Create Ticket
 
-This action is used to create a FreshDesk ticket. At least one of those parameters must be provided - "requesterId", "email", "phone", "twitterId", "uniqueExternalId".
+This action is used to create a FreshDesk ticket. At least one of those parameters must be provided - 'requesterId', 'email', 'phone', 'twitterId', 'uniqueExternalId'.
 
 ##### Input
 

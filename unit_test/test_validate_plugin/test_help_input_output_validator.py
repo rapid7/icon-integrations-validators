@@ -90,3 +90,16 @@ class TestHelpInputOutputValidator(unittest.TestCase):
         )
 
         self.assertEqual(result, 0, "Result should be success")
+
+    def test_input_output_validator_with_placeholder_tooltip(self):
+        directory_to_test = "plugin_examples/good_plugin_with_placeholder_tooltip"
+
+        result = validate(
+            directory_to_test,
+            self.file_to_test,
+            False,
+            True,
+            [HelpInputOutputValidator()],
+        )
+
+        self.assertEqual(result, 0, "Result should be success")

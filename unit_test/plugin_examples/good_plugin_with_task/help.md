@@ -31,9 +31,9 @@ This action is used to encode data to Base64.
 
 ##### Input
 
-|Name|Type|Default|Required|Description|Enum|Example|
-|----|----|-------|--------|-----------|----|-------|
-|content|string|None|True|Data to encode|None|This is a string|
+|Name|Type|Default|Required|Description|Enum|Example|Placeholder|Tooltip|
+|----|----|-------|--------|-----------|----|-------|-----------|-------|
+|content|string|None|True|Data to encode|None|This is a string|None|None|
 
 Example input:
 
@@ -63,10 +63,10 @@ This action is used to decode Base64 to data.
 
 ##### Input
 
-|Name|Type|Default|Required|Description|Enum|Example|
-|----|----|-------|--------|-----------|----|-------|
-|base64|bytes|None|True|Data to decode|None|==Md|
-|errors|string|nothing|False|How errors should be handled when decoding Base64|["replace", "ignore", "nothing"]|replace|
+|Name|Type|Default|Required|Description|Enum|Example|Placeholder|Tooltip|
+|----|----|-------|--------|-----------|----|-------|-----------|-------|
+|base64|bytes|None|True|Data to decode|None|==Md|None|None|
+|errors|string|nothing|False|How errors should be handled when decoding Base64|["replace", "ignore", "nothing"]|replace|None|None|
 
 Example input:
 
@@ -109,10 +109,10 @@ Supported schedule types for this task include:
 
 ##### Input
 
-|Name|Type|Default|Required|Description|Enum|Example|
-|----|----|-------|--------|-----------|----|-------|
-|base64|bytes|None|True|Data to decode|None|1234|
-|errors|string|nothing|False|How errors should be handled when decoding Base64|["replace", "ignore", "nothing"]|replace|
+|Name|Type|Default|Required|Description|Enum|Example|Placeholder|Tooltip|
+|----|----|-------|--------|-----------|----|-------|-----------|-------|
+|base64|bytes|None|True|Data to decode|None|1234|None|None|
+|errors|string|nothing|False|How errors should be handled when decoding Base64|["replace", "ignore", "nothing"]|replace|None|None|
 
 Example input:
 

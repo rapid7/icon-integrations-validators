@@ -82,8 +82,7 @@ def datetime_formatter(table_string: str) -> str:
             new_datetime_value = convert_to_valid_datetime(entry)
 
             # Replace the old value with the new one
-            split_action_input[-2] = new_datetime_value
-
+            split_action_input = [old_entry.replace(entry, new_datetime_value) for old_entry in split_action_input]
             # Rejoin the string with '|' character
             return "|".join(split_action_input)
 
@@ -245,12 +244,14 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
         for k, v in input_content.items():
             name_ = k
-            type_ = input_content.get(k).get("type")
-            default_ = input_content.get(k).get("default", None)
-            required = input_content.get(k).get("required")
-            description = input_content.get(k).get("description")
-            enum = input_content.get(k).get("enum", None)
-            example = input_content.get(k).get("example", None)
+            type_ = input_content.get(k, {}).get("type")
+            default_ = input_content.get(k, {}).get("default", None)
+            required = input_content.get(k, {}).get("required")
+            description = input_content.get(k, {}).get("description")
+            enum = input_content.get(k, {}).get("enum", None)
+            example = input_content.get(k, {}).get("example", None)
+            placeholder = input_content.get(k, {}).get("placeholder", None)
+            tooltip = input_content.get(k, {}).get("tooltip", None)
             if example is None:
                 raise ValidationException(
                     f"plugin.spec is missing input example for {v}"
@@ -266,7 +267,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
                     enum = f"{enum}".replace("'", '"')
 
                 action_input.append(
-                    f"|{name_}|{type_}|{default_}|{required}|{description}|{enum}|{example}|"
+                    f"|{name_}|{type_}|{default_}|{required}|{description}|{enum}|{example}|{placeholder}|{tooltip}|"
                 )
         return action_input
 
@@ -275,10 +276,10 @@ class HelpInputOutputValidator(KomandPluginValidator):
         action_output = []
         for k, v in output_content.items():
             name_ = k
-            type_ = output_content.get(k).get("type")
-            required = output_content.get(k).get("required", False)
-            description = output_content.get(k).get("description", None)
-            example = output_content.get(k).get("example", None)
+            type_ = output_content.get(k, {}).get("type")
+            required = output_content.get(k, {}).get("required", False)
+            description = output_content.get(k, {}).get("description", None)
+            example = output_content.get(k, {}).get("example", None)
             if example is None and ExampleOutputDataType.is_valid(type_):
                 raise ValidationException(
                     f"plugin.spec is missing output example for {v}"
@@ -295,7 +296,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
         HelpInputOutputValidator.raw_help = spec.raw_help()
         raw_spec_yaml = spec.spec_dictionary()
         process_type = ["actions", "triggers", "tasks"]
-
+        HelpInputOutputValidator.violated = 0
         for p_type in process_type:
             actions = raw_spec_yaml.get(p_type, {})
             for key, value in actions.items():
@@ -336,7 +337,6 @@ class HelpInputOutputValidator(KomandPluginValidator):
                         )
                         HelpInputOutputValidator.violations = []
                         HelpInputOutputValidator.violated = 1
-
         if HelpInputOutputValidator.violated:
             raise ValidationException(
                 "Help.md is not in sync with plugin.spec.yaml. Please regenerate help.md by running 'insight-plugin "
