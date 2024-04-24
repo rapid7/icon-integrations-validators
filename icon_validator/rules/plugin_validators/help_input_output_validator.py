@@ -251,6 +251,8 @@ class HelpInputOutputValidator(KomandPluginValidator):
             description = input_content.get(k).get("description")
             enum = input_content.get(k).get("enum", None)
             example = input_content.get(k).get("example", None)
+            placeholder = input_content.get(k).get("placeholder", None)
+            tooltip = input_content.get(k).get("tooltip", None)
             if example is None:
                 raise ValidationException(
                     f"plugin.spec is missing input example for {v}"
@@ -266,7 +268,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
                     enum = f"{enum}".replace("'", '"')
 
                 action_input.append(
-                    f"|{name_}|{type_}|{default_}|{required}|{description}|{enum}|{example}|"
+                    f"|{name_}|{type_}|{default_}|{required}|{description}|{enum}|{example}|{placeholder}|{tooltip}|"
                 )
         return action_input
 

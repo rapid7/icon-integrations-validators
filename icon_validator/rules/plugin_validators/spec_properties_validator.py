@@ -56,7 +56,9 @@ class SpecPropertiesValidator(KomandPluginValidator):
         "enum",
         "order",
         "example",
-        "excludeProduct"
+        "excludeProduct",
+        "placeholder",
+        "tooltip"
     }
 
     def __init__(self):
