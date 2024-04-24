@@ -1,0 +1,116 @@
+plugin_spec_version: v2
+extension: plugin
+products: [insightconnect]
+name: base64
+title: Base64
+description: Encode and decode data using the base64 alphabet
+version: 1.1.2
+vendor: rapid7
+support: community
+status: []
+supported_versions: ['1.0.0', '1.0.1']
+resources:
+  source_url: https://github.com/rapid7/insightconnect-plugins/tree/master/base64
+  license_url: https://github.com/rapid7/insightconnect-plugins/blob/master/LICENSE
+tags:
+- base64
+- encoder
+- decoder
+- utilities
+hub_tags:
+  use_cases: [data_utility]
+  keywords: [base64, encoder, decoder, utilities]
+  features: []
+actions:
+  encode:
+    title: Encoder
+    description: Encode data to Base64
+    input:
+      content:
+        type: string
+        description: Data to encode
+        example: This is a string
+        required: true
+    output:
+      data:
+        title: Encoded Data
+        description: Encoded data result
+        type: bytes
+        required: true
+        example: This is a string
+  decode:
+    title: Decoder
+    description: Decode Base64 to data
+    input:
+      base64:
+        type: bytes
+        description: Data to decode
+        required: true
+        example: "==Md"
+      errors:
+        type: string
+        description: How errors should be handled when decoding Base64
+        default: nothing
+        example: replace
+        enum:
+        - replace
+        - ignore
+        - nothing
+        required: false
+    output:
+      data:
+        title: Decoded Data
+        description: Decoded data result
+        type: string
+        required: true
+        example: "==Md"
+tasks:
+  test_task:
+    title: Test Task
+    description: Decode Base64 to data
+    input:
+      base64:
+        type: bytes
+        description: Data to decode
+        required: true
+        example: 1234
+      errors:
+        type: string
+        description: How errors should be handled when decoding Base64
+        default: nothing
+        example: replace
+        enum:
+        - replace
+        - ignore
+        - nothing
+        required: false
+    output:
+      data:
+        title: Decoded Data
+        description: Decoded data result
+        type: string
+        required: true
+        example: 12345
+    schedule:
+      title: Schedule for Retrieving Events
+      type: string
+      enum:
+        - "cron"
+        - "minutes"
+        - "hours"
+        - "datetime"
+      default: cron
+    state:
+      last_event_time:
+        title: Last Event Time
+        description: The datetime of the last retrieved event
+        type: string
+      last_event_id:
+        title: Last Event ID
+        description: The identifier of the last retrieved event
+        type: integer
+      last_run_time:
+        title: Last Run Time
+        description: The time of the last time events were retrieved
+        type: string
+    

@@ -26,6 +26,7 @@ from icon_validator.rules.plugin_validators.supported_version_validator import S
 from icon_validator.rules.plugin_validators.help_input_output_validator import convert_to_valid_datetime
 from icon_validator.rules.plugin_validators.name_validator import NameValidator
 from icon_validator.rules.plugin_validators.output_validator import OutputValidator
+from icon_validator.rules.plugin_validators.runtime_validator import RuntimeValidator
 
 import requests
 from unittest.mock import MagicMock, patch
@@ -37,6 +38,8 @@ class TestPluginValidate(unittest.TestCase):
 
     NAME_TESTS_DIRECTORY = "plugin_examples/name_tests"
     GOOD_PLUGIN_DIRECTORY = "plugin_examples/good_plugin"
+    GOOD_PLUGIN_WITH_TASK_DIRECTORY = "plugin_examples/good_plugin_with_task"
+    GOOD_PLUGIN_SDK_NOT_LATEST = "plugin_examples/good_plugin_with_task_sdk_not_latest"
 
     @parameterized.expand([
         ('2023-12-24 12:56:15+05:00', '2023-12-24T12:56:15+05:00'),
@@ -775,6 +778,18 @@ class TestPluginValidate(unittest.TestCase):
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [OutputValidator()])
         self.assertEqual(result, 0)
+
+    def test_runtime_version_validator(self) -> None:
+        directory_to_test = self.GOOD_PLUGIN_WITH_TASK_DIRECTORY
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [RuntimeValidator()])
+        self.assertEqual(result, 0)
+
+    def test_runtime_version_validator_failing(self) -> None:
+        directory_to_test = self.GOOD_PLUGIN_SDK_NOT_LATEST
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [RuntimeValidator()])
+        self.assertEqual(result, 1)
 
     @staticmethod
     def replace_requirements(path, text):
