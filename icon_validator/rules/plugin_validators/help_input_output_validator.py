@@ -82,8 +82,7 @@ def datetime_formatter(table_string: str) -> str:
             new_datetime_value = convert_to_valid_datetime(entry)
 
             # Replace the old value with the new one
-            split_action_input[-2] = new_datetime_value
-
+            split_action_input = [old_entry.replace(entry, new_datetime_value) for old_entry in split_action_input]
             # Rejoin the string with '|' character
             return "|".join(split_action_input)
 
@@ -297,7 +296,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
         HelpInputOutputValidator.raw_help = spec.raw_help()
         raw_spec_yaml = spec.spec_dictionary()
         process_type = ["actions", "triggers", "tasks"]
-
+        HelpInputOutputValidator.violated = 0
         for p_type in process_type:
             actions = raw_spec_yaml.get(p_type, {})
             for key, value in actions.items():
@@ -320,9 +319,6 @@ class HelpInputOutputValidator(KomandPluginValidator):
                             f'{YELLOW}Input violations: {p_type[:-1].capitalize()} -> "{action_name}": Missing {HelpInputOutputValidator.violations} in help.md{RESET_ALL}'
                         )
                         HelpInputOutputValidator.violations = []
-                        print("ADDING A VIOLATION DUE TO INPUT")
-                        print(f"ACTION IS {action_name}")
-                        print(f"VIOLATIONS ARE {HelpInputOutputValidator.violations}")
                         HelpInputOutputValidator.violated = 1
 
                 # Actions with no output in spec file will skip output validation.
@@ -339,12 +335,8 @@ class HelpInputOutputValidator(KomandPluginValidator):
                         print(
                             f'{YELLOW}Output violations: {p_type[:-1].capitalize()}-> "{action_name}": Missing {HelpInputOutputValidator.violations} in help.md{RESET_ALL}'
                         )
-                        print("ADDING A VIOLATION DUE TO OUTPUT")
-                        print(f"ACTION IS {action_name}")
-                        print(f"VIOLATIONS ARE {HelpInputOutputValidator.violations}")
                         HelpInputOutputValidator.violations = []
                         HelpInputOutputValidator.violated = 1
-        print(f"HELPINPUTOUTPUTVALIDATOR: {HelpInputOutputValidator.violated}")
         if HelpInputOutputValidator.violated:
             raise ValidationException(
                 "Help.md is not in sync with plugin.spec.yaml. Please regenerate help.md by running 'insight-plugin "
