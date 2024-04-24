@@ -287,7 +287,7 @@ This action is used to get tickets list. In `filterBy` input you can use only on
 |Name|Type|Default|Required|Description|Enum|Example|Placeholder|Tooltip|
 |----|----|-------|--------|-----------|----|-------|-----------|-------|
 |filterBy|ticketsFilter|None|False|Filter tickets by a specific fields|None|{"requesterId": 54332121123}|None|None|
- |include|string|None|False|Include additional ticket informations|["requester", "company", "stats", "None"]|company|None|None|
+|include|string|None|False|Include additional ticket informations|["requester", "company", "stats", "None"]|company|None|None|
 |orderBy|string|None|False|Order tickets by specific field|["created_at", "due_by", "updated_at", "status"]|status|None|None|
 |orderType|string|None|False|Type of the order|["asc", "desc"]|asc|None|None|
 |page|integer|None|False|Page number|None|3|None|None|
