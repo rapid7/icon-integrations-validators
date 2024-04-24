@@ -44,7 +44,7 @@ Example input:
 
 #### Create Ticket
 
-This action is used to create a FreshDesk ticket. At least one of those parameters must be provided - 'requesterId', 'email', 'phone', 'twitterId', 'uniqueExternalId'.
+This action is used to create a FreshDesk ticket. At least one of those parameters must be provided - "requesterId", "email", "phone", "twitterId", "uniqueExternalId".
 
 ##### Input
 
@@ -197,7 +197,7 @@ This action is used to get ticket details.
 
 |Name|Type|Default|Required|Description|Enum|Example|Placeholder|Tooltip|
 |----|----|-------|--------|-----------|----|-------|-----------|-------|
-|include|string|None|False|Include additional ticket informations|['conversations', 'requester', 'company', 'stats', 'None']|company|None|None|
+|include|string|None|False|Include additional ticket informations|["conversations", "requester", "company", "stats", "None"]|company|None|None|
 |ticketId|integer|None|True|ID of the Ticket|None|178|None|None|
 
 Example input:
@@ -287,9 +287,9 @@ This action is used to get tickets list. In `filterBy` input you can use only on
 |Name|Type|Default|Required|Description|Enum|Example|Placeholder|Tooltip|
 |----|----|-------|--------|-----------|----|-------|-----------|-------|
 |filterBy|ticketsFilter|None|False|Filter tickets by a specific fields|None|{"requesterId": 54332121123}|None|None|
-|include|string|None|False|Include additional ticket informations|['requester', 'company', 'stats', 'None']|company|None|None|
-|orderBy|string|None|False|Order tickets by specific field|['created_at', 'due_by', 'updated_at', 'status']|status|None|None|
-|orderType|string|None|False|Type of the order|['asc', 'desc']|asc|None|None|
+ |include|string|None|False|Include additional ticket informations|["requester", "company", "stats", "None"]|company|None|None|
+|orderBy|string|None|False|Order tickets by specific field|["created_at", "due_by", "updated_at", "status"]|status|None|None|
+|orderType|string|None|False|Type of the order|["asc", "desc"]|asc|None|None|
 |page|integer|None|False|Page number|None|3|None|None|
 |perPage|integer|None|False|Results per page. Less or equal to 100|None|12|None|None|
 |predefinedFilter|string|None|False|The various filters available are new_and_my_open, watching, spam, deleted|None|new_and_my_open|None|None|

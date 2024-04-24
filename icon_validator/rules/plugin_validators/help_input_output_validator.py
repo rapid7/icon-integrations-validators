@@ -276,10 +276,10 @@ class HelpInputOutputValidator(KomandPluginValidator):
         action_output = []
         for k, v in output_content.items():
             name_ = k
-            type_ = output_content.get(k).get("type")
-            required = output_content.get(k).get("required", False)
-            description = output_content.get(k).get("description", None)
-            example = output_content.get(k).get("example", None)
+            type_ = output_content.get(k, {}).get("type")
+            required = output_content.get(k, {}).get("required", False)
+            description = output_content.get(k, {}).get("description", None)
+            example = output_content.get(k, {}).get("example", None)
             if example is None and ExampleOutputDataType.is_valid(type_):
                 raise ValidationException(
                     f"plugin.spec is missing output example for {v}"
