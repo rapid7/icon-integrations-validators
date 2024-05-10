@@ -40,6 +40,7 @@ class TestPluginValidate(unittest.TestCase):
     GOOD_PLUGIN_DIRECTORY = "plugin_examples/good_plugin"
     GOOD_PLUGIN_WITH_TASK_DIRECTORY = "plugin_examples/good_plugin_with_task"
     GOOD_PLUGIN_SDK_NOT_LATEST = "plugin_examples/good_plugin_with_task_sdk_not_latest"
+    GOOD_PLUGIN_NO_ACTIONS = "plugin_examples/good_plugin_no_actions"
 
     @parameterized.expand([
         ('2023-12-24 12:56:15+05:00', '2023-12-24T12:56:15+05:00'),
@@ -790,6 +791,14 @@ class TestPluginValidate(unittest.TestCase):
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [RuntimeValidator()])
         self.assertEqual(result, 1)
+
+    def test_version_bump_validator_plugin_no_actions(self)->None:
+        directory_to_test = self.GOOD_PLUGIN_NO_ACTIONS
+        file_to_test = "plugin.spec.yaml"
+        remote_spec = MockRepoSpecResponse.mock_patch_remote_spec_major_version(directory_to_test)
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=remote_spec)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
+        self.assertEqual(result, 0)
 
     @staticmethod
     def replace_requirements(path, text):

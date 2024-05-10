@@ -192,28 +192,29 @@ class VersionBumpValidator(KomandPluginValidator):
 
     def validate_no_action_removed(self, remote: dict, local: dict):
         # input: complete spec dictionary
-        for action in remote[SpecConstants.ACTIONS]:
+        for action in remote.get(SpecConstants.ACTIONS, []):
             if action not in local[SpecConstants.ACTIONS]:
                 raise ValidationException(f"Action {action} has been removed from spec without major version increment."
                                           f"{self.MAJOR_INSTRUCTIONS_STRING}")
 
     def validate_no_trigger_removed(self, remote: dict, local: dict):
         # input: complete spec dictionary
-        for trigger in remote[SpecConstants.TRIGGERS]:
+        for trigger in remote.get(SpecConstants.TRIGGERS, []):
             if trigger not in local[SpecConstants.TRIGGERS]:
                 raise ValidationException(f"Trigger {trigger} has been removed from {RepoConstants.PLUGIN_SPEC} without"
                                           f" a major version increment.{self.MAJOR_INSTRUCTIONS_STRING}")
 
     def validate_actions(self, remote: dict, local: dict):
         # input: complete spec dictionary
-        self.validate_no_action_removed(remote, local)
-        for action_key, remote_action_dict in remote[SpecConstants.ACTIONS].items():
-            local_dict = local[SpecConstants.ACTIONS][action_key]
-            if local_dict.get(SpecConstants.TITLE) != remote_action_dict.get(SpecConstants.TITLE):
-                raise ValidationException(f"Action {action_key} title has changed without a major version increment."
-                                          f"{self.MAJOR_INSTRUCTIONS_STRING}")
+        if SpecConstants.ACTIONS in remote and SpecConstants.ACTIONS in local:
+            self.validate_no_action_removed(remote, local)
+            for action_key, remote_action_dict in remote[SpecConstants.ACTIONS].items():
+                local_dict = local[SpecConstants.ACTIONS][action_key]
+                if local_dict.get(SpecConstants.TITLE) != remote_action_dict.get(SpecConstants.TITLE):
+                    raise ValidationException(f"Action {action_key} title has changed without a major version increment."
+                                              f"{self.MAJOR_INSTRUCTIONS_STRING}")
 
-            self.validate_inner_fields(remote_action_dict, local_dict)
+                self.validate_inner_fields(remote_action_dict, local_dict)
 
     def validate_triggers(self, remote: dict, local: dict):
         # input: complete spec dictionary

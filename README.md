@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.19 - `VersionBumpValidator` - Fixed issue where validator failed if plugin contained no actions or triggers
 * 2.47.18 - `HelpInputOutputValidator` | `SpecPropertiesValidator` - Update to enable `placeholder` and `tooltip` validation | `RuntimeValidator` - Added SDK version validation
 * 2.47.17 - `SpecPropertiesValidator` - Added new excludeProduct field validator
 * 2.47.16 - `HelpInputOutputValidator` - Update error message from `icon-plugin` to `insight-plugin` | `DockerValidator` - Print full error message and change instances of `icon-plugin` to `insight-plugin`
