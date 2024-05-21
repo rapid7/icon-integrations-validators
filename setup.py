@@ -20,7 +20,7 @@ setup(
         "validators==0.22.0",
         "filetype==1.0.5",
         "insightconnect-integrations-plugin-spec-tooling==1.3.2",
-        "requests==2.31.0",
+        "requests==2.32.0",
         "urlextract==0.14.0",
         "typing==3.7.4.1",
         "PyYAML==6.0.1",
