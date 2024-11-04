@@ -1,4 +1,4 @@
-FROM rapid7/insightconnect-python-3-plugin:6.1.4
+FROM rapid7/insightconnect-python-3-plugin:latest
 LABEL organization=komand
 LABEL sdk=python
 LABEL type=plugin
