@@ -41,6 +41,7 @@ class TestPluginValidate(unittest.TestCase):
     GOOD_PLUGIN_WITH_TASK_DIRECTORY = "plugin_examples/good_plugin_with_task"
     GOOD_PLUGIN_SDK_NOT_LATEST = "plugin_examples/good_plugin_with_task_sdk_not_latest"
     GOOD_PLUGIN_NO_ACTIONS = "plugin_examples/good_plugin_no_actions"
+    GOOD_PLUGIN_WITH_CACHE_DIRECTORY = "plugin_examples/good_plugin_with_cache"
 
     @parameterized.expand([
         ('2023-12-24 12:56:15+05:00', '2023-12-24T12:56:15+05:00'),
@@ -778,6 +779,12 @@ class TestPluginValidate(unittest.TestCase):
         directory_to_test = self.GOOD_PLUGIN_DIRECTORY
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [OutputValidator()])
+        self.assertEqual(result, 0)
+
+    def test_runtime_validator_caching_excluded_file_pyc(self) -> None:
+        directory_to_test = self.GOOD_PLUGIN_WITH_CACHE_DIRECTORY
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [RuntimeValidator()])
         self.assertEqual(result, 0)
 
     def test_runtime_version_validator(self) -> None:

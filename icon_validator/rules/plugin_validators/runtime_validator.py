@@ -49,6 +49,8 @@ class RuntimeValidator(KomandPluginValidator):
             for path in paths:
                 for root, dirs, files in os.walk(path):
                     for file in files:
+                        if file == ".DS_Store" or file.endswith(".pyc"):
+                            continue
                         with open(os.path.join(root, file), "r") as open_file:
                             file_str = open_file.read().replace("\n", "")
 
