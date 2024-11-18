@@ -171,7 +171,7 @@ class TestPluginValidate(unittest.TestCase):
 
     def test_version_pin_validator_should_fail_when_no_version_pin_in_one_of_multiple_version_first_test(self):
         self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt",
-                                  "ldap3===1.2.3,ldap3xxxx1.2.3")
+                                  "ldap3===2.9.1,ldap3xxxx2.9.1")
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/version_pin_validator"
         file_to_test = "plugin.spec.yaml"
@@ -180,7 +180,7 @@ class TestPluginValidate(unittest.TestCase):
 
     def test_version_pin_validator_should_fail_when_no_version_pin_in_one_of_multiple_version_second_test(self):
         self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt",
-                                  "ldap3xxxx1.2.3,ldap3===1.2.3")
+                                  "ldap3xxxx2.9.1,ldap3===2.9.1")
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/version_pin_validator"
         file_to_test = "plugin.spec.yaml"
@@ -188,7 +188,7 @@ class TestPluginValidate(unittest.TestCase):
         self.assertEqual(result, 1)
 
     def test_version_pin_validator_should_success_when_three_equal(self):
-        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3===1.2.3")
+        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3===2.9.1")
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/version_pin_validator"
         file_to_test = "plugin.spec.yaml"
@@ -196,7 +196,7 @@ class TestPluginValidate(unittest.TestCase):
         self.assertEqual(result, 0)
 
     def test_version_pin_validator_should_success_when_minority_sign(self):
-        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3<1.2.3")
+        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3<2.9.1")
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/version_pin_validator"
         file_to_test = "plugin.spec.yaml"
@@ -204,7 +204,7 @@ class TestPluginValidate(unittest.TestCase):
         self.assertEqual(result, 0)
 
     def test_version_pin_validator_should_success_when_minority_equal_sign(self):
-        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3<=1.2.3")
+        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3<=2.9.1")
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/version_pin_validator"
         file_to_test = "plugin.spec.yaml"
@@ -221,7 +221,7 @@ class TestPluginValidate(unittest.TestCase):
         self.assertEqual(result, 0)
 
     def test_version_pin_validator_should_success_when_majority_sign(self):
-        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3>1.2.3")
+        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3>2.9.1")
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/version_pin_validator"
         file_to_test = "plugin.spec.yaml"
@@ -229,7 +229,7 @@ class TestPluginValidate(unittest.TestCase):
         self.assertEqual(result, 0)
 
     def test_version_pin_validator_should_success_when_majority_equal_sign(self):
-        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3>=1.2.3")
+        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3>=2.9.1")
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/version_pin_validator"
         file_to_test = "plugin.spec.yaml"
@@ -237,7 +237,7 @@ class TestPluginValidate(unittest.TestCase):
         self.assertEqual(result, 0)
 
     def test_version_pin_validator_should_success_when_not_equal_sign(self):
-        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3!=1.2.3")
+        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3!=2.9.1")
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/version_pin_validator"
         file_to_test = "plugin.spec.yaml"
@@ -245,7 +245,7 @@ class TestPluginValidate(unittest.TestCase):
         self.assertEqual(result, 0)
 
     def test_version_pin_validator_should_success_when_tilda_equal_sign(self):
-        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3~=1.2.3")
+        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3~=2.9.1")
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/version_pin_validator"
         file_to_test = "plugin.spec.yaml"
@@ -253,7 +253,7 @@ class TestPluginValidate(unittest.TestCase):
         self.assertEqual(result, 0)
 
     def test_version_pin_validator_should_success_when_many_versions(self):
-        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3<1.2.3,ldap3==1-2-3")
+        self.replace_requirements("./plugin_examples/version_pin_validator/requirements.txt", "ldap3<2.9.1,ldap3==1-2-3")
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/version_pin_validator"
         file_to_test = "plugin.spec.yaml"
