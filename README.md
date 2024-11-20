@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.21 - `RuntimeValidator` - Fixed issue where validator failed if plugin contained a cache files
 * 2.47.20 - Bumping `requests` in requirements.txt and bumping `ldap` in the `version_pin_validator` requirements.txt
 * 2.47.19 - `VersionBumpValidator` - Fixed issue where validator failed if plugin contained no actions or triggers
 * 2.47.18 - `HelpInputOutputValidator` | `SpecPropertiesValidator` - Update to enable `placeholder` and `tooltip` validation | `RuntimeValidator` - Added SDK version validation
