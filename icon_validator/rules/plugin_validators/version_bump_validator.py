@@ -1,4 +1,5 @@
 import git
+from typing import List
 
 from icon_validator.rules.validator import KomandPluginValidator
 from icon_validator.exceptions import ValidationException, NO_LOCAL_CON_VERSION, \
@@ -41,30 +42,40 @@ class VersionBumpValidator(KomandPluginValidator):
         self.remote_version = None
 
     @staticmethod
+    def is_initial_plugin_version(version_history: List[str]) -> bool:
+        initial_versions = ["0.1.0 - Initial plugin", "1.0.0 - Initial plugin"]
+        if len(version_history) == 1 and any(version in version_history for version in initial_versions):
+            return True
+        return False
+
+    @staticmethod
     def get_remote_spec(spec):
         """
         Get the existing remote spec for this plugin from the repo
         """
+        version_history = spec.spec_dictionary().get("version_history")
         directory = spec.directory.split(f"/{RepoConstants.PLUGIN_DIRNAME}/")[0]
+
         try:
             repo = Repo(directory)
+            remote_list = repo.remote().refs
+            blob = VersionBumpValidator.get_plugin_spec_blob(remote_list, spec.spec_dictionary()["name"])
+            # case: remote spec not found
+            if blob is None:
+                return None
+
+            # if all went well and no exceptions, we now have the blob of plugin spec
+            # using a temp file because stream_data requires a data object
+            try:
+                remote_spec = yaml.safe_load(blob.data_stream.read())
+            except yaml.YAMLError:
+                raise ValidationException("Remote plugin.spec.yaml contains incorrect yaml and must be fixed. "
+                                          "If this change fixes remote spec, disregard this error message")
+            return remote_spec
         except InvalidGitRepositoryError:
-            raise ValidationException("Incorrect directory passed- must be an individual plugin directory")
+            if not VersionBumpValidator.is_initial_plugin_version(version_history):
+                raise ValidationException("Incorrect directory passed- must be an individual plugin directory")
 
-        remote_list = repo.remote().refs
-        blob = VersionBumpValidator.get_plugin_spec_blob(remote_list, spec.spec_dictionary()["name"])
-        # case: remote spec not found
-        if blob is None:
-            return None
-
-        # if all went well and no exceptions, we now have the blob of plugin spec
-        # using a temp file because stream_data requires a data object
-        try:
-            remote_spec = yaml.safe_load(blob.data_stream.read())
-        except yaml.YAMLError:
-            raise ValidationException("Remote plugin.spec.yaml contains incorrect yaml and must be fixed. "
-                                      "If this change fixes remote spec, disregard this error message")
-        return remote_spec
 
     @staticmethod
     def get_plugin_spec_blob(remote_list: [git.RemoteReference], plugin_name: str):
@@ -383,14 +394,15 @@ class VersionBumpValidator(KomandPluginValidator):
         remote_spec = VersionBumpValidator.get_remote_spec(spec)
         local_spec = spec.spec_dictionary()
 
+        # case: new plugin with no remote spec
+        if remote_spec is None:
+            return
+
         self.local_version, self.remote_version = self.get_versions(local_spec, remote_spec)
 
         # we should validate connection versions regardless of the version changes to ensure these remain stable
         self.validate_connection_version(local_spec, remote_spec)
 
-        # case: new plugin with no remote spec
-        if remote_spec is None:
-            return
         # perform the different sections of validation
         # Check if we already did a major version bump- if so, no need to do all this checking
         if not self.check_major_version_increment_needed():
