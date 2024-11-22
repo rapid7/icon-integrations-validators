@@ -43,8 +43,9 @@ class VersionBumpValidator(KomandPluginValidator):
 
     @staticmethod
     def is_initial_plugin_version(version_history: List[str]) -> bool:
-        initial_versions = ["0.1.0 - Initial plugin", "1.0.0 - Initial plugin"]
-        if len(version_history) == 1 and any(version in version_history for version in initial_versions):
+        initial_versions = ["0.1.0 - initial plugin", "1.0.0 - initial plugin"]
+        version_history_lowercased = [version.lower() for version in version_history]
+        if len(version_history) == 1 and any(version in version_history_lowercased for version in initial_versions):
             return True
         return False
 
