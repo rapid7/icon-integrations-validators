@@ -1,4 +1,7 @@
 import unittest
+
+from git import InvalidGitRepositoryError
+
 from icon_validator.exceptions import NO_LOCAL_CON_VERSION, NO_CON_VERSION_CHANGE, \
     INVALID_CON_VERSION_CHANGE, INCORRECT_CON_VERSION_CHANGE, FIRST_TIME_CON_VERSION_ISSUE
 from icon_validator.validate import validate
@@ -50,6 +53,14 @@ class TestPluginValidate(unittest.TestCase):
     def test_convert_valid_datetime(self, table_string: str, expected: str):
         response = convert_to_valid_datetime(table_string)
         self.assertEqual(expected, response)
+
+    def test_is_initial_plugin_version(self):
+        result = VersionBumpValidator.is_initial_plugin_version(["1.0.0 - Initial plugin"])
+        self.assertEqual(result, True)
+
+    def test_is_not_initial_plugin_version(self):
+        result = VersionBumpValidator.is_initial_plugin_version(["2.0.0 - Test"])
+        self.assertEqual(result, False)
 
     def test_plugin_validate(self):
         # example workflow in plugin_examples directory. Run tests with these files
@@ -516,6 +527,22 @@ class TestPluginValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
         self.assertEqual(result, 1)
 
+    def test_initial_plugin_not_on_the_remote_should_pass(self):
+        # example spec in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/initial_plugin"
+        file_to_test = "plugin.spec.yaml"
+        VersionBumpValidator.get_remote_spec = MagicMock(return_value=None)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
+        self.assertEqual(result, 0)
+
+    def test_not_initial_plugin_not_on_the_remote_should_fail(self):
+        # example spec in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/good_plugin_no_actions"
+        file_to_test = "plugin.spec.yaml"
+        VersionBumpValidator.get_remote_spec = MagicMock(None)
+        result = validate(directory_to_test, file_to_test, False, True, [VersionBumpValidator()])
+        self.assertEqual(result, 1)
+
     def test_major_version_input_now_required_should_fail(self):
         # example spec in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/plugin_major_version_bump_all"
@@ -689,7 +716,7 @@ class TestPluginValidate(unittest.TestCase):
 
     @parameterized.expand([
         # ('test_name', new_yaml, exception, mock_local_spec)
-        ('initial_no_connection', "plugin.spec.good.new.nonrequired.input.yaml", NO_LOCAL_CON_VERSION, False),
+        ('initial_no_connection', "plugin.spec.good.new.nonrequired.input.yaml", None, False),
         ('changed_con_schema_no_ver_bump', "plugin.spec.bad.new.connection.yaml", NO_CON_VERSION_CHANGE, True),
         ('changed_con_schema_with_ver_bump', "plugin.spec.good.new.connection.yaml", None, True),
         ('invalid_con_ver_bump', "plugin.spec.bad.connection.change.yaml", INVALID_CON_VERSION_CHANGE, True),
