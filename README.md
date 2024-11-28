@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.23 - `RegenerationValidator` - Improving RegenerationValidator output, when raise exception
 * 2.47.22 - `VersionBumpValidator` - Skipping remote validation for newly created local plugins
 * 2.47.21 - `RuntimeValidator` - Fixed issue where validator failed if plugin contained a cache files
 * 2.47.20 - Bumping `requests` in requirements.txt and bumping `ldap` in the `version_pin_validator` requirements.txt
