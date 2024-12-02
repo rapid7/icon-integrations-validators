@@ -845,7 +845,7 @@ class TestPluginValidate(unittest.TestCase):
 
     def test_regeneration_validator_raise_when_checksums_are_diff(self):
         # example workflow in plugin_examples directory. Run tests with these files
-        directory_to_test = "plugin_examples/plugin_diff_checksum"
+        directory_to_test = "plugin_examples/bad_plugin_cloud_ready_system_command"
         file_to_test = "plugin.spec.yaml"
 
         with self.assertRaises(ValidationException) as context:
@@ -853,10 +853,13 @@ class TestPluginValidate(unittest.TestCase):
             RegenerationValidator().validate(spec)
 
         self.assertTrue(
-            "Error: Hashes between provided plugin and checksum were not equal because of spec: 892fcf1950bd17d2564a5c3b0edeebc8, "
-            "schemas: [{'identifier': 'connection/schema.py', 'hash': 'fc55da060d1072ba808a832b2fe43b76'}, {'identifier': 'decode/schema.py', 'hash': '9ccff053d6f5feaa1d93628f702b09d7'}, {'identifier': 'emit_greeting/schema.py', 'hash': 'f36371c4784989401a13f89ca80cdb03'}, {'identifier': 'encode/schema.py', 'hash': '9ccff053d6f5feaa1d93628f702b09d7'}], "
-            "manifest: ce984ba4e1d5fc5f5686839e87b0e49d, "
-            "setup: 5eb97af296b28121d7c9c9de86e6482d. Regenerate the plugin and push to working branch."
+            "Error: Hashes between provided plugin and checksum were not equal. "
+            "Mismatched files: schemas: [{'identifier': 'check_cidr/schema.py', 'hash': 'dea92b37791d025d7c7fe788db6a06e2'}, "
+            "{'identifier': 'check_ip/schema.py', 'hash': 'b015694a0abe21e1efc016ce843dfd4d'}, "
+            "{'identifier': 'connection/schema.py', 'hash': 'ea25f7440b9f5d2de1cb0262728b8df4'}, "
+            "{'identifier': 'get_blacklist/schema.py', 'hash': '123'}, "
+            "{'identifier': 'report_ip/schema.py', 'hash': 'b9931570833afe3d72d305582951c23d'}]. "
+            "Regenerate the plugin and push to working branch."
             in str(context.exception)
         )
 

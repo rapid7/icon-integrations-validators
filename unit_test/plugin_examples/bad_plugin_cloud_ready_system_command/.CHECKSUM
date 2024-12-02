@@ -13,7 +13,7 @@
 		},
 		{
 			"identifier": "get_blacklist/schema.py",
-			"hash": "85e7e679a99804f185f56a540ffa73fc"
+			"hash": "123"
 		},
 		{
 			"identifier": "report_ip/schema.py",

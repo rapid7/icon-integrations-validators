@@ -155,7 +155,8 @@ class ChecksumHandler(object):
         if not (provided_checksum_file == post_regen_checksum_file):
             diff = self.get_checksum_diff(post_regen_checksum_file, provided_checksum_file)
             raise ValidationException(
-                f"Error: Hashes between provided plugin and checksum were not equal because of {', '.join(diff)}. "
+                f"Error: Hashes between provided plugin and checksum were not equal. "
+                f"Mismatched files: {', '.join(diff)}. "
                 f"Regenerate the plugin and push to working branch."
             )
 
