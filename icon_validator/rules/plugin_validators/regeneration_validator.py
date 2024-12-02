@@ -116,9 +116,9 @@ class ChecksumHandler(object):
         provided_checksum_file: Checksum,
     ) -> List[str]:
         diff = []
-        for k, v in json.loads(provided_checksum_file.to_json()).items():
-            if not json.loads(post_regen_checksum_file.to_json())[k] == v:
-                diff.append(f"{k}: {v}")
+        for key, value in json.loads(provided_checksum_file.to_json()).items():
+            if not json.loads(post_regen_checksum_file.to_json())[key] == value:
+                diff.append(f"{key}: {value}")
         return diff
 
     def run_from_validator(self):
