@@ -854,11 +854,7 @@ class TestPluginValidate(unittest.TestCase):
 
         self.assertTrue(
             "Error: Hashes between provided plugin and checksum were not equal. "
-            "Mismatched files: schemas: [{'identifier': 'check_cidr/schema.py', 'hash': 'dea92b37791d025d7c7fe788db6a06e2'}, "
-            "{'identifier': 'check_ip/schema.py', 'hash': 'b015694a0abe21e1efc016ce843dfd4d'}, "
-            "{'identifier': 'connection/schema.py', 'hash': 'ea25f7440b9f5d2de1cb0262728b8df4'}, "
-            "{'identifier': 'get_blacklist/schema.py', 'hash': '123'}, "
-            "{'identifier': 'report_ip/schema.py', 'hash': 'b9931570833afe3d72d305582951c23d'}]. "
+            "Mismatched files: spec: 111, schemas: [{'identifier': 'get_blacklist/schema.py', 'hash': '123'}]. "
             "Regenerate the plugin and push to working branch."
             in str(context.exception)
         )

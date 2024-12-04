@@ -116,8 +116,15 @@ class ChecksumHandler(object):
         provided_checksum_file: Checksum,
     ) -> List[str]:
         diff = []
-        for key, value in json.loads(provided_checksum_file.to_json()).items():
-            if not json.loads(post_regen_checksum_file.to_json())[key] == value:
+        provided_checksum = json.loads(provided_checksum_file.to_json())
+        post_regen_checksum = json.loads(post_regen_checksum_file.to_json())
+
+        for key, value in provided_checksum.items():
+            if not post_regen_checksum[key] == value:
+                if isinstance(value, list) and key == "schemas":
+                    for schema in post_regen_checksum["schemas"]:
+                        if schema in provided_checksum["schemas"]:
+                            provided_checksum["schemas"].remove(schema)
                 diff.append(f"{key}: {value}")
         return diff
 
