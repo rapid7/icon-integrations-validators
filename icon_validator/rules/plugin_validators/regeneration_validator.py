@@ -1,11 +1,11 @@
 import json
 import os
 from hashlib import md5
-from typing import Optional
+from typing import Optional, List
 
+from icon_validator.exceptions import ValidationException
 from icon_validator.rules import KomandPluginSpec
 from icon_validator.rules.validator import KomandPluginValidator
-from icon_validator.exceptions import ValidationException
 
 MD5 = str
 JSON = str
@@ -110,6 +110,24 @@ class ChecksumHandler(object):
         self.plugin_name = plugin_name
         self.plugin_directory = plugin_directory
 
+    def get_checksum_diff(
+        self,
+        post_regen_checksum_file: Checksum,
+        provided_checksum_file: Checksum,
+    ) -> List[str]:
+        diff = []
+        provided_checksum = json.loads(provided_checksum_file.to_json())
+        post_regen_checksum = json.loads(post_regen_checksum_file.to_json())
+
+        for key, value in provided_checksum.items():
+            if not post_regen_checksum[key] == value:
+                if isinstance(value, list) and key == "schemas":
+                    for schema in post_regen_checksum["schemas"]:
+                        if schema in provided_checksum["schemas"]:
+                            provided_checksum["schemas"].remove(schema)
+                diff.append(f"{key}: {value}")
+        return diff
+
     def run_from_validator(self):
         checksum_file_contents: str = self._get_hashfile()
         if not checksum_file_contents:
@@ -142,8 +160,12 @@ class ChecksumHandler(object):
         # Now that we have a post-regeneration Checksum, let's compare!
         # print(post_regen_checksum_file.to_json())
         if not (provided_checksum_file == post_regen_checksum_file):
-            raise ValidationException("Error: Hashes between provided plugin and checksum were not equal. "
-                            "Regenerate the plugin and push to working branch.")
+            diff = self.get_checksum_diff(post_regen_checksum_file, provided_checksum_file)
+            raise ValidationException(
+                f"Error: Hashes between provided plugin and checksum were not equal. "
+                f"Mismatched files: {', '.join(diff)}. "
+                f"Regenerate the plugin and push to working branch."
+            )
 
     def _hash_python_schemas(self) -> [SchemaHash]:
         hashes: [SchemaHash] = []

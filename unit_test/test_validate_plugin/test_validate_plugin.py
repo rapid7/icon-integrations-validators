@@ -1,40 +1,43 @@
+import os
 import unittest
-
-from git import InvalidGitRepositoryError
-
-from icon_validator.exceptions import NO_LOCAL_CON_VERSION, NO_CON_VERSION_CHANGE, \
-    INVALID_CON_VERSION_CHANGE, INCORRECT_CON_VERSION_CHANGE, FIRST_TIME_CON_VERSION_ISSUE
-from icon_validator.validate import validate
-from icon_validator.exceptions import ValidationException
-from icon_plugin_spec.plugin_spec import KomandPluginSpec
-
-# Import plugin validators to pass to tests
-from icon_validator.rules.plugin_validators.title_validator import TitleValidator
-from icon_validator.rules.plugin_validators.profanity_validator import ProfanityValidator
-from icon_validator.rules.plugin_validators.version_validator import VersionValidator
-from icon_validator.rules.plugin_validators.version_pin_validator import VersionPinValidator
-from icon_validator.rules.plugin_validators.encoding_validator import EncodingValidator
-from icon_validator.rules.plugin_validators.example_input_validator import ExampleInputValidator
-from icon_validator.rules.plugin_validators.cloud_ready_connection_credential_token_validator import \
-    CloudReadyConnectionCredentialTokenValidator
-from icon_validator.rules.plugin_validators.use_case_validator import UseCaseValidator
-from icon_validator.rules.plugin_validators.help_validator import HelpValidator
-from icon_validator.rules.plugin_validators.confidential_validator import ConfidentialValidator
-from icon_validator.rules.plugin_validators.description_validator import DescriptionValidator
-from icon_validator.rules.plugin_validators.cloud_ready_validator import CloudReadyValidator
-from icon_validator.rules.plugin_validators.acronym_validator import AcronymValidator
-from icon_validator.rules.plugin_validators.unapproved_keywords_validator import UnapprovedKeywordsValidator
-from icon_validator.rules.plugin_validators.version_bump_validator import VersionBumpValidator
-from icon_validator.rules.plugin_validators.supported_version_validator import SupportedVersionValidator
-from icon_validator.rules.plugin_validators.help_input_output_validator import convert_to_valid_datetime
-from icon_validator.rules.plugin_validators.name_validator import NameValidator
-from icon_validator.rules.plugin_validators.output_validator import OutputValidator
-from icon_validator.rules.plugin_validators.runtime_validator import RuntimeValidator
+from unittest.mock import MagicMock, patch
 
 import requests
-from unittest.mock import MagicMock, patch
-import os
+from icon_plugin_spec.plugin_spec import KomandPluginSpec
 from parameterized import parameterized
+
+from icon_validator.exceptions import (
+    NO_CON_VERSION_CHANGE,
+    INVALID_CON_VERSION_CHANGE,
+    INCORRECT_CON_VERSION_CHANGE,
+    FIRST_TIME_CON_VERSION_ISSUE,
+)
+from icon_validator.exceptions import ValidationException
+# Import plugin validators to pass to tests
+from icon_validator.rules.plugin_validators.acronym_validator import AcronymValidator
+from icon_validator.rules.plugin_validators.cloud_ready_connection_credential_token_validator import (
+    CloudReadyConnectionCredentialTokenValidator
+)
+from icon_validator.rules.plugin_validators.cloud_ready_validator import CloudReadyValidator
+from icon_validator.rules.plugin_validators.confidential_validator import ConfidentialValidator
+from icon_validator.rules.plugin_validators.description_validator import DescriptionValidator
+from icon_validator.rules.plugin_validators.encoding_validator import EncodingValidator
+from icon_validator.rules.plugin_validators.example_input_validator import ExampleInputValidator
+from icon_validator.rules.plugin_validators.help_input_output_validator import convert_to_valid_datetime
+from icon_validator.rules.plugin_validators.help_validator import HelpValidator
+from icon_validator.rules.plugin_validators.name_validator import NameValidator
+from icon_validator.rules.plugin_validators.output_validator import OutputValidator
+from icon_validator.rules.plugin_validators.profanity_validator import ProfanityValidator
+from icon_validator.rules.plugin_validators.regeneration_validator import RegenerationValidator
+from icon_validator.rules.plugin_validators.runtime_validator import RuntimeValidator
+from icon_validator.rules.plugin_validators.supported_version_validator import SupportedVersionValidator
+from icon_validator.rules.plugin_validators.title_validator import TitleValidator
+from icon_validator.rules.plugin_validators.unapproved_keywords_validator import UnapprovedKeywordsValidator
+from icon_validator.rules.plugin_validators.use_case_validator import UseCaseValidator
+from icon_validator.rules.plugin_validators.version_bump_validator import VersionBumpValidator
+from icon_validator.rules.plugin_validators.version_pin_validator import VersionPinValidator
+from icon_validator.rules.plugin_validators.version_validator import VersionValidator
+from icon_validator.validate import validate
 
 
 class TestPluginValidate(unittest.TestCase):
@@ -839,6 +842,22 @@ class TestPluginValidate(unittest.TestCase):
         f = open(path, 'w')
         f.write(text)
         f.close()
+
+    def test_regeneration_validator_raise_when_checksums_are_diff(self):
+        # example workflow in plugin_examples directory. Run tests with these files
+        directory_to_test = "plugin_examples/bad_plugin_cloud_ready_system_command"
+        file_to_test = "plugin.spec.yaml"
+
+        with self.assertRaises(ValidationException) as context:
+            spec = KomandPluginSpec(directory_to_test, file_to_test)
+            RegenerationValidator().validate(spec)
+
+        self.assertTrue(
+            "Error: Hashes between provided plugin and checksum were not equal. "
+            "Mismatched files: spec: 111, schemas: [{'identifier': 'get_blacklist/schema.py', 'hash': '123'}]. "
+            "Regenerate the plugin and push to working branch."
+            in str(context.exception)
+        )
 
 
 class MockRepoSpecResponse:
