@@ -38,8 +38,8 @@ class WorkflowHelpValidator(KomandPluginValidator):
             raise ValidationException("Help section is missing header: ## Setup.")
         if "## Technical Details" not in help_str:
             raise ValidationException("Help section is missing header: ## Technical Details.")
-        if "## Troubleshooting" not in help_str:
-            raise ValidationException("Help section is missing header: ## Troubleshooting.")
+        if "# Troubleshooting" not in help_str:
+            raise ValidationException("Help section is missing header: # Troubleshooting.")
         if "# Version History" not in help_str:
             raise ValidationException("Help section is missing header: # Version History.")
         if "# Links" not in help_str:

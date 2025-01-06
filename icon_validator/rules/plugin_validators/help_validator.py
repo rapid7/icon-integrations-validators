@@ -16,7 +16,7 @@ class HelpValidator(KomandPluginValidator):
         "## Technical Details",
         "### Actions",
         "### Triggers",
-        "## Troubleshooting",
+        "# Troubleshooting",
         "# Version History",
         "# Links",
         "## References",

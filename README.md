@@ -61,7 +61,7 @@ run `pre-commit install` in the repository after cloning and you will
 be on your way to contributing!
 
 ## Changelog
-
+* 2.47.24 - `HelpInputOutputValidator` - Reflect `troubleshooting` changing datatype to List. Now expected as `# Troubleshooting`
 * 2.47.23 - `RegenerationValidator` - Show file names of mismatched checksums
 * 2.47.22 - `VersionBumpValidator` - Skipping remote validation for newly created local plugins
 * 2.47.21 - `RuntimeValidator` - Fixed issue where validator failed if plugin contained a cache files
