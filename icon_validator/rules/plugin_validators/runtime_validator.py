@@ -90,7 +90,7 @@ class RuntimeValidator(KomandPluginValidator):
 
     @staticmethod
     def _parse_image_tag(image_name: str, dockerfile_content: str) -> Union[str, None]:
-        match = re.search(f"{image_name}:\s*([^ ]+)", dockerfile_content)
+        match = re.search(f"{image_name}:\s*([^ \n]+)", dockerfile_content)
         if match:
             return match.group(1)
         return None
