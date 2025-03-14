@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.24 - `RunTimeValidator` - Updated SDK version validator for new Dockerfile structure
 * 2.47.23 - `RegenerationValidator` - Show file names of mismatched checksums
 * 2.47.22 - `VersionBumpValidator` - Skipping remote validation for newly created local plugins
 * 2.47.21 - `RuntimeValidator` - Fixed issue where validator failed if plugin contained a cache files
