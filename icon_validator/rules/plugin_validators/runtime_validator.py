@@ -15,8 +15,8 @@ class RuntimeValidator(KomandPluginValidator):
     def validate_setup(spec):
         if "setup.py" in os.listdir(spec.directory):
             with open(f"{spec.directory}/setup.py", "r") as file:
-                setup_str = file.read().replace("\n", "")
-
+                replace_dictionary = {"\n": "", " ": ""}
+                setup_str = re.sub("|".join(replace_dictionary), lambda x: replace_dictionary[x.group(0)], file.read())
                 if 'install_requires=["insightconnect-plugin-runtime"]' not in setup_str\
                         and "install_requires=['insightconnect-plugin-runtime']" not in setup_str:
                     raise ValidationException("Komand is no longer used for install_requires in setup.py. "
