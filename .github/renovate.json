@@ -1,6 +1,8 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "github>rapid7/renovate-config:base"
-  ]
-}
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+      "github>rapid7/renovate-config//data-foundation/base",
+      "github>rapid7/renovate-config//data-foundation/onepr",
+      "github>rapid7/renovate-config//data-foundation/teams/icon"
+    ]
+  }
