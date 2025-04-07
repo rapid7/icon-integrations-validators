@@ -3,7 +3,7 @@
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
 from icon_validator.exceptions import ValidationException
 
-from .rules import VALIDATORS, JENKINS_VALIDATORS, WORKFLOW_VALIDATORS
+from .rules import VALIDATORS, JENKINS_VALIDATORS, WORKFLOW_VALIDATORS, CONNECTOR_VALIDATORS
 from .styling import *
 from .timing import *
 
@@ -16,13 +16,18 @@ def validate(
     validators=list(),
 ):
     spec = KomandPluginSpec(directory, spec_file_name)
+    is_connector = spec.spec_dictionary().get("is_connector")
     status = 0  # Resultant return code
     start_time = time_now()
     print(f"{BULLET_OK} {BOLD}Running Integration Validators...{CEND}")
 
     if not validators:
         if spec_file_name == "plugin.spec.yaml":
-            validators = VALIDATORS
+            if is_connector:
+                print("Plugin is connector conversion. Running connector validators...")
+                validators = CONNECTOR_VALIDATORS
+            else:
+                validators = VALIDATORS
             if run_all:
                 validators += JENKINS_VALIDATORS
         elif spec_file_name == "workflow.spec.yaml":
