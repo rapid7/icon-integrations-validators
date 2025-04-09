@@ -16,7 +16,7 @@ def validate(
     validators=list(),
 ):
     spec = KomandPluginSpec(directory, spec_file_name)
-    is_connector = spec.spec_dictionary().get("is_connector") if spec_file_name == "plugin.spec.yam" else False
+    is_connector = spec.spec_dictionary().get("is_connector") if spec_file_name == "plugin.spec.yaml" else False
     status = 0  # Resultant return code
     start_time = time_now()
     print(f"{BULLET_OK} {BOLD}Running Integration Validators...{CEND}")
