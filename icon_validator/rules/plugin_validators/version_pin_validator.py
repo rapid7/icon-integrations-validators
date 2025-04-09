@@ -21,6 +21,7 @@ class VersionPinValidator(KomandPluginValidator):
             requirements_text_elements = requirements_text_elements.strip()
             if requirements_text_elements.startswith("#"):
                 continue
+            requirements_text_elements = requirements_text_elements.split("#")[0]
             for requirements_text_one_element in requirements_text_elements.split(","):
                 requirements_text_one_element = requirements_text_one_element.strip()
                 if not requirements_text_one_element.startswith("git+") and not re.match(r'.*?(==|===|<|<=|!=|>=|>|~=).*?', requirements_text_one_element):

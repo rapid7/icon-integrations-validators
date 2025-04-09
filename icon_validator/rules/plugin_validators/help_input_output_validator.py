@@ -125,6 +125,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_input(action_title: str, action_input: list, process_type: str):
+        action_title = re.escape(action_title)
         regex = (
             r"### "
             + process_type.capitalize()
@@ -163,6 +164,7 @@ class HelpInputOutputValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_output(action_title: str, action_output: list, process_type: str):
+        action_title = re.escape(action_title)
         regex = (
             r"### "
             + process_type.capitalize()
