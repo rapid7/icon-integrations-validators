@@ -62,7 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
-* 2.47.26 - Update validators list for connector plugins | Update `HelpInputOutputValidator` to escape values
+* 2.47.26 - Update validators list for connector plugins | Update `HelpInputOutputValidator` to escape values | Update `VersionPinValidator` to address inline comments
 * 2.47.25 - `RunTimeValidator` - Update check for setup includes | `HelpValidator` Update to warn instead of raise validator issue for invalid name casing
 * 2.47.24 - `RunTimeValidator` - Updated SDK version validator for new Dockerfile structure
 * 2.47.23 - `RegenerationValidator` - Show file names of mismatched checksums
