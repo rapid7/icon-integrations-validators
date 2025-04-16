@@ -1,8 +1,53 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-      "github>rapid7/renovate-config//data-foundation/base",
-      "github>rapid7/renovate-config//data-foundation/onepr",
-      "github>rapid7/renovate-config//data-foundation/teams/icon"
-    ]
-  }
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>rapid7/renovate-config//data-foundation/base",
+    "github>rapid7/renovate-config//data-foundation/teams/icon"
+  ],
+  "dependencyDashboard": true,
+  "packageRules": [
+    {
+      "description": "Disable updates for the Go version directive in go.mod",
+      "matchManagers": ["gomod"],
+      "matchDepTypes": ["go"],
+      "enabled": false
+    },
+    {
+      "description": "Disable updates for Go base image (e.g., golang:1.xx) in Dockerfiles",
+      "matchManagers": ["dockerfile"],
+      "matchPackageNames": ["golang"],
+      "enabled": false
+    },
+    {
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all",
+      "matchPackageNames": [
+        "*"
+      ],
+      "matchUpdateTypes": ["minor", "patch", "pin", "pinDigest", "digest", "lockFileMaintenance", "rollback", "bump", "replacement"]
+    },
+    {
+      "description": "Group all major dependency updates into one PR with warnings",
+      "matchUpdateTypes": ["major"],
+      "groupName": "all major dependencies",
+      "groupSlug": "major-updates-caution",
+      "commitMessageExtra": ":warning: Upgrade Major Dependencies [Manual Review Required] :warning:",
+      "prBodyNotes": [
+        "---",
+        "## :rotating_light: ATTENTION: Major Dependency Upgrades Ahead! :rotating_light:",
+        "This PR includes **major version updates** for one or more dependencies.",
+        "Such updates frequently introduce **breaking changes** and require careful attention.",
+        "",
+        "**ACTION REQUIRED:**",
+        "* **DO NOT MERGE BLINDLY.**",
+        "* **Review Changelogs:** Meticulously check the release notes/changelogs linked in the table below for each dependency.",
+        "* **Assess Impact:** Understand how these changes might affect our codebase.",
+        "* **Test Rigorously:** Perform thorough testing (automated and manual) across all potentially affected areas.",
+        "* **Code Adjustments:** Be prepared to make necessary code changes to adapt to the new versions.",
+        "---"
+      ],
+      "draftPR": true,
+      "enabled": true
+    }
+  ]
+}
