@@ -9,7 +9,8 @@ class SpecPropertiesValidator(KomandPluginValidator):
         "input",
         "output",
         "title",
-        "description"
+        "description",
+        "action_type",
     }
 
     _COMPONENT_TASK_WHITELIST = {
