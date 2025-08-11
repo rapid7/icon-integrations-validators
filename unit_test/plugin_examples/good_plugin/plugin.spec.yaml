@@ -80,3 +80,4 @@ actions:
         type: string
         required: true
         example: "==Md"
+    action_type: import
