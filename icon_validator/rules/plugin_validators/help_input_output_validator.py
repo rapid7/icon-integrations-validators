@@ -89,6 +89,34 @@ def datetime_formatter(table_string: str) -> str:
     return table_string
 
 
+def merge_continuation_lines(text: str) -> list:
+    """
+    Join multiline table rows back into single lines.
+
+    When a Markdown table cell contains newlines, it spans multiple lines in the
+    file. This function joins those continuation lines back together, replacing
+    the newlines with literal \\n characters.
+
+    :param text: Text containing Markdown table rows (may span multiple lines)
+    :type text: str
+
+    :return: List of table row strings, one per row
+    :rtype: list
+    """
+
+    lines = [line for line in text.splitlines() if line]
+    merged = []
+    for line in lines:
+        if line.startswith("|"):
+            merged.append(line)
+        elif merged and not merged[-1].endswith("|"):
+            # Only merge the line if the previous row isn't finished yet
+            # (a finished row ends with |). This ensures we only join real
+            # continuation lines, not section headings or code blocks.
+            merged[-1] += "\\n" + line
+    return merged
+
+
 def convert_ais_to_valid_datetime(ais: str) -> list:
     """
     Function to take the string, Action Input Section, and convert
@@ -102,10 +130,8 @@ def convert_ais_to_valid_datetime(ais: str) -> list:
     :rtype: list
     """
 
-    lines = ais.splitlines()
+    lines = merge_continuation_lines(ais)
     new_lines = []
-    lines = [line for line in lines if len(line)]
-    lines = [line for line in lines if line[0] == "|"]
     for entry in lines:
         elements = entry.split("|")
         new_elements = []
@@ -237,7 +263,8 @@ class HelpInputOutputValidator(KomandPluginValidator):
             )
 
         for output_fields in action_output:
-            if output_fields not in action_output_section[0]:
+            normalized_output_rows = "\n".join(merge_continuation_lines(action_output_section[0]))
+            if output_fields not in normalized_output_rows:
                 HelpInputOutputValidator.violations.append(output_fields)
 
     @staticmethod
@@ -269,7 +296,9 @@ class HelpInputOutputValidator(KomandPluginValidator):
                     enum = f"{enum}".replace("'", '"')
 
                 action_input.append(
-                    f"|{name_}|{type_}|{default_}|{required}|{description}|{enum}|{example}|{placeholder}|{tooltip}|"
+                    f"|{name_}|{type_}|{default_}|{required}|{description}|{enum}|{example}|{placeholder}|{tooltip}|".replace(
+                        "\n", "\\n"
+                    )
                 )
         return action_input
 
@@ -290,7 +319,9 @@ class HelpInputOutputValidator(KomandPluginValidator):
                 if isinstance(example, list):
                     example = f"{example}".replace("'", '"')
                 action_output.append(
-                    f"|{name_}|{type_}|{required}|{description}|{example}|"
+                    f"|{name_}|{type_}|{required}|{description}|{example}|".replace(
+                        "\n", "\\n"
+                    )
                 )
         return action_output
 
