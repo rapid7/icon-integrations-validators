@@ -262,8 +262,8 @@ class HelpInputOutputValidator(KomandPluginValidator):
                 r"#+ Output\n\n.*?\n\n", action_help_section[0], re.DOTALL
             )
 
+        normalized_output_rows = "\n".join(merge_continuation_lines(action_output_section[0]))
         for output_fields in action_output:
-            normalized_output_rows = "\n".join(merge_continuation_lines(action_output_section[0]))
             if output_fields not in normalized_output_rows:
                 HelpInputOutputValidator.violations.append(output_fields)
 
