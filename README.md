@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.30 - `HelpInputOutputValidator` - Handle multiline default/example values in plugin specs
 * 2.47.29 - Updated `GitPython` and `requests` dependencies to the latest versions
 * 2.47.28 - `version_pin_validator` updated to better handle non-requirements
 * 2.47.27 - `SpecPropertiesValidator` - Update to allow `action_type` field in `components`
