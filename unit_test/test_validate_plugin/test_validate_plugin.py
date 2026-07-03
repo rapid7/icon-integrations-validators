@@ -416,6 +416,13 @@ class TestPluginValidate(unittest.TestCase):
         result = validate(directory_to_test, file_to_test, False, True, [DescriptionValidator()])
         self.assertEqual(result, 0)
 
+    def test_description_validator_should_fail_when_over_500_characters(self):
+        DescriptionValidator.errors = []
+        # 501 uppercase characters: only the length rule should be triggered
+        DescriptionValidator.validate_description("A" * 501, "plugin spec")
+        self.assertTrue(any("500 character limit" in error for error in DescriptionValidator.errors))
+        DescriptionValidator.errors = []
+
     def test_cloud_ready_validator_bad_python_image_should_fail(self):
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/bad_plugin_cloud_ready_bad_docker_image"
@@ -816,6 +823,14 @@ class TestPluginValidate(unittest.TestCase):
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [RuntimeValidator()])
         self.assertEqual(result, 0)
+
+    def test_runtime_validator_caching_detects_caching_library(self) -> None:
+        self.assertIsNotNone(RuntimeValidator._find_caching_usage("import cachetools\n"))
+
+    def test_runtime_validator_caching_ignores_cache_keyword_in_variable(self) -> None:
+        # The word "cache" as a variable, value or comment must not be flagged as caching
+        source = "cache = {}\ncached_value = fetch()  # keep in cache\n"
+        self.assertIsNone(RuntimeValidator._find_caching_usage(source))
 
     def test_runtime_version_validator(self) -> None:
         directory_to_test = self.GOOD_PLUGIN_WITH_TASK_DIRECTORY
