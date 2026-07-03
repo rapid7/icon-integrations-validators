@@ -9,6 +9,8 @@ class DescriptionValidator(KomandPluginValidator):
     def validate_description(description, key):
         if description.endswith("."):
             DescriptionValidator.errors.append(f"Description ends with a period when it should not in {key}.")
+        if len(description) > 500:
+            DescriptionValidator.errors.append(f"Description exceeds 500 character limit ({len(description)} characters) in {key}.")
         if description[0].islower():
             DescriptionValidator.errors.append(f"Description should not start with a lower case letter {key}.")
         if description[0].isspace():

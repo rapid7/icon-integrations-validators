@@ -1,3 +1,4 @@
+import ast
 import glob
 import os
 import re
@@ -10,6 +11,22 @@ from icon_validator.rules.validator import KomandPluginValidator
 
 
 class RuntimeValidator(KomandPluginValidator):
+    # Third party modules whose import indicates a real caching mechanism is in use
+    CACHING_MODULES = {
+        "cachetools",
+        "cachelib",
+        "diskcache",
+        "aiocache",
+        "beaker",
+        "dogpile",
+        "requests_cache",
+    }
+
+    # Functools members that provide caching when imported/used
+    CACHING_FUNCTIONS = {"lru_cache", "cache", "cached_property"}
+
+    # Decorator names that indicate caching (like @lru_cache, @cache, @cached)
+    CACHING_DECORATORS = {"lru_cache", "cache", "cached", "cached_property", "memoize"}
 
     @staticmethod
     def validate_setup(spec):
@@ -36,6 +53,59 @@ class RuntimeValidator(KomandPluginValidator):
                                                       "Use insightconnect-plugin-runtime instead.")
 
     @staticmethod
+    def _module_root(name: str) -> str:
+        # Just return top level package name like for example "dogpile.cache" -> "dogpile"
+        return name.split(".")[0] if name else name
+
+    @staticmethod
+    def _decorator_name(decorator) -> Union[str, None]:
+        # Search for generic decorators @cache
+        if isinstance(decorator, ast.Name):
+            return decorator.id
+        # Search for decorators with arguments like @cache(...) or @cachetools.cached(...)
+        if isinstance(decorator, ast.Call):
+            return RuntimeValidator._decorator_name(decorator.func)
+        if isinstance(decorator, ast.Attribute):
+            return decorator.attr
+        return None
+
+    @staticmethod
+    def _find_caching_usage(file_str: str) -> Union[str, None]:
+        # Parse the Python source into an AST and look for genuine caching constructs
+        # Using the AST (rather than a text search) means the word "cache" appearing in
+        # comments, docstrings, string values or unrelated variable names does not cause
+        # a false positive - only real imports, decorators and helpers are considered
+        try:
+            tree = ast.parse(file_str)
+        except SyntaxError:
+            # If the file is not valid Python we cannot reliably inspect it, so skip it.
+            return None
+
+        # For each node in object tree
+        for node in ast.walk(tree):
+            # Check for import cachetools etc
+            if isinstance(node, ast.Import):
+                for alias in node.names:
+                    if RuntimeValidator._module_root(alias.name) in RuntimeValidator.CACHING_MODULES:
+                        return f"import of caching library '{alias.name}'"
+            # Check for from functools import lru_cache / from cachetools import cached etc
+            elif isinstance(node, ast.ImportFrom):
+                module_root = RuntimeValidator._module_root(node.module or "")
+                if module_root in RuntimeValidator.CACHING_MODULES:
+                    return f"import from caching library '{node.module}'"
+                if module_root == "functools":
+                    for alias in node.names:
+                        if alias.name in RuntimeValidator.CACHING_FUNCTIONS:
+                            return f"import of caching helper 'functools.{alias.name}'"
+            # Check for @lru_cache/@cache/@cached decorators on functions or classes
+            elif isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                for decorator in node.decorator_list:
+                    name = RuntimeValidator._decorator_name(decorator)
+                    if name in RuntimeValidator.CACHING_DECORATORS:
+                        return f"caching decorator '@{name}' on '{node.name}'"
+        return None
+
+    @staticmethod
     def validate_caching(spec):
         if spec.spec_dictionary().get("cloud_ready") is True:
             paths = []
@@ -48,16 +118,18 @@ class RuntimeValidator(KomandPluginValidator):
                 paths.append(tasks_path[0])
             for path in paths:
                 for root, dirs, files in os.walk(path):
-                    for file in files:
-                        if file == ".DS_Store" or file.endswith(".pyc"):
+                    for file_ in files:
+                        # Caching is a code concern, so only inspect Python source files
+                        if not file_.endswith(".py"):
                             continue
-                        with open(os.path.join(root, file), "r") as open_file:
-                            file_str = open_file.read().replace("\n", "")
 
-                            if "cache" in file_str:
+                        # Check for caching usage like import cachetools, @lru_cache, etc
+                        file_path = os.path.join(root, file_)
+                        with open(file_path, "r") as open_file:
+                            if caching_usage := RuntimeValidator._find_caching_usage(open_file.read()):
                                 raise ValidationException(
                                     f"Cloud ready plugins cannot contain caching. "
-                                    f"Update {str(os.path.join(root, file))}."
+                                    f"Found {caching_usage} in {file_path}."
                                 )
 
     def validate_dockerfile(self, spec, latest_images):
