@@ -475,6 +475,20 @@ class TestPluginValidate(unittest.TestCase):
             except ValidationException:
                 raise Exception("We do not expect the supplied docker string to fail. We should support ':latest'")
 
+    def test_cloud_ready_validator_triggers_enable_cache_false_should_fail(self):
+        # Cloud ready plugin with triggers must have enable_cache: true
+        directory_to_test = "plugin_examples/bad_plugin_cloud_ready_triggers_enable_cache_false"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [CloudReadyValidator()])
+        self.assertEqual(result, 1)
+
+    def test_cloud_ready_validator_with_triggers_should_succeed(self):
+        # Cloud ready plugin with triggers and enable_cache: true should pass
+        directory_to_test = "plugin_examples/good_plugin_cloud_ready_with_triggers"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [CloudReadyValidator()])
+        self.assertEqual(result, 0)
+
     def test_acronym_validator_should_success(self):
         # example workflow in plugin_examples directory. Run tests with these files
         directory_to_test = "plugin_examples/good_plugin"
