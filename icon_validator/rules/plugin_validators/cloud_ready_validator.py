@@ -9,15 +9,10 @@ class CloudReadyValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_enable_cache_in_plugin_spec(plugin_spec: dict):
-        # Plugin with triggers must have caching enabled and vice versa
+        # A Cloud Ready plugin without triggers must not enable caching.
+        # (The with-triggers case is enforced for all plugins by EnableCacheValidator.)
         has_triggers = bool(plugin_spec.get("triggers"))
         enable_cache = plugin_spec.get("enable_cache", False)
-
-        if has_triggers and not enable_cache:
-            raise ValidationException(
-                "'enable_cache' must be set to 'true' for a Cloud Ready plugin with triggers. "
-                "Please check this field in plugin.spec and try again."
-            )
 
         if not has_triggers and enable_cache:
             raise ValidationException(
