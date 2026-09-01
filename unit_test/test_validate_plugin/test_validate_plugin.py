@@ -20,6 +20,7 @@ from icon_validator.rules.plugin_validators.cloud_ready_connection_credential_to
 )
 from icon_validator.rules.plugin_validators.cloud_ready_validator import CloudReadyValidator
 from icon_validator.rules.plugin_validators.confidential_validator import ConfidentialValidator
+from icon_validator.rules.plugin_validators.enable_cache_validator import EnableCacheValidator
 from icon_validator.rules.plugin_validators.description_validator import DescriptionValidator
 from icon_validator.rules.plugin_validators.encoding_validator import EncodingValidator
 from icon_validator.rules.plugin_validators.example_input_validator import ExampleInputValidator
@@ -475,19 +476,57 @@ class TestPluginValidate(unittest.TestCase):
             except ValidationException:
                 raise Exception("We do not expect the supplied docker string to fail. We should support ':latest'")
 
-    def test_cloud_ready_validator_triggers_enable_cache_false_should_fail(self):
-        # Cloud ready plugin with triggers must have enable_cache: true
-        directory_to_test = "plugin_examples/bad_plugin_cloud_ready_triggers_enable_cache_false"
-        file_to_test = "plugin.spec.yaml"
-        result = validate(directory_to_test, file_to_test, False, True, [CloudReadyValidator()])
-        self.assertEqual(result, 1)
-
     def test_cloud_ready_validator_with_triggers_should_succeed(self):
         # Cloud ready plugin with triggers and enable_cache: true should pass
         directory_to_test = "plugin_examples/good_plugin_cloud_ready_with_triggers"
         file_to_test = "plugin.spec.yaml"
         result = validate(directory_to_test, file_to_test, False, True, [CloudReadyValidator()])
         self.assertEqual(result, 0)
+
+    def test_enable_cache_validator_cloud_triggers_no_cache_should_fail(self):
+        # Cloud ready plugin with triggers must have enable_cache: true
+        directory_to_test = "plugin_examples/bad_plugin_cloud_ready_triggers_enable_cache_false"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [EnableCacheValidator()])
+        self.assertEqual(result, 1)
+
+    def test_enable_cache_validator_orchestrator_triggers_no_cache_should_fail(self):
+        # Orchestrator-only plugin (not cloud ready) with triggers must also have enable_cache: true
+        directory_to_test = "plugin_examples/bad_plugin_triggers_no_enable_cache"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [EnableCacheValidator()])
+        self.assertEqual(result, 1)
+
+    def test_enable_cache_validator_triggers_with_cache_should_succeed(self):
+        # A plugin with triggers and enable_cache: true should pass (cloud_ready is ignored here)
+        directory_to_test = "plugin_examples/good_plugin_cloud_ready_with_triggers"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [EnableCacheValidator()])
+        self.assertEqual(result, 0)
+
+    def test_enable_cache_validator_no_triggers_should_succeed(self):
+        # A plugin without triggers is not required to enable caching
+        directory_to_test = "plugin_examples/good_plugin"
+        file_to_test = "plugin.spec.yaml"
+        result = validate(directory_to_test, file_to_test, False, True, [EnableCacheValidator()])
+        self.assertEqual(result, 0)
+
+    @parameterized.expand([
+        ("triggers_and_cache_true", {"triggers": {"a_trigger": {}}, "enable_cache": True}, False),
+        ("triggers_and_cache_absent", {"triggers": {"a_trigger": {}}}, True),
+        ("triggers_and_cache_false", {"triggers": {"a_trigger": {}}, "enable_cache": False}, True),
+        ("triggers_and_cache_string_false", {"triggers": {"a_trigger": {}}, "enable_cache": "false"}, True),
+        ("triggers_and_cache_string_true", {"triggers": {"a_trigger": {}}, "enable_cache": "true"}, True),
+        ("empty_triggers", {"triggers": {}, "enable_cache": False}, False),
+        ("no_triggers_no_cache", {"enable_cache": False}, False),
+        ("no_triggers_with_cache", {"enable_cache": True}, False),
+    ])
+    def test_enable_cache_validator_logic(self, _name: str, plugin_spec: dict, should_raise: bool):
+        if should_raise:
+            with self.assertRaises(ValidationException):
+                EnableCacheValidator.validate_enable_cache_with_triggers(plugin_spec)
+        else:
+            EnableCacheValidator.validate_enable_cache_with_triggers(plugin_spec)
 
     def test_acronym_validator_should_success(self):
         # example workflow in plugin_examples directory. Run tests with these files
