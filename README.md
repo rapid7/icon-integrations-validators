@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.47.35 - Updated dependencies to resolve Snyk vulnerabilities (`GitPython` 3.1.60)
 * 2.47.34 - `EnableCacheValidator` - Require `enable_cache: true` for any plugin that defines triggers (orchestrator-only plugins included) so triggers do not silently fail on SDK 6.6.0+ | `CloudReadyValidator` - now only enforces `enable_cache: false` for Cloud Ready plugins without triggers
 * 2.47.33 - Updated dependencies to the latest versions
 * 2.47.32 - `CloudReadyValidator` - Allow `enable_cache: true` for Cloud Ready plugins that define triggers
