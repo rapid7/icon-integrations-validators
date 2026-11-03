@@ -62,6 +62,7 @@ be on your way to contributing!
 
 ## Changelog
 
+* 2.48.0 - Add validation for InsightConnect snippets: directories with a `snippet.spec.yaml` run the new snippet validators, which check the `.snpt` file and reuse the workflow validators for the spec and `help.md`
 * 2.47.35 - Updated dependencies (`GitPython` 3.2.0)
 * 2.47.34 - `EnableCacheValidator` - Require `enable_cache: true` for any plugin that defines triggers (orchestrator-only plugins included) so triggers do not silently fail on SDK 6.6.0+ | `CloudReadyValidator` - now only enforces `enable_cache: false` for Cloud Ready plugins without triggers
 * 2.47.33 - Updated dependencies to the latest versions
