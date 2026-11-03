@@ -1,6 +1,6 @@
 """
 The rules package provides the array VALIDATORS which contains all the validators for
-validating InsightConnect plugins and workflows.
+validating InsightConnect plugins, workflows and snippets.
 """
 
 # Plugin validators
@@ -73,6 +73,18 @@ from icon_validator.rules.workflow_validators.workflow_icon_validator import *
 from icon_validator.rules.workflow_validators.workflow_help_plugin_utilization_validator import *
 from icon_validator.rules.workflow_validators.workflow_encoding_validator import *
 from icon_validator.rules.workflow_validators.workflow_parameters_keyword_validator import *
+
+# Snippet validators
+from icon_validator.rules.snippet_validators.snippet_directory_name_match_validator import *
+from icon_validator.rules.snippet_validators.snippet_files_validator import *
+from icon_validator.rules.snippet_validators.snippet_help_validator import *
+from icon_validator.rules.snippet_validators.snippet_extension_validator import *
+from icon_validator.rules.snippet_validators.snippet_snpt_filename_validator import *
+from icon_validator.rules.snippet_validators.snippet_screenshot_validator import *
+from icon_validator.rules.snippet_validators.snippet_title_validator import *
+from icon_validator.rules.snippet_validators.snippet_name_validator import *
+from icon_validator.rules.snippet_validators.snippet_snpt_validator import *
+from icon_validator.rules.snippet_validators.snippet_python_script_use_validator import *
 
 # The order of this list is the execution order of the validators.
 VALIDATORS = [
@@ -182,4 +194,30 @@ WORKFLOW_VALIDATORS = [
     WorkflowUseCaseValidator(),
     UnapprovedKeywordsValidator(),
     WorkflowPythonScriptUseValidator(),
+]
+
+# Snippets reuse the workflow validators that only read the spec and help.md. The Snippet* validators
+# replace the ones that read a .icon file, or that require extension.png or screenshots, which are
+# optional for snippets. WorkflowPNGHashValidator, WorkflowHelpPluginUtilizationValidator and
+# WorkflowParametersKeywordValidator have no snippet equivalent.
+SNIPPET_VALIDATORS = [
+    SnippetDirectoryNameMatchValidator(),
+    SnippetFilesValidator(),
+    SnippetHelpValidator(),
+    WorkflowChangelogValidator(),
+    WorkflowVendorValidator(),
+    WorkflowVersionValidator(),
+    SnippetExtensionValidator(),
+    WorkflowSupportValidator(),
+    SnippetSNPTFileNameValidator(),
+    SnippetScreenshotValidator(),
+    SnippetTitleValidator(),
+    WorkflowDescriptionValidator(),
+    SnippetNameValidator(),
+    WorkflowProfanityValidator(),
+    SnippetSNPTFileValidator(),
+    WorkflowEncodingValidator(),
+    WorkflowUseCaseValidator(),
+    UnapprovedKeywordsValidator(),
+    SnippetPythonScriptUseValidator(),
 ]
