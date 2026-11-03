@@ -1,0 +1,16 @@
+extension: snippet
+products: ["insightconnect"]
+name: Quarantine_asset_with_InsightAgent
+title: "Quarantine Asset with Insight Agent"
+description: "This snippet will quarantine an asset with the Insight Agent."
+version: 1.0.0
+vendor: rapid7
+support: rapid7
+status: []
+hub_tags:
+  use_cases: [asset_management, endpoint_detection_response]
+  keywords: [agent, endpoint, incident_response, insightidr]
+  features: []
+resources:
+  source_url: https://github.com/rapid7/icon-integrations-validators/tree/master/unit_test/snippet_examples/Quarantine_asset_with_InsightAgent
+  license_url: https://github.com/rapid7/icon-integrations-validators/blob/master/LICENSE
