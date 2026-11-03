@@ -15,9 +15,9 @@ def main():
         sys.exit(0)
 
     arguments_parser = argparse.ArgumentParser(epilog=version_string,
-                                               description="Linting rules for plugins and workflows")
+                                               description="Linting rules for plugins, workflows and snippets")
     # required
-    arguments_parser.add_argument("path", help="Path to find the plugin or workflow code", default=".")
+    arguments_parser.add_argument("path", help="Path to find the plugin, workflow or snippet code", default=".")
 
     # optional
     arguments_parser.add_argument("--all", help="Run all Validators", default=False,
@@ -35,6 +35,11 @@ def main():
         if the_arguments.run_all_validators:
             sys.stderr.write(
                 f"{BULLET_OK}Option '--all' and '-a' only works with plugins. Executing workflow supported validators\n")
+    elif os.path.exists(path + "/snippet.spec.yaml"):
+        spec_file_name = "snippet.spec.yaml"
+        if the_arguments.run_all_validators:
+            sys.stderr.write(
+                f"{BULLET_OK}Option '--all' and '-a' only works with plugins. Executing snippet supported validators\n")
     else:
         spec_file_name = "plugin.spec.yaml"
 

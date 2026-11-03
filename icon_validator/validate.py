@@ -3,7 +3,7 @@
 from icon_plugin_spec.plugin_spec import KomandPluginSpec
 from icon_validator.exceptions import ValidationException
 
-from .rules import VALIDATORS, JENKINS_VALIDATORS, WORKFLOW_VALIDATORS, CONNECTOR_VALIDATORS
+from .rules import VALIDATORS, JENKINS_VALIDATORS, WORKFLOW_VALIDATORS, CONNECTOR_VALIDATORS, SNIPPET_VALIDATORS
 from .styling import *
 from .timing import *
 
@@ -32,6 +32,8 @@ def validate(
                 validators += JENKINS_VALIDATORS
         elif spec_file_name == "workflow.spec.yaml":
             validators = WORKFLOW_VALIDATORS
+        elif spec_file_name == "snippet.spec.yaml":
+            validators = SNIPPET_VALIDATORS
 
     validation_failures: [str] = []
     for v in validators:
