@@ -19,6 +19,9 @@ class SnippetNameValidator(KomandPluginValidator):
             raise ValidationException("The snippet name does not contain a string.")
 
         snpt_names = [file_name[:-len(SNPT_FILE_EXTENSION)] for file_name in snpt_file_names(spec.directory)]
+        if not snpt_names:
+            raise ValidationException("No .snpt snippet file was found to match the snippet name in "
+                                      f"snippet.spec.yaml ({name}).")
         if name not in snpt_names:
             raise ValidationException(f"The snippet name in snippet.spec.yaml ({name}) and the name of the "
                                       f".snpt snippet file ({', '.join(snpt_names)}) do not match.")

@@ -13,7 +13,7 @@ class SnippetDirectoryNameMatchValidator(KomandPluginValidator):
         Checks that a directory name matches a snippet filename (.snpt file),
         as in snippets/<Name>/<Name>.snpt
         """
-        directory_name = os.path.basename(spec.directory)
+        directory_name = os.path.basename(os.path.normpath(spec.directory))
         expected_file_name = f"{directory_name}{SNPT_FILE_EXTENSION}"
 
         if expected_file_name not in os.listdir(spec.directory):

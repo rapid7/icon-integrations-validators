@@ -11,7 +11,7 @@ class SnippetPythonScriptUseValidator(KomandPluginValidator):
 
     _PLUGIN_TITLE = "Python 3 Script"
     # A .snpt file names a step's plugin by its spec name, not its title
-    _PLUGIN_NAME = "python_3_script"
+    _PLUGIN_SPEC_NAME = "python_3_script"
 
     def python_plugin_used(self, snippet: dict) -> List[str]:
         """
@@ -26,7 +26,7 @@ class SnippetPythonScriptUseValidator(KomandPluginValidator):
         for step in steps:
             metadata = step.get("metadata") if isinstance(step, dict) else None
             plugin = metadata.get("plugin") if isinstance(metadata, dict) else None
-            if isinstance(plugin, dict) and self._PLUGIN_NAME in str(plugin.get("name")):
+            if isinstance(plugin, dict) and self._PLUGIN_SPEC_NAME in str(plugin.get("name")):
                 step_names.append(step.get("name"))
         return step_names
 

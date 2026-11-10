@@ -38,12 +38,14 @@ class WorkflowDescriptionValidator(KomandPluginValidator):
 
     @staticmethod
     def validate_workflow_description_exists(spec):
+        # Snippets reuse this validator
+        extension = "Snippet" if spec.spec_file_name == "snippet.spec.yaml" else "Workflow"
         if "description" not in spec.spec_dictionary():
-            raise ValidationException("Workflow description in yaml is missing.")
+            raise ValidationException(f"{extension} description in yaml is missing.")
 
         description = spec.spec_dictionary()["description"]
         if description == "":
-            raise ValidationException("Workflow description in yaml can not be blank")
+            raise ValidationException(f"{extension} description in yaml can not be blank")
 
     @staticmethod
     def validate_workflow_description_punctuation(description):
