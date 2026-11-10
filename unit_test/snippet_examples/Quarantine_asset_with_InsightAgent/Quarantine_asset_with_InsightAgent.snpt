@@ -1,0 +1,458 @@
+{
+  "name": "Quarantine Asset with Insight Agent",
+  "summary": "This snippet will quarantine an asset with the Insight Agent.\n\nNote: This snippet is used to power on demand response actions in InsightIDR investigations. Read more about response actions - https://docs.rapid7.com/insightidr/get-started-with-on-demand-response-actions",
+  "tags": [
+    "Asset Management",
+    "Endpoint Detection & Response"
+  ],
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "Asset Names": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "default": []
+      }
+    },
+    "definitions": {}
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "Results": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "All Actors Success": {
+        "type": "boolean"
+      }
+    },
+    "definitions": {}
+  },
+  "outputValues": {
+    "Results": "{{[6d0ce5f1-9117-4f15-bc00-ce7a344ad0b4].[content]}}",
+    "All Actors Success": "{{[4c0a32be-5f6d-46b5-b93f-bd5eb0e80635].[Quarantine All Assets Success]}}"
+  },
+  "notes": "# Quarantine Asset with the Insight Agent\n\n**Note: this Snippet is used by InsightIDR Investigations and MDR Active Response. You should not disable or modify this snippet if you use it for these services.**\n\nThis quarantine snippet takes a list of Assets in the form of IP addresses, hostnames, MAC addresses, or Asset Identifiers, and attempts to execute a quarantine using the Insight Agent.\n\nThe status of the action for each user is returned in an array of strings, with the given user identifier, delineating whether the asset was quarantined successfully.\n\nTo add assets to your exclusion list, create a global artifact with the existing schema imported from the snippet. Then navigate to Settings --> Global Artifacts and add entries to your global artifact.",
+  "steps": [
+    {
+      "nodeId": "002d1f08-2660-4508-963b-2eb8c84de704",
+      "name": "Asset Excluded from Quarantine?",
+      "type": "automated_decision",
+      "metadata": {
+        "parameters": {
+          "defaultEdgeId": "df1fbbe2-22df-45b4-b3a0-b5cf5d9fe7f7",
+          "stepControlParams": [
+            {
+              "edgeId": "df1fbbe2-22df-45b4-b3a0-b5cf5d9fe7f7",
+              "expression": {},
+              "expressionText": ""
+            },
+            {
+              "edgeId": "5c61d0f1-5b8b-42f4-8fd7-2eb739a08092",
+              "expression": {
+                "op": "AND",
+                "left": {
+                  "name": "92b00910-2a7e-461b-802d-b5b2fd0a94b0.found",
+                  "type": "variable"
+                },
+                "type": "binary",
+                "right": {
+                  "name": "92b00910-2a7e-461b-802d-b5b2fd0a94b0.matches.0.excluded",
+                  "type": "variable"
+                }
+              },
+              "expressionText": "{{[92b00910-2a7e-461b-802d-b5b2fd0a94b0].[found]}} && {{[92b00910-2a7e-461b-802d-b5b2fd0a94b0].[matches].[0].[excluded]}}"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "nodeId": "2d463b57-12d7-4034-8d81-d8fcc8667ac9",
+      "name": "Find Asset",
+      "description": "",
+      "type": "action",
+      "metadata": {
+        "parameters": {
+          "input": {
+            "agent": "{{[4c0a32be-5f6d-46b5-b93f-bd5eb0e80635].[$item]}}"
+          }
+        },
+        "identifier": "get_agent_details",
+        "continueOnFailure": true,
+        "isDisabled": false,
+        "plugin": {
+          "name": "rapid7_insight_agent",
+          "vendor": "rapid7",
+          "version": "2.0.1"
+        },
+        "connectionId": "00000000-0000-0000-a000-000000000000",
+        "isCloud": true,
+        "connectionType": "CONNECTION"
+      }
+    },
+    {
+      "nodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635",
+      "name": "Loop Over Assets",
+      "type": "loop",
+      "metadata": {
+        "parameters": {
+          "nextEdgeId": "08f979e9-9ff6-47f9-87da-211d46faee14",
+          "innerEdgeId": "56c06375-e451-4ecc-a8e6-2258941ffd43",
+          "customOutput": [
+            {
+              "name": "Quarantine All Assets Success",
+              "input": {
+                "condition": "all",
+                "expression": {
+                  "op": "==",
+                  "left": {
+                    "name": "e5f7a280-6479-4550-a283-0aa0e2c2dc05.$success",
+                    "type": "variable"
+                  },
+                  "type": "binary",
+                  "right": {
+                    "type": "literal",
+                    "value": true
+                  }
+                },
+                "expressionText": "{{[e5f7a280-6479-4550-a283-0aa0e2c2dc05].[$success]}} == true"
+              },
+              "outputType": "boolean"
+            },
+            {
+              "name": "Successful Quarantines",
+              "input": {
+                "value": "{{[4c0a32be-5f6d-46b5-b93f-bd5eb0e80635].[$item]}}",
+                "valueType": "string",
+                "expression": {
+                  "op": "==",
+                  "left": {
+                    "name": "e5f7a280-6479-4550-a283-0aa0e2c2dc05.$success",
+                    "type": "variable"
+                  },
+                  "type": "binary",
+                  "right": {
+                    "type": "literal",
+                    "value": true
+                  }
+                },
+                "expressionText": "{{[e5f7a280-6479-4550-a283-0aa0e2c2dc05].[$success]}} == true"
+              },
+              "outputType": "array"
+            },
+            {
+              "name": "Unsuccessful Quarantines",
+              "input": {
+                "value": "{{[4c0a32be-5f6d-46b5-b93f-bd5eb0e80635].[$item]}}",
+                "valueType": "string",
+                "expression": {
+                  "op": "==",
+                  "left": {
+                    "name": "e5f7a280-6479-4550-a283-0aa0e2c2dc05.$success",
+                    "type": "variable"
+                  },
+                  "type": "binary",
+                  "right": {
+                    "type": "literal",
+                    "value": false
+                  }
+                },
+                "expressionText": "{{[e5f7a280-6479-4550-a283-0aa0e2c2dc05].[$success]}}== false"
+              },
+              "outputType": "array"
+            }
+          ],
+          "repeatVariable": "{{[$input].[Asset Names]}}"
+        },
+        "customOutputSchema": {
+          "type": "object",
+          "title": "Variables",
+          "properties": {
+            "Successful Quarantines": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Successful Quarantines",
+              "description": "Custom output: \"Successful Quarantines\""
+            },
+            "Unsuccessful Quarantines": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Unsuccessful Quarantines",
+              "description": "Custom output: \"Unsuccessful Quarantines\""
+            },
+            "Quarantine All Assets Success": {
+              "type": "boolean",
+              "title": "Quarantine All Assets Success",
+              "description": "Custom output: \"Quarantine All Assets Success\""
+            }
+          }
+        }
+      }
+    },
+    {
+      "nodeId": "510fb11c-24d0-46f0-a625-f48e5a3ef081",
+      "name": "Exclusion Report",
+      "type": "artifact",
+      "metadata": {
+        "parameters": {
+          "type": "markdown",
+          "input": {
+            "content": "No action was taken. Asset was in the exclude list for Quarantine, defined in your quarantine asset exclude list Global Artifact."
+          }
+        },
+        "isDisabled": false
+      }
+    },
+    {
+      "nodeId": "6d0ce5f1-9117-4f15-bc00-ce7a344ad0b4",
+      "name": "Report",
+      "type": "artifact",
+      "metadata": {
+        "parameters": {
+          "type": "markdown",
+          "input": {
+            "content": "Quarantine was successful for: {{[4c0a32be-5f6d-46b5-b93f-bd5eb0e80635].[Successful Quarantines]}}\n\nQuarantine was unsuccessful for: {{[4c0a32be-5f6d-46b5-b93f-bd5eb0e80635].[Unsuccessful Quarantines]}}"
+          }
+        },
+        "isDisabled": false
+      }
+    },
+    {
+      "nodeId": "92b00910-2a7e-461b-802d-b5b2fd0a94b0",
+      "name": "Check Asset Exclude List",
+      "type": "helpers",
+      "metadata": {
+        "parameters": {
+          "expression": {
+            "op": "=",
+            "left": {
+              "type": "literal",
+              "value": "asset"
+            },
+            "type": "binary",
+            "right": {
+              "name": "cd5e02c0-abe3-4f2b-8866-7fa64cfb5df0.hostname",
+              "type": "variable"
+            }
+          },
+          "ignoreCase": false,
+          "expressionText": "'asset' = {{[cd5e02c0-abe3-4f2b-8866-7fa64cfb5df0].[hostname]}}"
+        },
+        "identifier": "lookup_global_artifacts",
+        "isDisabled": false,
+        "globalArtifact": {
+          "name": "Response Actions Quarantine Exclusion List",
+          "schema": {
+            "type": "object",
+            "title": "Top Level Object",
+            "properties": {
+              "_ROOT_": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/_ROOT_"
+                }
+              }
+            },
+            "definitions": {
+              "_ROOT_": {
+                "type": "object",
+                "properties": {
+                  "asset": {
+                    "type": "string"
+                  },
+                  "notes": {
+                    "type": "string"
+                  },
+                  "excluded": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          },
+          "id": "17da45f3-9ff0-47cb-b09f-6277878b03ba"
+        }
+      }
+    },
+    {
+      "nodeId": "cd5e02c0-abe3-4f2b-8866-7fa64cfb5df0",
+      "name": "Extract Simple Hostname",
+      "type": "pattern_match",
+      "metadata": {
+        "parameters": {
+          "input": "{{[4c0a32be-5f6d-46b5-b93f-bd5eb0e80635].[$item]}}",
+          "captureAll": false,
+          "ignoreCase": true,
+          "expressions": [
+            {
+              "type": "variable",
+              "value": {
+                "ident": "hostname",
+                "regex": "[^.]*"
+              }
+            },
+            {
+              "type": "text",
+              "value": "[\\.]{0,1}.*"
+            }
+          ],
+          "expressionText": "{{hostname:/[^.]*/}}[\\.]{0,1}.*"
+        },
+        "isDisabled": false
+      }
+    },
+    {
+      "nodeId": "e5f7a280-6479-4550-a283-0aa0e2c2dc05",
+      "name": "Quarantine Asset with Insight Agent",
+      "description": "",
+      "type": "action",
+      "metadata": {
+        "parameters": {
+          "input": {
+            "agent_id": "{{[2d463b57-12d7-4034-8d81-d8fcc8667ac9].[agent].[id]}}",
+            "interval": 300,
+            "quarantine_state": true
+          }
+        },
+        "identifier": "quarantine",
+        "continueOnFailure": true,
+        "isDisabled": false,
+        "plugin": {
+          "name": "rapid7_insight_agent",
+          "vendor": "rapid7",
+          "version": "2.0.1"
+        },
+        "connectionId": "00000000-0000-0000-a000-000000000000",
+        "isCloud": true,
+        "connectionType": "CONNECTION"
+      }
+    },
+    {
+      "nodeId": "ee058754-dcea-494f-8602-9122c5628122",
+      "name": "Quarantine Asset Report",
+      "type": "artifact",
+      "metadata": {
+        "parameters": {
+          "type": "markdown",
+          "input": {
+            "content": "{{[4c0a32be-5f6d-46b5-b93f-bd5eb0e80635].[$item]}}}: {{[e5f7a280-6479-4550-a283-0aa0e2c2dc05].[$success]}}"
+          }
+        },
+        "isDisabled": false
+      }
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "nodeId": "002d1f08-2660-4508-963b-2eb8c84de704",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635"
+      },
+      {
+        "nodeId": "2d463b57-12d7-4034-8d81-d8fcc8667ac9",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635"
+      },
+      {
+        "nodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635"
+      },
+      {
+        "nodeId": "510fb11c-24d0-46f0-a625-f48e5a3ef081",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635"
+      },
+      {
+        "nodeId": "6d0ce5f1-9117-4f15-bc00-ce7a344ad0b4"
+      },
+      {
+        "nodeId": "92b00910-2a7e-461b-802d-b5b2fd0a94b0",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635"
+      },
+      {
+        "nodeId": "cd5e02c0-abe3-4f2b-8866-7fa64cfb5df0",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635"
+      },
+      {
+        "nodeId": "e5f7a280-6479-4550-a283-0aa0e2c2dc05",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635"
+      },
+      {
+        "nodeId": "ee058754-dcea-494f-8602-9122c5628122",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635"
+      }
+    ],
+    "edges": [
+      {
+        "edgeId": "00814712-b07d-4e17-a7d3-eaaec3524c5a",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635",
+        "fromNodeId": "2d463b57-12d7-4034-8d81-d8fcc8667ac9",
+        "toNodeId": "e5f7a280-6479-4550-a283-0aa0e2c2dc05"
+      },
+      {
+        "edgeId": "08f979e9-9ff6-47f9-87da-211d46faee14",
+        "fromNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635",
+        "toNodeId": "6d0ce5f1-9117-4f15-bc00-ce7a344ad0b4"
+      },
+      {
+        "edgeId": "1ebe3f82-81e7-4a2a-821d-d28b8670f928",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635",
+        "fromNodeId": "cd5e02c0-abe3-4f2b-8866-7fa64cfb5df0",
+        "toNodeId": "92b00910-2a7e-461b-802d-b5b2fd0a94b0"
+      },
+      {
+        "edgeId": "56c06375-e451-4ecc-a8e6-2258941ffd43",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635",
+        "fromNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635",
+        "toNodeId": "cd5e02c0-abe3-4f2b-8866-7fa64cfb5df0"
+      },
+      {
+        "edgeId": "5c15820e-7036-45a5-a06d-30912136864d",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635",
+        "fromNodeId": "92b00910-2a7e-461b-802d-b5b2fd0a94b0",
+        "toNodeId": "002d1f08-2660-4508-963b-2eb8c84de704"
+      },
+      {
+        "edgeId": "5c61d0f1-5b8b-42f4-8fd7-2eb739a08092",
+        "name": "Yes",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635",
+        "fromNodeId": "002d1f08-2660-4508-963b-2eb8c84de704",
+        "toNodeId": "510fb11c-24d0-46f0-a625-f48e5a3ef081"
+      },
+      {
+        "edgeId": "6e27ee58-dbf4-4730-a8ca-3b70a7206fa3",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635",
+        "fromNodeId": "510fb11c-24d0-46f0-a625-f48e5a3ef081"
+      },
+      {
+        "edgeId": "b0e7eca5-5378-483e-a819-e4df3e1f5d4b",
+        "fromNodeId": "6d0ce5f1-9117-4f15-bc00-ce7a344ad0b4"
+      },
+      {
+        "edgeId": "c8891a0a-7637-459e-bea2-c94fdf8a97c1",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635",
+        "fromNodeId": "ee058754-dcea-494f-8602-9122c5628122"
+      },
+      {
+        "edgeId": "db8eed6c-4e36-476f-8a0d-459395a96736",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635",
+        "fromNodeId": "e5f7a280-6479-4550-a283-0aa0e2c2dc05",
+        "toNodeId": "ee058754-dcea-494f-8602-9122c5628122"
+      },
+      {
+        "edgeId": "df1fbbe2-22df-45b4-b3a0-b5cf5d9fe7f7",
+        "name": "No",
+        "parentNodeId": "4c0a32be-5f6d-46b5-b93f-bd5eb0e80635",
+        "fromNodeId": "002d1f08-2660-4508-963b-2eb8c84de704",
+        "toNodeId": "2d463b57-12d7-4034-8d81-d8fcc8667ac9"
+      }
+    ]
+  }
+}

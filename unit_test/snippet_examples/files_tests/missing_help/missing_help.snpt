@@ -1,0 +1,41 @@
+{
+  "name": "Example Snippet",
+  "summary": "An example snippet for the snippet validator tests.",
+  "tags": [],
+  "inputSchema": {
+    "type": "object",
+    "properties": {},
+    "definitions": {}
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {},
+    "definitions": {}
+  },
+  "outputValues": {},
+  "notes": "",
+  "steps": [
+    {
+      "nodeId": "1b7a8d6e-3c1f-4a52-9a43-6f0d2c9e8b71",
+      "name": "Example Report",
+      "type": "artifact",
+      "metadata": {
+        "parameters": {
+          "type": "markdown",
+          "input": {
+            "content": "Example"
+          }
+        },
+        "isDisabled": false
+      }
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "nodeId": "1b7a8d6e-3c1f-4a52-9a43-6f0d2c9e8b71"
+      }
+    ],
+    "edges": []
+  }
+}

@@ -1,0 +1,11 @@
+extension: snippet
+products: ["insightconnect"]
+name: missing_keys_tests
+vendor: rapid7
+support: rapid7
+status: []
+hub_tags:
+  use_cases: [utility]
+  keywords: [example]
+  features: []
+resources: {}

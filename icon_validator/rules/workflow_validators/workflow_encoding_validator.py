@@ -6,21 +6,21 @@ import yaml
 class WorkflowEncodingValidator(KomandPluginValidator):
 
     @staticmethod
-    def validate_encoding(spec_dict):
+    def validate_encoding(spec_dict, spec_file_name="workflow.spec.yaml"):
         for key, value in spec_dict.items():
             if not isinstance(value, dict):
-                WorkflowEncodingValidator.compare_encodings(key, value)
+                WorkflowEncodingValidator.compare_encodings(key, value, spec_file_name)
             else:
                 sub_yaml = yaml.safe_load(str(value))
-                WorkflowEncodingValidator.validate_encoding(sub_yaml)
+                WorkflowEncodingValidator.validate_encoding(sub_yaml, spec_file_name)
 
     @staticmethod
-    def compare_encodings(key, value):
+    def compare_encodings(key, value, spec_file_name="workflow.spec.yaml"):
         unicode_string = str(value)
         decoded_string = unicode_string.encode("ascii", "ignore").decode("utf-8")
         if unicode_string != decoded_string:
             raise ValidationException(
-                f"A forbidden character was found in the '{key}' field of the workflow.spec.yaml file: {value}")
+                f"A forbidden character was found in the '{key}' field of the {spec_file_name} file: {value}")
 
     def validate(self, spec):
-        WorkflowEncodingValidator.validate_encoding(spec.spec_dictionary())
+        WorkflowEncodingValidator.validate_encoding(spec.spec_dictionary(), spec.spec_file_name)

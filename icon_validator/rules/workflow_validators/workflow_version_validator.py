@@ -35,10 +35,12 @@ class WorkflowVersionValidator(KomandPluginValidator):
         Check that version key exists.
         Check that version is a string.
         """
+        # Snippets reuse this validator
+        extension = "Snippet" if spec.spec_file_name == "snippet.spec.yaml" else "Workflow"
         if "version" not in spec.spec_dictionary():
-            raise ValidationException("Workflow version is missing.")
+            raise ValidationException(f"{extension} version is missing.")
         if not isinstance(spec.spec_dictionary()["version"], str):
-            raise ValidationException("Workflow version does not contain a string.")
+            raise ValidationException(f"{extension} version does not contain a string.")
 
     def validate(self, spec):
         WorkflowVersionValidator.validate_workflow_version(spec)
